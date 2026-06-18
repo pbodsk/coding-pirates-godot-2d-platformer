@@ -29,40 +29,60 @@ Installer Godot og husk hvor du har installeret det så du kan finde det næste 
 
 3. Giv dit spil et navn (og _husk_ hvor du gemte det til næste gang)
 
-![create](../../assets/01/name.png)
+![name](../../assets/01/name.png)
 
+## Opsætning
+Inden vi går i gang er der lige et par indstillinger vi skal have klaret.
 
+Vi skal have:
 
-And can you write code?
+- Navngivet nogle physics layers, så er det nemmere for os selv at holde styr på senere
+- Registreret hvilke taster vi gerne vil styre med (ligesom i vores 2D shooter)
+- Sat texture rendering til "nearest" så vores sprøde 64x64 assets står knivskarpt og lækkert
 
-```gdscript
-func _ready():
-    var hello = "Hello"
-```
+### Navngiv physics layers
+Når vi skal til at lave collision detection skal vi arbejde med forskellige layers. De har som default navnene Layer 1, Layer 2 og så videre og det er jo ikke så nemt at finde rundt i, men heldigvis kan vi give dem andre navne så det bliver lidt lettere, så det gør vi.
 
-And it updates
+I topmenuen under _Project_ vælger du _Project Settings_, vær sikker på at du står på _General_ fanen i toppen, og så skal du finde Layer Names -> 2D Physics (_ikke_ 2D Render).
 
-Here's a list
-- one
-- two
-- three
+Nu kan du give dine lag nogle bedre navne, kald dem:
 
-**bold** _italic_
+- Layer 1: Terrain
+- Layer 2: Player
+- Layer 3: Enemies
+- Layer 4: Bullets
+- Layer 5: Items
 
-A single line of code `var meh = 1`
+![Layers](../../assets/01/2DPhysics.png)
 
-And an image here
-![test](../../assets/01/image.png)
+Så er det lidt nemmere at overskue hvor vi skal putte de forskellige ting hen senere.
 
-| header | tada |
-| --- | --- |
-| look | here|
+### Vælg hvilke taster du skal bruge til at styre med
+Skal gøres på samme måde som du gjorde i vores 2D shooter. 
 
-# One
-## Two
-### Three
-#### Four
-##### Five
-###### Six
+Stadig inde i Project Settings skal du skifte til _Input Map_ fanen og så skal du tilføje nye controls. Vi skal bruge
 
-> Quote
+- left
+- right
+- up
+- fire
+
+Og du har frit valg.
+
+![controls](../../assets/01/controls.png)
+
+### Sæt texture rendering
+Stadig inde i Project Settings skal du tilbage på _General_ og så finde Rendering -> Textures og sætte "Default Texture Filter" til Nearest
+
+![texture filter](../../assets/01/nearest.png)
+
+Læs mere [her](https://www.gdquest.com/library/pixel_art_setup_godot4/)
+
+Og det var det
+
+## Outro
+Med opsætningsarbejdet af vejen er vi klar til at begynde på vores spil.
+
+Første skridt er at få lavet en `Level` og bruge `TileMapLayer`s til at bygge vores map.
+
+Når du er klar kan du hoppe videre til [level 2](../lesson02/)

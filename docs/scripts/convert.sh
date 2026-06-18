@@ -35,6 +35,7 @@ find "$SOURCE_DIR" -name "*.md" -type f | while read -r file; do
         --to=html5 \
         --standalone \
         --css="${css_prefix}style/github-markdown.css" \
+        --css="${css_prefix}style/style.css" \
         --lua-filter=../scripts/wrap-markdown-body.lua \
         -o "$output_path"
 done

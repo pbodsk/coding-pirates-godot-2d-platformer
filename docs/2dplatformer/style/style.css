@@ -1,0 +1,4 @@
+.markdown-body img {
+    max-width: min(100%, 640px);
+    max-height: auto;
+}

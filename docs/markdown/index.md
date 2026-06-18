@@ -8,3 +8,4 @@
 - [Lektion 6, Skyd](lessons/lesson06)
 - [Lektion 7, Walker](lessons/lesson07)
 - [Lektion 8, Walker fortsat](lessons/lesson08)
+- [Lektion 9, Elevatorer](lessons/lesson08)

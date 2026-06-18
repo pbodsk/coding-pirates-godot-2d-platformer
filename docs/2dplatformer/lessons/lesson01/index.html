@@ -94,11 +94,57 @@
     code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../../style/github-markdown.css" />
+  <link rel="stylesheet" href="../../style/style.css" />
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="this-is-a-document">This is a document</h1>
-<p>Can it be converted to HTML?</p>
+<h1 id="godot-2d-platformer---level-1-opsætning">Godot 2D Platformer -
+level 1, opsætning</h1>
+<p>Velkommen til endnu en Godot guide serie!</p>
+<p>I denne guide serie skal vi lave endnuet 2D spil, for der er stadig
+så meget vi kan lære bare om 2D i Godot.</p>
+<p>Vi skal lave et 2D platform spil hvor den tapre space pirate Piry
+McPirate skal bevæge sig på platforme og elevatorer mens han nedkæmper
+ondsindede Walkers, samler førstehjælpspakker op og bare holder sig i
+live</p>
+<p>Udover alle de ting vi allerede kan i Godot (scripts, UI, signals og
+så videre) skal vi lære:</p>
+<ul>
+<li>At lave en level med <code>TileMapLayer</code>s.</li>
+<li>Om Physics i Godot og hvordan vi kan bruge en
+<code>CharacterBody2D</code>s til vores player og fjender sådan at de
+reagerer med tyngdekraft.</li>
+<li>Om <code>collision_layer</code> og <code>collision_mask</code>.</li>
+<li>Hvordan vi kan opbygge vores kode ved hjælp af "komponenter" sådan
+at vi kan lave en masse små "byggeklodser" som vi så kan sætte sammen,
+som vi vil på de enkelte scener vi laver.</li>
+<li>Hvordan vi kan bruge en <code>RayCast2D</code> node til at få vores
+fjender til at bevæge sig i et mønster.</li>
+<li>Hvordan vi kan bruge <code>CanvasModulate</code> og
+<code>PointLight2D</code> til at sætte lys på vores levels.</li>
+</ul>
+<p>Og sikkert også en masse andet...så helt ærligt! Vi har temmelig
+travlt!! Lad os komme i gang.</p>
+<h2 id="hent-godot">Hent Godot</h2>
+<p>Hvis du ikke allerede har hentet Godot så ville det nok være et godt
+sted at starte. Du kan finde nyeste version af Godot på <a
+href="https://godotengine.org/download">deres download side</a>. Vælg
+den øverste version der bare hedder "Godot Engine", vi skal ikke bruge
+.Net versionen... dot Niet til dot Net som russerne siger...tror
+jeg.</p>
+<p>Installer Godot og husk hvor du har installeret det så du kan finde
+det næste gang! Spørg evt. om hjælp med at installere Godot hvis det
+driller.</p>
+<h2 id="nyt-projekt">Nyt projekt</h2>
+<ol type="1">
+<li>Start Godot</li>
+<li>Vælg <em>+ Create</em> i øverste venstre hjørne</li>
+</ol>
+<p><img src="../../assets/01/create.png" alt="create" /></p>
+<ol start="3" type="1">
+<li>Giv dit spil et navn og <em>husk</em> hvor du gemte det</li>
+</ol>
+<p><img src="../../assets/01/name.png" alt="create" /></p>
 <p>And can you write code?</p>
 <div class="sourceCode" id="cb1"><pre
 class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_ready</span>():</span>

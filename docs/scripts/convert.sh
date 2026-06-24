@@ -11,6 +11,16 @@ if [ -d "$ASSETS_DIR" ]; then
   cp -R "$ASSETS_DIR" "$OUTPUT_DIR/"
 fi
 
+find "$OUTPUT_DIR/assets" \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" \) -type f | while read -r image; do
+  width=$(magick identify -format "%w" "$image")
+  height=$(magick identify -format "%h" "$image")
+
+  if [ "$width" -gt 900 ] || [ "$height" -gt 400 ]; then
+    echo "Resizing: $image"
+    magick mogrify -resize 50% "$image"
+  fi
+done
+
 # Convert markdown files to HTML
 find "$SOURCE_DIR" -name "*.md" -type f | while read -r file; do
     relative_path="${file#$SOURCE_DIR}"

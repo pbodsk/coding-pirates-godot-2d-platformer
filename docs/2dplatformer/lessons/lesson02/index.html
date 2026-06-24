@@ -33,7 +33,258 @@
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="lektion-2">Lektion 2</h1>
+<h1 id="godot-2d-platformer---level-2-tilemaplayers">Godot 2D Platformer
+- level 2, TileMapLayers</h1>
+<p>I <a href="../lesson01/">level 1</a> fik vi oprettet et nyt projekt
+og fik rettet diverse settings så de passer til vores 2D spil.</p>
+<p>I denne level skal vi starte på at lave vores levels og til det
+formål skal vi bruge et <a
+href="https://docs.godotengine.org/en/stable/classes/class_tilemaplayer.html#class-tilemaplayer">TileMapLayer</a>
+som giver os mulighed for at bygge vores level af "tiles", altså små
+kvadratiske pixel blokke med forskellige tegninger som vi kan bruge til
+at tegne vores level med.</p>
+<p>Vi kan lægge flere lag af <code>TileMapLayer</code>s ovenpå hinanden
+sådan at vi kan have en baggrund i et lag, de platforme vi vil bevæge os
+på i et andet lag, og endda have et lag der ligger <em>foran</em> vores
+platformslag så vores spiller kan bevæge sig <em>bag</em> ting.</p>
+<h2 id="lidt-mere-om-tilemaplayers">Lidt mere om
+<code>TileMapLayer</code>s</h2>
+<p>Et <code>TileMapLayer</code> gemmer sine tiles i et <a
+href="https://docs.godotengine.org/en/stable/classes/class_tileset.html#class-tileset">TileSet</a>
+så det vil sige:</p>
+<ul>
+<li><code>TileMapLayer</code> = Det vi bruger til at tege med, sætte
+collisioner på og så videre</li>
+<li><code>TileSet</code> = <em>Hvad</em> er det vi vil tegne</li>
+</ul>
+<h2 id="opret-vores-første-tilemaplayer">Opret vores første
+<code>TileMapLayer</code></h2>
+<p>I vores projekt vil vi gerne lave en Level scene som vi kan bruge til
+alle de ting der har med vores level at gøre, dvs.</p>
+<ul>
+<li>Selve "mappet"</li>
+<li>Fjender</li>
+<li>Elevatorer</li>
+<li>Health</li>
+<li>Exit points</li>
+<li>Og hvad vi ellers kan finde på</li>
+</ul>
+<p>Så vi skal nu:</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Have lavet en ny mappe til vores
+level</label></li>
+<li><label><input type="checkbox" />Have lavet en level
+scene</label></li>
+<li><label><input type="checkbox" />Tilføjet en
+<code>TileMapLayer</code> node</label></li>
+</ul>
+<p>Lad os tage det et skridt af gangen.</p>
+<h3 id="ny-mappe">Ny mappe</h3>
+<p>Lad os være super organiserede og starte med at lave en mappe der
+hedder <code>scenes</code> og inden i den mappe laver vi mappe der
+hedder <code>levels</code>.</p>
+<p>Du kan godt huske hvordan man gør ikke? Højreklik på
+<code>res://</code> mappen, vælg "Create New" og "Folder".</p>
+<p>Kald mappen <em>scenes</em></p>
+<p>Inden i den mappe laver du nu en mappe der hedder <em>levels</em> så
+det ser sådan her ud:</p>
+<p><img src="../../assets/02/folders.png" alt="folders" /></p>
+<p>Sådan, nu har vi sat os selv op for succes og kan strege første item
+på vores liste</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Have lavet en ny mappe
+til vores level</label></li>
+<li><label><input type="checkbox" />Have lavet en level
+scene</label></li>
+<li><label><input type="checkbox" />Tilføjet en
+<code>TileMapLayer</code> node</label></li>
+</ul>
+<h3 id="level-scene">Level scene</h3>
+<p>Så skal vi have lavet en scene til vores level. Den skal som sagt
+indeholde mange forskellige ting så vi laver lige lidt struktur i den
+også.</p>
+<ol type="1">
+<li>Opret en ny 2D Scene af typen <code>Node2D</code>. Vores "ydre"
+scene skal bare være sådan en slags container for alle de ting vi skal
+bruge, lidt ligesom en <code>&lt;div&gt;</code> i HTML.</li>
+<li>Omdøb <code>Node2D</code> til <code>Level01</code>. Det skulle nu
+gerne se sådan her ud:</li>
+</ol>
+<p><img src="../../assets/02/level01.png" alt="level01" /></p>
+<ol start="3" type="1">
+<li>Gem din nyoprettede <code>Level01</code> i <em>scenes/levels</em>
+mappen</li>
+</ol>
+<p><img src="../../assets/02/save_level01.png" alt="save_level01" /></p>
+<ol start="4" type="1">
+<li>Lad os tilføje nogle flere "container noder" som vi kan smide ting
+i. Inde under din Level01 <code>Node2D</code> skal du tilføje nogle
+flere <code>Node2D</code> scener. Kald dem:
+<ul>
+<li>TileMaps</li>
+<li>Platforms</li>
+<li>Items</li>
+<li>Enemies</li>
+</ul></li>
+</ol>
+<p>Det skal nu gerne se sådan her ud</p>
+<p><img src="../../assets/02/structure.png" alt="structure" /></p>
+<p>Hallo mand! Sikke en orden, fremtids os bliver så glade for nutids os
+fordi vi sådan har gjort det dejligt overskueligt.</p>
+<p>Vi hakker af på listen:</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Have lavet en ny mappe
+til vores level</label></li>
+<li><label><input type="checkbox" checked="" />Have lavet en level
+scene</label></li>
+<li><label><input type="checkbox" />Tilføjet en
+<code>TileMapLayer</code> node</label></li>
+</ul>
+<p>Glæder os over hvor gode vi er og så skynder vi os videre.</p>
+<h3 id="tilføj-tilemaplayer">Tilføj <code>TileMapLayer</code></h3>
+<p>Endelig! Tid til at lave noget som vi kan se på skærmen! Sådan næsten
+da.</p>
+<ul>
+<li>Højreklik på TileMaps container noden</li>
+<li>Vælg "+ Add Child Node"</li>
+<li>Søg på <code>TileMap</code></li>
+<li>Vælg <code>TileMapLayer</code></li>
+</ul>
+<p><img src="../../assets/02/select-tilemap.png"
+alt="select-tilemap" /></p>
+<ul>
+<li>Tryk på "Create"</li>
+<li>Omdøb <code>TileMapLayer</code> til "CollisionLayer", det er her vi
+laver den del af banen man kan stå på, senere laver vi også for- og
+baggrund</li>
+</ul>
+<p>Så langt så godt. Nu har vi en <code>TileMapLayer</code> node som vi
+ikke kan bruge til noget som helst for vi skal også have tilføjet et
+<code>TileSet</code>, men vi kan da strege på vores liste:</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Have lavet en ny mappe
+til vores level</label></li>
+<li><label><input type="checkbox" checked="" />Have lavet en level
+scene</label></li>
+<li><label><input type="checkbox" checked="" />Tilføjet en
+<code>TileMapLayer</code> node</label></li>
+</ul>
+<p>Og glæde os igen.</p>
+<p>Så har vi glædet os nok...Videre!</p>
+<h2 id="tileset">TileSet</h2>
+<p>Nu har vi et <code>TileMapLayer</code> som er det vi bruger til at
+designe vores levels med, men det kræver som sagt et
+<code>TileSet</code> som er de "fliser" vi kan tegne med.</p>
+<p>Så nu skal vi:</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Have lavet en mappe til vores
+assets</label></li>
+<li><label><input type="checkbox" />Have tilføjet nogle tile assets til
+vores mappe</label></li>
+<li><label><input type="checkbox" />Have lavet et nyt
+<code>TileSet</code> som skal tilknyttes vores
+<code>TileMapLayer</code></label></li>
+</ul>
+<h3 id="lav-mappe-til-assets">Lav mappe til assets</h3>
+<p>I "FileSystem" i nederste venstre hjørne skal vi have lavet en ny
+mappe på samme niveau som vores scenes mappe. Så vi:</p>
+<ol type="1">
+<li>Højreklikker på "res://"</li>
+<li>Vælger "Create New..." -&gt; "Folder"</li>
+<li>Kalder vores folder for "assets"</li>
+</ol>
+<p>Lad os være ordentlige og lave en mappe til tilesets under vores
+assets. Du har sikkert regnet det ud men altså:</p>
+<ol type="1">
+<li>Højreklik på den nye assets mappe</li>
+<li>Vælge "Create New..." -&gt; "Folder"</li>
+<li>Kald vores nye folder for "tilesets"</li>
+</ol>
+<p>Det skulle nu gerne se sådan her ud</p>
+<p><img src="../../assets/02/tilesets-folder.png"
+alt="tilesets-folder" /></p>
+<p>Vi streger af og går videre</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Have lavet en mappe til
+vores assets</label></li>
+<li><label><input type="checkbox" />Have tilføjet nogle tile assets til
+vores mappe</label></li>
+<li><label><input type="checkbox" />Have lavet et nyt
+<code>TileSet</code> som skal tilknyttes vores
+<code>TileMapLayer</code></label></li>
+</ul>
+<h3 id="tilføj-tile-assets">Tilføj tile assets</h3>
+<p>Assets kan du som sagt finde <a
+href="../../assets/gameassets/assets.zip">her</a>.</p>
+<p>I den mappe kan du nu finde mappen med tilesets og derfra trække de
+her tilesets over i den "tileset" mappe du lige har lavet:</p>
+<ul>
+<li>1_Industrial_Tileset_1.png</li>
+<li>1_Industrial_Tileset_1B.png</li>
+<li>1_Industrial_Tileset_1C.png</li>
+<li>2_Industrial_Tileset_1_Background.png</li>
+<li>2_Industrial_Tileset_1B_Background.png</li>
+<li>2_Industrial_Tileset_1C_Background_Violet.png</li>
+</ul>
+<p>Så har vi lidt at tegne med.</p>
+<p><img src="../../assets/02/tilesets-added.png"
+alt="tilesets-added" /></p>
+<p>Sådan, det var step to</p>
+<p>Vi streger af og går videre</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Have lavet en mappe til
+vores assets</label></li>
+<li><label><input type="checkbox" checked="" />Have tilføjet nogle tile
+assets til vores mappe</label></li>
+<li><label><input type="checkbox" />Have lavet et nyt
+<code>TileSet</code> som skal tilknyttes vores
+<code>TileMapLayer</code></label></li>
+</ul>
+<h3 id="lav-et-nyt-tileset">Lav et nyt <code>TileSet</code></h3>
+<p>Nu er vi endelig klar til at binde et <code>TileSet</code> på vores
+<code>TileMapLayer</code>. Det gør vi sådan her:</p>
+<ol type="1">
+<li>Vælg vores "CollisionLayer" i strukturen i venstre side</li>
+<li>I "inspectoren" i højre side, under "TileMapLayer" kan du klikke på
+drop down pilen og vælge "TileSet"</li>
+</ol>
+<p><img src="../../assets/02/new-tileset.png" alt="new-tileset" /></p>
+<p>I bunden af skærmen er der nu dukket en ny "TileSet" fane op</p>
+<p><img src="../../assets/02/tilesources.png" alt="tilesources" /></p>
+<p>Her kan du nu vælge dine tilesets fra "assets" mappen og trække dem
+over på Tile Sources. Sigt efter det mørkere område i venstre side af
+fanen.</p>
+<p>Vi vil gerne bruge:</p>
+<ul>
+<li>1_Industrial_Tileset_1.png</li>
+<li>1_Industrial_Tileset_1B.png</li>
+<li>1_Industrial_Tileset_1C.png</li>
+</ul>
+<p>Så træk dem over (hint...hvis du er skrap med tastaturet kan du
+markere flere på en gang (brug <kbd>shift</kbd>) og så trække dem over
+på <em>en</em> gang istedet for en af gangen som en anden hulemand)</p>
+<p>Du får nu den her besked som du bare siger "Yes" til</p>
+<p><img src="../../assets/02/yes-please.png" alt="yes" /></p>
+<p>Nu skulle det gerne se sådan her ud ved dig</p>
+<p><img src="../../assets/02/tilesets-done.png"
+alt="tilesets-done" /></p>
+<p>Det var det, nu har vi et <code>TileMapLayer</code> med tre
+tilhørende <code>TileSet</code>s som vi kan bruge til at tegne med.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Have lavet en mappe til
+vores assets</label></li>
+<li><label><input type="checkbox" checked="" />Have tilføjet nogle tile
+assets til vores mappe</label></li>
+<li><label><input type="checkbox" checked="" />Have lavet et nyt
+<code>TileSet</code> som skal tilknyttes vores
+<code>TileMapLayer</code></label></li>
+</ul>
+<h2 id="næste-skridt">Næste skridt</h2>
+<p>Nu er vi næsten klar til at tegne. Først skal vi dog lige have
+tilføjet et lag af "fysisk dimension", sådan at vores player, fjender og
+så videre kan <em>stå</em> på nogle af fliserne uden at falde af. Det
+kigger vi på i <a href="../lesson03/">level 3</a> hvor vi også kommer i
+gang med at tegne...jeg lover!</p>
 </article>
 </body>
 </html>

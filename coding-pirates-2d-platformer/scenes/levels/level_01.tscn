@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://3hv5ybg766wk"]
+
+[node name="Level01" type="Node2D" unique_id=1547257308]
+
+[node name="TileMaps" type="Node2D" parent="." unique_id=1603073944]
+
+[node name="Platforms" type="Node2D" parent="." unique_id=1416107148]
+
+[node name="Items" type="Node2D" parent="." unique_id=1941275957]
+
+[node name="Enemies" type="Node2D" parent="." unique_id=2114501910]

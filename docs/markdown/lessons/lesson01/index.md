@@ -17,7 +17,7 @@ Udover alle de ting vi allerede kan i Godot (scripts, UI, signals og så videre)
 Og sikkert også en masse andet...så helt ærligt! Vi har temmelig travlt!! Lad os komme i gang.
 
 ## Hent Godot
-Hvis du ikke allerede har hentet Godot så ville det nok være et godt sted at starte. Du kan finde nyeste version af Godot på [deres download side](https://godotengine.org/download). Vælg den øverste version der bare hedder "Godot Engine", vi skal ikke bruge .Net versionen... dot Niet til dot Net som russerne siger...tror jeg.
+Hvis du ikke allerede har hentet Godot så ville det nok være et godt sted at starte. Du kan finde nyeste version af Godot på [deres download side](https://godotengine.org/download). Vælg den øverste version der bare hedder "Godot Engine", vi skal ikke bruge .Net versionen, bare den øverste.
 
 Installer Godot og husk hvor du har installeret det så du kan finde det næste gang! Spørg evt. om hjælp med at installere Godot hvis det driller.
 

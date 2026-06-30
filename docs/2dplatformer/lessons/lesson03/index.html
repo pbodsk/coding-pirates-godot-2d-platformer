@@ -33,7 +33,119 @@
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="lektion-3">Lektion 3</h1>
+<h1 id="godot-2d-platformer---level-3-tilemaplayers-part-ii">Godot 2D
+Platformer - level 3, TileMapLayers Part II</h1>
+<p>I <a href="../lesson02/">level 2</a> fik vi startet op på at tilføje
+vores <code>TileMapLayer</code> og et <code>TileSet</code> men vi
+stoppede da vi skulle til at tilføje fysiske egenskaber, så lad os
+fortsætte der...meeen, først måske lige en introduktion til hvad vi
+egentlig mener når vi snakker fysike egenskaber i Godot...og spil
+generelt</p>
+<h2 id="fysike-egenkaber-i-godot">Fysike egenkaber i Godot</h2>
+<p>Når vi laver spil vil vi ofte gerne vide om to ting rører hinanden.
+Tænk tilbage på vores 2D skydespil f.eks, her ville vi gerne vide sådan
+noget som:</p>
+<ul>
+<li>har den her kugle vi har skudt afsted ramt et fjendtligt
+rumskib?</li>
+<li>eller har den her kugle fra fjenden ramt os?</li>
+</ul>
+<p>Eller tænk på et platformspil som det vi er ved at lave nu, her vil
+vi gerne vide ting som:</p>
+<ul>
+<li>står vores spiller på jorden nu, eller er han i luften?</li>
+<li>har vores skud ramt væggen?</li>
+<li>er vores spiller gået ind i en power-up til deres våben? Eller noget
+førstehjælp måske?</li>
+<li>er vores walkers ved at gå ud over kanten på en platform?</li>
+</ul>
+<p>Alt det kan vi bruge fysiske dimensioner til, det drejer sig alt
+sammen om <em>collision detection</em>, altså støder objekt A ind i
+objekt B (eller måske omvendt, er object A <em>holdt op</em> med at
+støde ind i objekt B) Og hvis ja, hvad vil vi så gøre når det sker?</p>
+<p>Du har allerede arbejdet med <code>CollisionShape2D</code> da vi
+lavede vores rumspil og ville se om kugler havde ramt rumskibe f.eks, så
+du kender allerede til fysiske dimenensioner i Godot.</p>
+<p>Nu vil vi så forsøge os med en <a
+href="https://docs.godotengine.org/en/stable/classes/class_characterbody2d.html#class-characterbody2d"><code>CharacterBody2D</code></a>
+og det kræver at vi lærer lidt om <em>Collision Layers og Collision
+Masks</em> i Godot.</p>
+<h3 id="collision-layer">Collision Layer</h3>
+<p><code>CollisionLayer</code> er det lag som vi gerne vil have at vores
+node er i. Tænk tilbage på <a href="../lesson01/">level 1</a> da vi
+navngav <em>physics layers</em>. Husk at vi kaldte dem:</p>
+<ul>
+<li>Layer 1: Terrain</li>
+<li>Layer 2: Player</li>
+<li>Layer 3: Enemies</li>
+<li>Layer 4: Bullets</li>
+<li>Layer 5: Items</li>
+</ul>
+<p>Det var jo vanvittigt godt tænkt af os dengang! Når vi f.eks skal til
+at tilføje vores <code>TileSet</code> til et physic layer virker det
+logisk at de skal proppes i Terrain layer, og når vi skal til at lave en
+player skal den selvfølgelig i Player layer...tak fortids os!</p>
+<p>Men hvorfor? Kan det ikke være lige meget? Nej for nu kommer
+<em>Collision Mask</em> på banen</p>
+<h3 id="collision-mask">Collision Mask</h3>
+<p><code>CollisionMask</code> kan vi bruge til at styre <em>hvad</em> vi
+gerne vil have besked om at vi er kollideret med. Samtidig kan du jo så
+også læse at vi <em>ikke</em> får besked om <em>alt</em> vi støder
+sammen med, vi skal selv fortælle <em>hvad</em> vi vil have besked
+om.</p>
+<p>Så for eksempel vil vores player gerne have besked om, at den står på
+nogle fliser i vores <code>TileSet</code> som man ikke kan falde
+igennem.</p>
+<p>Eller hvad med vores bullets? De vil gerne have at vide om de har
+ramt en væg, en fjende eller måske spilleren.</p>
+<p>Lad os tage eksemplet med spilleren.</p>
+<ul>
+<li>Spilleren er i det Collision Layer vi har kaldt <em>Player</em></li>
+<li>I spillerens Collision Mask markerer vi at vi gerne vil have besked
+når spilleren rammer noget i <em>Terrain</em> laget</li>
+</ul>
+<p>Simpelt ikke?</p>
+<p>Du kan læse mere om physics i Godot på deres <a
+href="https://docs.godotengine.org/en/stable/tutorials/physics/physics_introduction.html">hjemmeside</a></p>
+<p>Nå, den bedste måde at lære det her på er vel at kaste sig ud i det,
+så lad os tilføje vores <code>TileSet</code> til <em>Terrain</em>
+CollisionLayer.</p>
+<h2 id="tilføj-tileset-til-terrain">Tilføj <code>TileSet</code> til
+Terrain</h2>
+<p>I vores Level01 scene markerer du <code>CollisionLayer</code> og ovre
+i "Inspectoren" i højre side finder du settings for "TileMapLayer" og
+klikker på "TileSet"...det er lidt bøvlet, du skal ramme indenfor den
+røde firkant på billedet her</p>
+<p><img src="../../assets/03/select-tileset.png"
+alt="select-tileset" /></p>
+<p>Nu skulle du gerne få en menu hvor du har adgang til diverse
+indstillinger for dit <code>TileSet</code>.</p>
+<p><img src="../../assets/03/tileset-expanded.png"
+alt="tileset-expanded" /></p>
+<p>Klik på knappen "+ Add Element" under "Physics Layers" og se så, nu
+har vi adgang til Collision Layers og Collision Masks på vores
+<code>TileSet</code></p>
+<p><img src="../../assets/03/collision-layers.png"
+alt="collision-layers" /></p>
+<p>Nå! OK, nu bliver det jo let. Vi vil gerne have at vores
+<code>TileSet</code> er i Terrain laget og vi er faktisk ligeglade med
+om andre rammer os, det må være deres problem, ikke vores.</p>
+<p>Så</p>
+<ul>
+<li>Under CollisionLayer tilføjer vi vores <code>TileSet</code> til lag
+et. Hvis vi hover musen kan vi se at der står Terrain...nemt!</li>
+<li>Vi sørger for at der ikke er valgt nogetsomhelst i
+CollisionMask</li>
+</ul>
+<p>Det ser sådan her ud</p>
+<p><img src="../../assets/03/collision-setup.png"
+alt="collision-setup" /></p>
+<p>Så! Nu har vi tilføjet en fysisk dimension til vores
+<code>TileSet</code>, og det vil sige at vi nu kan fortælle nogle af
+vores tiles at dem kan man træde på, sådan at vores player og fjender
+kan gå på dem.</p>
+<p>Hvordan gør man det? Fedt at du spørger, lad os kigge på det!</p>
+<h2 id="vælg-tiles-der-kan-trædes-på">Vælg Tiles der kan trædes på</h2>
 </article>
 </body>
 </html>

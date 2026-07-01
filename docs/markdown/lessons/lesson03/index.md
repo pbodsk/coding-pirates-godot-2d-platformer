@@ -80,4 +80,81 @@ Så! Nu har vi tilføjet en fysisk dimension til vores `TileSet`, og det vil sig
 Hvordan gør man det? Fedt at du spørger, lad os kigge på det!
 
 ## Vælg Tiles der kan trædes på
+Nu har vi tilføjet vores `TileSet` til et CollisionLayer, så nu kan vi markere hvilke der skal indgå i _collision detection_.
 
+Det gør du sådan her:
+
+1. I vores Level01 scene markerer du `CollisionLayer` og klikker på `TileSet` i "Inspectoren" i højre side af Godot.
+2. Nu skulle der gerne dukke en "TileSet" editor op i bunden af skærmen ved siden af "TileMap"
+
+![tileset-editor](../../assets/03/tileset-editor.png)
+
+3. I den vælger du "Paint"
+
+![paint-tileset](../../assets/03/paint-tileset.png)
+
+4. Under "Paint Properties" klikker du på "Select a property editor" og vælger "Physics layer 0" under "Physics"
+
+![tileset-properties](../../assets/03/tileset-properties.png)
+
+5. Nu kan du få lov til at "tegne" på de fliser som du gerne vil have skal tælle med i _collision detection_. Det foregår ved at du simpelthen bare klikker på de fliser der skal tælle med i højre side. Du kan zoome ind så det bliver nemmere at ramme. Her kan du se hvordan vi har valgt nogle fliser.
+
+![tileset-painted](../../assets/03/tileset-painted.png)
+
+Husk at gentage dette for de to andre `TileSet`s
+
+![alternate-tileset](../../assets/03/alternate-tileset.png)
+
+## Endelig tid til at tegne!
+Nu kan du i bunden skifte tilbage til `TileMap`
+
+![tilemap-editor](../../assets/03/tilemap-editor.png)
+
+Og så kan du vælge tiles og begynde at tegne med dem.
+
+![drawing](../../assets/03/drawing.png)
+
+Prøv dig frem, du kan:
+
+- Vælge flere tiles af gangen
+- Bruge de forskellige værktøjer til at tegne med, pen, line, rect og eraser, prøv at se hvad de kan
+
+Når du har noget du synes er værd at teste kan du prøve at vælge Level01 scenen og så køre "Run Current Scene"
+
+![alive](../../assets/03/alive.png)
+
+Kønt er det ikke men det fixer vi senere.
+
+## Baggrundslag
+Lad os som det sidste lave endnu et `TileMapLayer` som ligger _bag_ vores "CollisionLayer" og som vi kan bruge som baggrund. 
+
+Da det er et baggrundslag betyder det jo så også at vi ikke skal tilføje CollisionLayer så det burde være en lille opgave.
+
+1. Inde under vores Level01 -> TileMaps laver du et nyt `TileMapLayer`. Kald det Background og sørg for at det ligger _over_ vores CollisionLayer
+
+![backgroundlayer](../../assets/03/backgroundlayer.png)
+
+2. Tilføj et `TileSet` og brug de baggrunds tileset assets der er i assets mappen, altså:
+- 2_Industrial_Tileset_1_Background.png
+- 2_Industrial_Tileset_1B_Background.png
+- 2_Industrial_Tileset_1C_Background_Violet.png
+
+3. Nu kan du tegne i dit baggrundslag og så vil de ting du tegner ligge sig i et lag _bag_ dit CollisionLayer.
+
+Det er jo meget fint og det betyder også at du kan lave forgrundslag så det ser ud som om din spiller løber om _bag_ ting på banen.
+
+## Fri leg
+Prøv dig frem. Her er vi gået helt amok og har lavet to baggrundslag hvor vi bruger 
+
+- 3_Far_Background_Tile.png
+
+Til det bageste lag, og så har vi også lagt et lag i forgrunden.
+
+![layers](../../assets/03/layers.png)
+
+## Næste skridt
+Endelig kom vi igang med at tegne og nu kan vi nemt lave levels i flere lag.
+
+Næste skridt bliver at vi skal have lavet en "Game" scene som holder tingene sammen, og så skal vi have lavet en Player så vi kan begynde at flytte os rundt på banen.
+
+Alt sammen i [level 4](../lesson04/), vi ses.

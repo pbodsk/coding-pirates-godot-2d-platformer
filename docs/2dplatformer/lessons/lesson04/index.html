@@ -33,7 +33,208 @@
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="lektion-4">Lektion 4</h1>
+<h1
+id="godot-2d-platformer---level-4-game-scene-og-start-på-player">Godot
+2D Platformer - level 4, Game scene og start på Player</h1>
+<p>I <a href="../lesson03/">level 3</a> fik vi startet på at tegne vores
+level, så vi endelig kunne se <em>noget</em> på skærmen efter alt vores
+hårde arbejde!</p>
+<p>I denne lektion vil vi lave en <code>Game</code> scene som vi kan
+bruge til at holde styr på:</p>
+<ul>
+<li>Levels</li>
+<li>Player</li>
+<li>UI</li>
+</ul>
+<p>Præcis som vi gjorde i vores 2D skydespil. Derudover starter vi også
+på vores <code>Player</code> scene.</p>
+<h2 id="gruppering">Gruppering</h2>
+<p>Indenfor programmering handler det meget om at bryde ting ned i små
+logiske bidder og sørge for at ting grupperet pænt, sådan at man ikke
+prøver at gøre alt muligt i den samme blok kode som så bliver kæmpestor
+og svær at holde styr på.</p>
+<p>Det er også det vi gør her. Vi har en <code>Game</code> scene som
+ikke kan ret meget selv, men som så til gengæld indeholder</p>
+<ul>
+<li>vores <code>Level01</code> fra før, som ved hvordan man skal tegne
+et map</li>
+<li>en <code>Player</code> scene som kan finde ud af at tegne og flytte
+vores helt</li>
+<li>senere noget UI så vi kan se hvor mange point vi har og så
+videre</li>
+</ul>
+<p>Vores <code>Game</code> scene skal i første omgang indeholde:</p>
+<ul>
+<li><code>Level01</code> som tilføjes som en child node, ganske som vi
+gjorde i vores 2D space shooter</li>
+<li>en <code>Player</code> som vi laver lige om lidt</li>
+</ul>
+<p>Lad os komme i gang.</p>
+<h2 id="opret-ny-node2d">Opret ny Node2D</h2>
+<ol type="1">
+<li>Lav en ny 2D scene af typen <code>Node2D</code> og kald den
+"Game"</li>
+<li>Gem din scene under navnet "Game.tscn" i roden af scenes mappen</li>
+</ol>
+<p><img src="../../assets/04/save-game.png" alt="save-game" /></p>
+<p>Det skulle gerne se sådan her ud i din "FileSystem" explorer i
+nederste venstre hjørne af Godot vinduet.</p>
+<p><img src="../../assets/04/filesystem.png" alt="filesystem" /></p>
+<h2 id="tilføj-level01-som-child-node">Tilføj Level01 som child
+node</h2>
+<p>Du kan godt huske hvordan ikke?</p>
+<ol type="1">
+<li>Marker din nye Game node</li>
+<li>Tryk på "Instantiate Child Scene", kæden lige over din Game
+node</li>
+</ol>
+<p>Vælg nu din "Level01.tscn" scene. Det skulle nu gerne se sådan her
+ud</p>
+<p><img src="../../assets/04/added-level01.png"
+alt="added-level01" /></p>
+<h2 id="test">Test</h2>
+<p>Nu kan du trykke på "Run Project" (play knappen øverst).</p>
+<p>Godot vil komme og fortælle dig høfligt at du har glemt at vælge en
+"main scene" som er den man som default vil kører når spillet
+starter.</p>
+<p><img src="../../assets/04/main-scene.png" alt="main-scene" /></p>
+<p>Her kan du bare vælge "Select Current"</p>
+<p>(og hvis du nogensinde vil ændre det, så er det under Project
+Settings -&gt; Application -&gt; Run -&gt; Main Scene)</p>
+<p>Og nu skulle du gerne kunne se din <code>Game</code> scene, som
+indtil videre bare er det samme som <code>Level01</code></p>
+<p><img src="../../assets/04/alive-again.png" alt="alive-again" /></p>
+<p>Altså...det er jo stadig ikke kønt men der er da noget på
+skærmen.</p>
+<p>Lad os komme videre med at få lavet en Player</p>
+<h2 id="player">Player</h2>
+<p>Til vores <code>Player</code> vil vi gerne bruge en
+<code>CharacterBody2D</code> scene.</p>
+<p>Som der står i <a
+href="https://docs.godotengine.org/en/stable/classes/class_characterbody2d.html">dokumentationen</a>:</p>
+<blockquote>
+<p><strong>CharacterBody2D</strong> is a specialized class for physics
+bodies that are meant to be user-controlled. They are not affected by
+physics at all, but they affect other physics bodies in their path.</p>
+</blockquote>
+<p>Hallo mand! Det er jo lige det vi vil.</p>
+<p>Så vi vil nu:</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Oprette en ny
+<code>CharacterBody2D</code> node</label></li>
+<li><label><input type="checkbox" />Tilføje en
+<code>CollisionShape2D</code></label></li>
+<li><label><input type="checkbox" />Tilføje en
+<code>AnimatedSprite2D</code></label></li>
+<li><label><input type="checkbox" />Tilføje vores første
+animation</label></li>
+</ul>
+<p>Lad os komme i gang</p>
+<h3 id="opret-player-node">Opret Player node</h3>
+<p>Du har gjort det her mange gange før så nu får du det bare i
+punktform og så klarer du den derfra.</p>
+<ol type="1">
+<li>Opret ny scene af type <code>CharacterBody2D</code></li>
+<li>Omdøb den til Player</li>
+<li>Opret en ny mappe i roden af res mappen (altså på nivau med vores
+"assets" og "scenes" mapper). Kald mappen "characters" (her vil vi gemme
+vores Player og senere fjender)</li>
+<li>Gem vores nye scene som "player.tscn"</li>
+<li>Tilføj en <code>CollisionShape2D</code> som sub-node du kan bruge en
+CapsuleShape</li>
+<li>Tilføj en <code>AnimatedSprite2D</code> som sub-node</li>
+</ol>
+<p>Vi streger ud</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Oprette en ny
+<code>CharacterBody2D</code> node</label></li>
+<li><label><input type="checkbox" checked="" />Tilføje en
+<code>CollisionShape2D</code></label></li>
+<li><label><input type="checkbox" checked="" />Tilføje en
+<code>AnimatedSprite2D</code></label></li>
+<li><label><input type="checkbox" />Tilføje vores første
+animation</label></li>
+</ul>
+<p>Og så skal vi lige have nogle assets også.</p>
+<ol type="1">
+<li>Opret en ny undermappe under assets og kald den "characters"</li>
+<li>Kopier "space-marine-idle.png" fra assets som du tidligere hentede
+ind i den nyeoprettede "characters" mappe</li>
+</ol>
+<p>Nu kan du oprette nye <code>SpriteFrames</code> på din
+<code>AnimatedSprite2D</code>i "Inspectoren" i højre side</p>
+<p><img src="../../assets/04/new-sprite-frames.png"
+alt="new-sprite-frames" /></p>
+<p><img src="../../assets/04/sprite-frames.png"
+alt="sprite-frames" /></p>
+<p>Og endelig kan du oprette en ny animation som du har gjort før.</p>
+<ol type="1">
+<li>Klik på den <code>SpriteFrames</code> du lige har oprettet</li>
+<li>Nu kan du i bunden vælge "SpriteTrames"</li>
+<li>Omdøb den animation der allerede er til at hedde "idle"</li>
+<li>Klik på "ADd Frames from Sprite-Sheet" i topmenuen af "SpriteFrames"
+(den der ligner en Rubrics Cube eller vaffel eller hvad det nu er)</li>
+<li>Tilføj nu "space-marine-idle.png" og ret Vertical til</li>
+<li>Vælg alle 4 frames og tryk på "Add 4 Frame(s)"</li>
+<li>Husk at slå "Autoplay on Load" til</li>
+<li>Tada</li>
+</ol>
+<p><img src="../../assets/04/idle-animation.png"
+alt="idle-animation" /></p>
+<p>Vi kan sætte flueen ved sidste punkt</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Oprette en ny
+<code>CharacterBody2D</code> node</label></li>
+<li><label><input type="checkbox" checked="" />Tilføje en
+<code>CollisionShape2D</code></label></li>
+<li><label><input type="checkbox" checked="" />Tilføje en
+<code>AnimatedSprite2D</code></label></li>
+<li><label><input type="checkbox" checked="" />Tilføje vores første
+animation</label></li>
+</ul>
+<h3 id="tilføj-player-til-game">Tilføj Player til Game</h3>
+<p>Præcis som vi tilføjede <code>Level01</code> til <code>Game</code>
+vil vi nu tilføje <code>Player</code> som en Child Scene.</p>
+<p>Zoom lidt ind og skift til Move Mode så vi kan flytte vores
+<code>Player</code> inde i <code>Game</code></p>
+<p><img src="../../assets/04/move-mode.png" alt="move-mode" /></p>
+<p>Flyt <code>Player</code> så den står nede ved gulvet, det behøver
+ikke være helt præcist, det klarer vi om lidt.</p>
+<p><img src="../../assets/04/player-moved.png" alt="player-moved" /></p>
+<p>Kør vores spil igen</p>
+<p>What the...</p>
+<p><img src="../../assets/04/what-the.png" alt="what-the" /></p>
+<p>OK det er fesent! Vi kan jo intet se. Hvis bare der var noget vi
+kunne gøre ved det...</p>
+<h3 id="camera2d">Camera2D</h3>
+<p>Jamen vi <em>kan</em> jo gøre noget ved det. Vi kan tilføje et
+<code>Camera2D</code> til vores <code>Player</code> og så vil det sørge
+for at følge vores <code>Player</code> rundt. Du kan læse mere om
+<code>Camera2D</code> i <a
+href="https://docs.godotengine.org/en/stable/classes/class_camera2d.html#camera2d">dokumentationen</a>.</p>
+<p>Så:</p>
+<ol type="1">
+<li>Ind på vores <code>Player</code> scene igen og tilføj et
+<code>Caeera2D</code> som en child node</li>
+<li>Sæt zoom level til 4 i "Inspectoren" i højre side</li>
+</ol>
+<p>Det ser sådan her ud</p>
+<p><img src="../../assets/04/camera-added.png" alt="camera-added" /></p>
+<p>Kør vores spil igen...Jaeh ja! Se nu bare!</p>
+<p><img src="../../assets/04/game-on.png" alt="game-on" /></p>
+<p>Nu er der zoomet ind på vores <code>Player</code> som står og
+animerer lige så fint.</p>
+<p>Den svæver godtnok lidt over jorden men det klarer vi i næste
+lektion.</p>
+<h2 id="godt-arbejde">Godt arbejde</h2>
+<p>Nu begynder det at ligne noget. Vi har et <code>Game</code> som har
+en <code>Level01</code> og vi har også en <code>Player</code> som vi kan
+se.</p>
+<p>I <a href="../lesson05/">level 5</a> vil vi begynde at tilføje
+scripts til vores <code>Player</code> så den følger tyngdeloven. Vi vil
+lave nogle "komponenter" som vi kan bruge sammen med vores scenes sådan
+at vi kan bruge det samme kode flere steder, det bliver godt! Vi ses i
+<a href="../lesson05/">level 5</a>.</p>
 </article>
 </body>
 </html>

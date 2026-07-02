@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://xee5uxyws1cl"]
+
+[ext_resource type="Texture2D" uid="uid://mty6wjmlmcii" path="res://assets/characters/space-marine-idle.png" id="1_dnjla"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ntv8e"]
+radius = 14.0
+height = 40.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dnjla"]
+atlas = ExtResource("1_dnjla")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3eadt"]
+atlas = ExtResource("1_dnjla")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tory2"]
+atlas = ExtResource("1_dnjla")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x0jl3"]
+atlas = ExtResource("1_dnjla")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_evndh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dnjla")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3eadt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tory2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x0jl3")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 4.0
+}]
+
+[node name="Player" type="CharacterBody2D" unique_id=1934841766]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1088840334]
+shape = SubResource("CapsuleShape2D_ntv8e")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=143006957]
+sprite_frames = SubResource("SpriteFrames_evndh")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=614652152]
+zoom = Vector2(4, 4)

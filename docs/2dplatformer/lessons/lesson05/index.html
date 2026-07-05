@@ -27,13 +27,482 @@
       vertical-align: middle;
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../../style/github-markdown.css" />
   <link rel="stylesheet" href="../../style/style.css" />
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="lektion-5">Lektion 5</h1>
+<h1
+id="godot-2d-platformer---level-5-komponenter-og-start-på-player-script">Godot
+2D Platformer - level 5, komponenter og start på Player script</h1>
+<p>I <a href="../lesson04/">level 4</a> fik vi lavet en "main"
+<code>Game</code> scene som skal køre vores spil og vi fik begyndt på en
+<code>Player</code> scene som vi efterlod svævende et lille stykke over
+jorden.</p>
+<p>I denne lektion vil vi begynde at arbejde med "komponenter" som vi
+kan genbruge på flere neder som skal have de samme egenskaber. Vi vil
+lave en <code>GravityComponent</code> og bruge den i et script som vi
+tilføjer til vores <code>Player</code> så den kan overholde
+tyngedekraften.</p>
+<p>Lad os starte med at forstå hvad vi kan bruge komponenter til.</p>
+<h2 id="introduktion-til-komponenter">Introduktion til komponenter</h2>
+<p>Lad os først forestille os at vi lavede vores spil <em>uden</em>
+komponenter.</p>
+<p>Vi har en <code>Player</code> som vi gerne vil:</p>
+<ul>
+<li>have til at overholde tyngdelovene</li>
+<li>kunne styre med tastaturet så den kan
+<ul>
+<li>løbe til siderne</li>
+<li>hoppe</li>
+<li>falde når den løber ud over kanten på en platform</li>
+</ul></li>
+<li>have til at skyde når vi trykker på en knap på tastaturet</li>
+<li>have til at miste health når den bliver ramt af fjendens kugler</li>
+<li>have til at kunne samle healthpacks op så den får ekstra health</li>
+<li>skifte mellem forskellige animationer alt efter om den står stille,
+hopper eller går</li>
+</ul>
+<p>Så...vi går i gang med at skrive et <em>kæææææmpe</em> langt script
+som gør alt det ovenstående.</p>
+<p>Bagefter laver vi så en <code>Walker</code> fjende som vi gerne
+vil:</p>
+<ul>
+<li>have til at overholde tyngdelovene</li>
+<li>have til at gå selv fra side til side</li>
+<li>have til at skyde når den opdager vores <code>Player</code></li>
+<li>have til at miste health når den bliver ramt af
+<code>Player</code>ens kugler</li>
+<li>skifte mellem forskellige animationer alt efter om den står stille
+eller går</li>
+</ul>
+<p>Så...nu kunne vi så skrive et <em>kæææææmpe</em> langt script som gør
+alt det ovenstående.</p>
+<h3 id="men-hov">Men hov!</h3>
+<p>Stop lige, mange af de her ting er de samme uanset om man er
+<code>Player</code> eller <code>Walker</code> er de ikke?</p>
+<p>Hvad nu hvis vi lige tænker os om og så istedet laver noget kode som
+kan <em>genbruges</em> uanset om man er <code>Player</code> eller
+<code>Walker</code>?</p>
+<h3 id="komponenter">Komponenter</h3>
+<p>Det vil vi prøve her, ved at skrive en masse "komponenter" som så har
+<em>en</em> specifik opgave hver.</p>
+<p>F.eks kunne vi lave en <code>GravityComponent</code> hvis eneste
+opgave er at finde ud af om en <code>CharacterBody2D</code> står på en
+platform eller ej. Hvis den ikke står på en platform, så tilføjer vi
+noget tyngdekraft så den falder ned mod jorden.</p>
+<p>Det gode er at vi nu har et lille - forholdsvist - forholdsvist
+simpelt script som vi kan knappe på både vores <code>Player</code> og
+vores <code>Walker</code> og så forstår de pludselig begge to
+tyngdelovene.</p>
+<p>Det samme kunne være gældende for ting som:</p>
+<ul>
+<li>Animationer</li>
+<li>Det at kunne skyde</li>
+<li>Det at blive ramt</li>
+<li>Det at flytte sig</li>
+</ul>
+<p>Hvis vi laver nogle komponenter til det, så kan vi sætte dem på vores
+forskellige scenes som det nu passer os.</p>
+<p>Ulempen er at måske er en smule forvirrende at forstå til at starte
+med, men vi er kvikke unge mennesker der har gået til Coding Pirates i
+lang tid så det skal vi hurtigt fatte.</p>
+<p>Så lad os prøve at skrive vores første komponent, nemlig en
+<code>GravityComponent</code></p>
+<h2 id="gravitycomponent"><code>GravityComponent</code></h2>
+<p>Lad os tænke os om...hvad vil vi gerne have at vores
+<code>GravityComponent</code> skal gøre?</p>
+<p>Ja det eneste den skal gøre er vel at se om vi er i luften og hvis vi
+er det, så trække os ned mod jorden.</p>
+<p>OK...vi skrev: "vi er i luften". Hvem er vi?</p>
+<p>I det her tilfælde er det vel en <code>CharacterBody2D</code> som er
+den node vi gerne vil bruge til både <code>Player</code> og
+<code>Walker</code>.</p>
+<p>Hvordan kan vi se om en <code>CharacterBody2D</code> er i luften?</p>
+<p>Ja vi kan se det modsatte i alle tilfælde.
+<code>CharacterBody2D</code> har en funktion der hedder
+<code>is_on_floor()</code> og det har vist ikke noget at gøre med, om
+den fyrer den af på dansegulvet :)</p>
+<p>Du kan læse mere om den i <a
+href="https://docs.godotengine.org/en/stable/classes/class_characterbody2d.html#class-characterbody2d-method-is-on-floor">dokumentationen</a></p>
+<p>OK, så skal vi bare finde ud af hvordan vi trækker en
+<code>CharacterBody2D</code> ned mod jorden, så vi læser videre i <a
+href="https://docs.godotengine.org/en/stable/classes/class_characterbody2d.html#class-characterbody2d-property-velocity">dokumentationen</a>
+og ser at der er noget der hedder <code>velocity</code>, altså
+hastighed. Det er en <code>Vector2D</code> hvilket vi i vores tilfælde
+kan oversætte til at det er en X og en Y værdi der angiver hastigheden i
+en retning.</p>
+<p>I vores tilfælde er vi kun interesserede i vertikal (op og ned)
+hastighed så det er Y aksen vi skal bruge.</p>
+<ul>
+<li>For at bevæge os nedad skal vi bruge et positivt tal (husk at
+koordinatsystemet i Godot starter med 0, 0 i øverste venstre
+hjærne).</li>
+<li>For at bevæge os opad skal vi bruge et negativt tal.</li>
+</ul>
+<p>Så har vi vist alle de oplysninger vi skal bruge, så lad os prøve at
+skrive vores script</p>
+<h3 id="opsætning-af-gravitycomponent">Opsætning af
+GravityComponent</h3>
+<p>Vi får brug for mange komponenter så vi laver en ny mappe i roden af
+vores filsystem, direkte under res://.</p>
+<ol type="1">
+<li>Kald mappen "components"</li>
+<li>Inde i den mappe laver du nu en ny scene af typen <code>Node</code>
+som du kalder "GravityComponent"</li>
+</ol>
+<p><img src="../../assets/05/gravity_component.png"
+alt="gravity_component" /></p>
+<ol start="3" type="1">
+<li>Og så tilføjer du et script til din <code>GravityComponent</code>
+som du kalder "gravity_component" du kan godt huske hvordan ikke?</li>
+</ol>
+<p>Vælg <code>GravityComponent</code> i venstre side af Godot vinduet og
+tryk på det lille script med en grøn + knap øverst:</p>
+<p><img src="../../assets/05/attach_script.png"
+alt="attach_script" /></p>
+<p>Det skulle nu gerne se sådan her ud</p>
+<p><img src="../../assets/05/structure.png" alt="structure" /></p>
+<p>Og så er vi klar til at skrive vores script.</p>
+<h3 id="script">Script</h3>
+<p>Hvad var det vi gerne ville i den her komponent?</p>
+<p><em>Hvis den <code>CharacterBody2D</code> vi kigger på nu, ikke er på
+jorden, så træk den ned mod jorden</em></p>
+<p>Så vi skal skrive en funktion der:</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Tager en
+<code>CharacterBody2D</code> som input parameter</label></li>
+<li><label><input type="checkbox" />Kigger på om den <em>ikke</em> er på
+jorden</label></li>
+<li><label><input type="checkbox" />Hvis den ikke er, så træk den ned
+ved at øge <code>velocity.y</code> værdien</label></li>
+</ul>
+<p>Lad os starte med en funktions definition.</p>
+<p>I din <code>gravity_component.gd</code> fil skriver du:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_gravity</span>(body: CharacterBody2D) <span class="op">-&gt;</span> void:</span></code></pre></div>
+<p>Altså, en funktion der:</p>
+<ul>
+<li>hedder <code>handle_gravity</code></li>
+<li>tager en parameter kaldet <code>body</code> af typen
+<code>CharacterBody2D</code></li>
+<li>ikke returnerer nogen værdi</li>
+</ul>
+<p>Det var step 1</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Tager en
+<code>CharacterBody2D</code> som input parameter</label></li>
+<li><label><input type="checkbox" />Kigger på om den <em>ikke</em> er på
+jorden</label></li>
+<li><label><input type="checkbox" />Hvis den ikke er, så træk den ned
+ved at øge <code>velocity.y</code> værdien</label></li>
+</ul>
+<p>Videre</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_gravity</span>(body: CharacterBody2D) <span class="op">-&gt;</span> void:</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> body.<span class="fu">is_on_floor</span>():</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        </span></code></pre></div>
+<p>Det var step 2</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Tager en
+<code>CharacterBody2D</code> som input parameter</label></li>
+<li><label><input type="checkbox" checked="" />Kigger på om den
+<em>ikke</em> er på jorden</label></li>
+<li><label><input type="checkbox" />Hvis den ikke er, så træk den ned
+ved at øge <code>velocity.y</code> værdien</label></li>
+</ul>
+<p>Videre</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_gravity</span>(body: CharacterBody2D) <span class="op">-&gt;</span> void:</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> body.<span class="fu">is_on_floor</span>():</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        body.velocity.y <span class="op">+=</span> ???</span></code></pre></div>
+<p>Hmmm...hvad skal vores gravity være? Lad os lave en varibel til det,
+så man kan styre det udefra, ganske som vi gjorde i vores 2D skydespil.
+Vores script ser nu sådan her ud:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Settings&quot;</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> gravity: float <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_gravity</span>(body: CharacterBody2D) <span class="op">-&gt;</span> void:</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> body.<span class="fu">is_on_floor</span>():</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        body.velocity.y <span class="op">+=</span> gravity</span></code></pre></div>
+<p>Det var step 3</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Tager en
+<code>CharacterBody2D</code> som input parameter</label></li>
+<li><label><input type="checkbox" checked="" />Kigger på om den
+<em>ikke</em> er på jorden</label></li>
+<li><label><input type="checkbox" checked="" />Hvis den ikke er, så træk
+den ned ved at øge <code>velocity.y</code> værdien</label></li>
+</ul>
+<p>Og med det skulle vores script virke. Lad os straks tilføje det til
+vores <code>Player</code>.</p>
+<h2 id="tilføj-gravitycomponent-til-player">Tilføj
+<code>GravityComponent</code> til <code>Player</code></h2>
+<p>Første skridt er vel at lave et script til vores <code>Player</code>,
+så det gør vi, du kan godt huske hvordan ikke?</p>
+<p>Vælg <code>Player</code> i venstre side af Godot vinduet og tryk på
+det lille script med en grøn + knap øverst:</p>
+<p><img src="../../assets/05/attach_script.png"
+alt="attach_script" /></p>
+<p>Kald scriptet <code>player.gd</code> og gem det sammen med
+<code>Player.tscn</code> i "characters" mappen.</p>
+<h3 id="tilføj-gravitycomponent-til-vores-player-script">Tilføj
+<code>GravityComponent</code> til vores <code>Player</code> script.</h3>
+<p>Vi skal have lavet en <code>@export</code> variabel af typen
+<code>GravityComponent</code> på vores <code>Player</code> script,
+hvordan katten gør vi mon det?</p>
+<p>I Godot kan man give et script en type, så hvis vi nu gør det med
+vores <code>GravityComponent</code> så kan vi nemt oprette den på vores
+<code>Player</code>.</p>
+<p>Derfor:</p>
+<ol type="1">
+<li>Tilbage på <code>GravityComponent</code></li>
+<li>Tilføj <code>class_name GravityComponent</code> som øverste linie så
+dit script ser sådan her ud:</li>
+</ol>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class_name</span> GravityComponent</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Settings&quot;</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> gravity: float <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_gravity</span>(body: CharacterBody2D) <span class="op">-&gt;</span> void:</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> body.<span class="fu">is_on_floor</span>():</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        body.velocity.y <span class="op">+=</span> gravity</span></code></pre></div>
+<ol start="3" type="1">
+<li>Tilbage i dit <code>player.gd</code> kan du nu tilføje en referance
+til dit script sådan her:</li>
+</ol>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> CharacterBody2D</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Nodes&quot;</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> gravity_component: GravityComponent</span></code></pre></div>
+<ol start="4" type="1">
+<li>Og så kan du binde din <code>GravityComponent</code> på din
+<code>Player</code> i 2D mode ved at vælge <code>Player</code> i venstre
+side og så vælge "Instantiate child scene" ganske som vi gjorde da vil
+tilføjede <code>Level01</code> og <code>Player</code> til
+<code>Game</code>.</li>
+<li>Vælg <code>gravity_component.tscn</code></li>
+</ol>
+<p>Det skulle gerne se sådan her ud nu:</p>
+<p><img src="../../assets/05/gravity_component_added.png"
+alt="gravity_component_added" /></p>
+<p>Nu er vores <code>GravityComponent</code> en child scene til vores
+<code>Player</code> men vi er nødt til lige at binde dem sammen en gang
+mere så vores <code>@export gravity_component: GravityComponent</code>
+virker inde i scriptet.</p>
+<p>Derfor:</p>
+<ol type="1">
+<li>Klik på <code>Player</code> rod scenen i venstre side af Godot
+vinduet</li>
+<li>I "Inspectoren" i højre side kan du nu se en ny kategori der hedder
+Nodes, præcis som vi skrev i vores <code>Player</code> script
+(<code>export_subgroup</code>)</li>
+</ol>
+<p><img src="../../assets/05/nodes.png" alt="nodes" /></p>
+<ol start="3" type="1">
+<li>Fold den ud ved at trykke på pilen til venstre for "Nodes", nu kan
+du se at der er en "Gravity Component" værdi som vi mangler at assigne
+så det gør vi.</li>
+</ol>
+<p><img src="../../assets/05/assign_gravity.png"
+alt="assign_gravity" /></p>
+<ol start="4" type="1">
+<li>Tryk på "Assign"</li>
+<li>Eftersom vi har tilføjet "GravityComponent" som en child instance
+skulle vi nu få mulighed for at assigne "GravityComponent" til værdien
+af typen <code>GravityComponent</code></li>
+</ol>
+<p><img src="../../assets/05/assign_gravity_component.png"
+alt="assign_gravity_component" /></p>
+<ol start="6" type="1">
+<li>Vælg "GravityComponent" og tryk på "OK"</li>
+</ol>
+<p>Og nu er alting bundet sammen så vi har fortalt vores
+<code>Player</code> at vi gerne vil bruge en
+<code>GravityComponent</code>. Lidt besværligt men til gengæld er vi
+sikre på at tingene er bundet korrekt sammen og at vi ikke har glemt
+noget.</p>
+<h2 id="brug-gravitycomponent-sammen-med-player">Brug
+<code>GravityComponent</code> sammen med <code>Player</code></h2>
+<p>Nu bliver det spændende. Efter vores hårde arbejde burde det nu være
+nemt at få vores <code>Player</code> til at overholde tyngdeloven.</p>
+<p>Vi skal:</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />have hooket ind i physics
+lifecycle</label></li>
+<li><label><input type="checkbox" />kalde vores
+<code>handle_gravity</code> funktion med <code>Player</code>ens
+<code>ChararacterBody2D</code></label></li>
+</ul>
+<p>Lad os komme i gang.</p>
+<h3 id="physics-lifecycle">Physics lifecycle</h3>
+<p>Tænk tilbage på vores 2D space shooter. Der brugte vi Godots
+<code>process</code> funktion til at:</p>
+<ul>
+<li>lytte på tastaturindput</li>
+<li>flytte vores rumskib</li>
+</ul>
+<p>Og så videre.</p>
+<p>Det vil vi også gøre her, men samtidig, fordi vi bruger fysiske
+egenskaber, skal vi bruge en anden livscyklusmetode kaldet
+<code>_physics_process</code>. Som der står i <a
+href="https://docs.godotengine.org/en/stable/classes/class_node.html#class-node-private-method-physics-process">dokumentationen</a>:</p>
+<blockquote>
+<p>Called once on each physics tick, and allows Nodes to synchronize
+their logic with physics ticks. delta is the logical time between
+physics ticks in seconds.</p>
+</blockquote>
+<p>Så, den vil vi gerne bruge i vores <code>Player</code>:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_physics_process</span>(delta: float) <span class="op">-&gt;</span> void:</span></code></pre></div>
+<p>Det var trin 1</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />have hooket ind i physics
+lifecycle</label></li>
+<li><label><input type="checkbox" />kalde vores
+<code>handle_gravity</code> funktion med <code>Player</code>ens
+<code>ChararacterBody2D</code></label></li>
+</ul>
+<p>Og hvad vil vi så? Jamen vi har jo lavet en fin funktion i vores
+<code>GravityComponent</code> som gerne skulle gøre alt arbejdet for
+os.</p>
+<p>Så lad os kalde den:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> CharacterBody2D</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Nodes&quot;</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> gravity_component: GravityComponent</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_physics_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    gravity_component.<span class="fu">handle_gravity</span>(<span class="va">self</span>)</span></code></pre></div>
+<p>Det var trin 2</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />have hooket ind i physics
+lifecycle</label></li>
+<li><label><input type="checkbox" checked="" />kalde vores
+<code>handle_gravity</code> funktion med <code>Player</code>ens
+<code>ChararacterBody2D</code></label></li>
+</ul>
+<p>Jamen burde det så ikke virke nu? Lad os da prøve! Kør dit spil?</p>
+<p>Næh...vores <code>Player</code> svæver stadig rundt...så'noed
+fis!</p>
+<p>Nå...vi læser lidt videre i dokumentationen om physics i Godot og
+finder <a
+href="https://docs.godotengine.org/en/stable/tutorials/physics/using_character_body_2d.html#movement-and-collision">det
+her</a></p>
+<blockquote>
+<p>When moving a CharacterBody2D, you should not set its position
+property directly. Instead, you use the move_and_collide() or
+move_and_slide() methods. These methods move the body along a given
+vector and detect collisions.</p>
+</blockquote>
+<p>Aha! Så altså, for at flytte vores <code>CharacterBody2D</code> skal
+vi kalde <code>move_and_slide()</code> tilsidst i vores
+<code>_physics_process</code> eller sker der ingenting.</p>
+<p>Tilføj <code>move_and_slide()</code> til dit script så det ser sådan
+her ud:</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> CharacterBody2D</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Nodes&quot;</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> gravity_component: GravityComponent</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_physics_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    gravity_component.<span class="fu">handle_gravity</span>(<span class="va">self</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">move_and_slide</span>()</span></code></pre></div>
+<p>Og så kør dit spil igen.</p>
+<p>Tada! Nu falder vores <code>Player</code> ned og står på en
+platform.</p>
+<p><img src="../../assets/05/falling.png" alt="falling" /></p>
+<h2 id="sådan">Sådan!</h2>
+<p>Nu har vi taget hul på at bruge komponenter til vores
+<code>CharacterBody2D</code> scenes. Det kan måske virke lidt besværligt
+men når vi kommer i gang med at lave flere og især når vi nemt kan bruge
+vores komponenter sammen med en <code>Walker</code> f.eks. bliver det
+virkelig brugbart.</p>
+<p>I <a href="../lesson06/">næste level</a> vil vi arbejde videre med
+komponenter så vi kan få vores <code>Player</code> til at flytte sig. Vi
+ses</p>
 </article>
 </body>
 </html>

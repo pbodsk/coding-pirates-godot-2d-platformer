@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://xee5uxyws1cl"]
 
+[ext_resource type="Script" uid="uid://ddwmv8jqiba6q" path="res://characters/player.gd" id="1_3eadt"]
 [ext_resource type="Texture2D" uid="uid://mty6wjmlmcii" path="res://assets/characters/space-marine-idle.png" id="1_dnjla"]
+[ext_resource type="PackedScene" uid="uid://m260ltqajvd2" path="res://components/gravity_component.tscn" id="3_tory2"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ntv8e"]
 radius = 14.0
@@ -42,7 +44,9 @@ animations = [{
 "speed": 4.0
 }]
 
-[node name="Player" type="CharacterBody2D" unique_id=1934841766]
+[node name="Player" type="CharacterBody2D" unique_id=1934841766 node_paths=PackedStringArray("gravity_component")]
+script = ExtResource("1_3eadt")
+gravity_component = NodePath("GravityComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1088840334]
 shape = SubResource("CapsuleShape2D_ntv8e")
@@ -54,3 +58,5 @@ autoplay = "idle"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=614652152]
 zoom = Vector2(4, 4)
+
+[node name="GravityComponent" parent="." unique_id=1825825997 instance=ExtResource("3_tory2")]

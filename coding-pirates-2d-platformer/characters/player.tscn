@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://ddwmv8jqiba6q" path="res://characters/player.gd" id="1_3eadt"]
 [ext_resource type="Texture2D" uid="uid://mty6wjmlmcii" path="res://assets/characters/space-marine-idle.png" id="1_dnjla"]
 [ext_resource type="PackedScene" uid="uid://m260ltqajvd2" path="res://components/gravity_component.tscn" id="3_tory2"]
+[ext_resource type="PackedScene" uid="uid://depeln7t8u8a6" path="res://components/horizontal_movement_component.tscn" id="4_x0jl3"]
+[ext_resource type="PackedScene" uid="uid://be6suy2nwk373" path="res://components/input_component.tscn" id="5_evndh"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ntv8e"]
 radius = 14.0
@@ -44,9 +46,11 @@ animations = [{
 "speed": 4.0
 }]
 
-[node name="Player" type="CharacterBody2D" unique_id=1934841766 node_paths=PackedStringArray("gravity_component")]
+[node name="Player" type="CharacterBody2D" unique_id=1934841766 node_paths=PackedStringArray("gravity_component", "horizontal_movement_component", "input_component")]
 script = ExtResource("1_3eadt")
 gravity_component = NodePath("GravityComponent")
+horizontal_movement_component = NodePath("HorizontalMovementComponent")
+input_component = NodePath("InputComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1088840334]
 shape = SubResource("CapsuleShape2D_ntv8e")
@@ -60,3 +64,7 @@ autoplay = "idle"
 zoom = Vector2(4, 4)
 
 [node name="GravityComponent" parent="." unique_id=1825825997 instance=ExtResource("3_tory2")]
+
+[node name="HorizontalMovementComponent" parent="." unique_id=1987594452 instance=ExtResource("4_x0jl3")]
+
+[node name="InputComponent" parent="." unique_id=1582684102 instance=ExtResource("5_evndh")]

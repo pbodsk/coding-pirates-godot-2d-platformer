@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://depeln7t8u8a6"]
+
+[ext_resource type="Script" uid="uid://c17jd3yhnj3u" path="res://components/horizontal_movement_component.gd" id="1_y3wsf"]
+
+[node name="HorizontalMovementComponent" type="Node" unique_id=1987594452]
+script = ExtResource("1_y3wsf")

@@ -327,7 +327,6 @@ func handle_horizontal_movement(body: CharacterBody2D, direction: float) -> void
 ```
 
 Og det var step 4
-Det var step 3
 
 - [X] tager en `CharacterBody2D` og en `direction` som input og ikke returnerer noget
 - [X] have lavet nogle `@export` variabler til `speed`, `ground_accelleration_speed` og `ground_decelleration_speed` (så vi kan standse hurtigere end vi starter)
@@ -335,11 +334,12 @@ Det var step 3
 - [X] bruge `move_toward`
 
 ### Tilføj `HorizontalMovementComponent` til `Player`
-Præcis på samme måde som vi tilføjede `GravityComponent` tilføjer vi nu `HorizontalMovementComponent` til vores `Player` ved at:
+[Præcis på samme måde som vi tilføjede `GravityComponent` tilføjer vi nu `HorizontalMovementComponent` til vores `Player` ved at:
 
 1. Tilføje en `@export var horizontal_movement_component: HorizontalMovementComponent` til vores `Player` script
 2. "Instantiate Child scene" og tilføje `horizontal_movement_component.tscn` på vores `Player`
 3. Assigne `HorizontalMovementComponent` til "Horizontal Movement Component" i "Inspectoren" for vores "Player"
+]
 
 ![assign_horizontal_movement_component](../../assets/06/assign_horizontal_movement_component.png)
 
@@ -423,4 +423,4 @@ Jaeh...joeh...vores spiller bevæger sig og den accellerer og decellererer når 
 ## Sådan!
 Vi er nu kommet godt i gang med komponenter og har nogle fine byggeklodser som vi kan bruge senere også.
 
-Næste gang vil vi prøve at lave en `AnimationComponent` så vores spiller ser lidt mere realistisk ud.
+[Næste gang](../lesson07/) vil vi prøve at lave en `AnimationComponent` så vores spiller ser lidt mere realistisk ud.

@@ -27,13 +27,394 @@
       vertical-align: middle;
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../../style/github-markdown.css" />
   <link rel="stylesheet" href="../../style/style.css" />
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="lektion-7">Lektion 7</h1>
+<h1 id="godot-2d-platformer---level-7-animationer">Godot 2D Platformer -
+level 7 animationer</h1>
+<p>I <a href="../lesson06/">level 6</a> fik vi vores <code>Player</code>
+til at bevæge sig ved at lave to komponenter, en
+<code>HorizontalMovementComponent</code> og en
+<code>InputComponent</code>.</p>
+<p>Men! Der er ikke meget sjov ved den måde vores spiller bevæger sig
+på. Den vender altid på den samme måde og den animerer ikke.</p>
+<p>Lad os rette op på det ved at lave en <code>AnimationComponent</code>
+i denne level. Let's go!</p>
+<h2 id="lad-os---som-altid---lige-tænke-os-om-først">Lad os - som altid
+- lige tænke os om først</h2>
+<p>Hvad er det vi gerne vil? Ja vi vil jo gerne have en komponent der i
+første omgang kan afgøre om der skal spilles en "walk" eller en "idle"
+animation (senere skal den også håndtere at vi hopper, skyder og dør men
+det tar' vi senere).</p>
+<p>Hvad kan vi bruge til at afgøre om det skal være "walk" eller "idle"
+vi spiller?</p>
+<p>Det er vel om der er trykket på en "bevæg dig" tast eller ej.</p>
+<p>Men hey! Det lavede vi jo i vores <code>InputComponent</code></p>
+<p><code>input_component.horizontal_direction</code> giver os et tal som
+er -1, 0 eller 1. Det kan vi da bruge.</p>
+<p>Hvis <code>horizontal_direction == 0</code> så spil "idle"
+animationen, ellers så spil "walk" animationen.</p>
+<p>Nemt :)</p>
+<h2 id="animationcompoent---skelet">AnimationCompoent - Skelet</h2>
+<p>Vi skal igeenem samme show som da vi lavede de andre komponenter.</p>
+<ol type="1">
+<li>Lav en ny Node2D</li>
+<li>Kald den "AnimationComponent"</li>
+<li>Gem dem som <code>animation_component.tscn</code> under
+"components"</li>
+<li>Tilføj et script til "AnimationComponent"</li>
+</ol>
+<p>Det ser sådan her ud:</p>
+<p><img src="../../assets/07/animation_component.png"
+alt="animation_component" /></p>
+<h2 id="script">Script</h2>
+<p>Scriptet kan vi også starte på, det skal have en
+<code>class_name</code> som de andre</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class_name</span> AnimationComponent</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node</span></code></pre></div>
+<p>Og hvad så? Hvad er det vi skal animere? Det er en
+<code>AnimatedSprite2D</code> så hvis vi nu sørger for at sætte den som
+en '@export sprite: AnimatedSprite2D' når vi bruger vores
+<code>AnimationComponent</code> så er det nemt.</p>
+<p>Så vi tilføjer:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Nodes&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> sprite: AnimatedSprite2D</span></code></pre></div>
+<p>til vores script så det ser sådan her ud:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class_name</span> AnimationComponent</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Nodes&quot;</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> sprite: AnimatedSprite2D</span></code></pre></div>
+<p>Og så kan vi skrive vores funktion.</p>
+<p>Vi blev enige om at den skulle have en
+<code>horizontal_direction</code> med ind som parameter og den skal ikke
+returnere nogen værdi.</p>
+<p>Vi laver en liste så vi kan strege ud undervejs:</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Tag en
+<code>horizontal_direction</code> som input og returner ikke
+noget</label></li>
+<li><label><input type="checkbox" />Find ud af om vi skal spille "walk"
+eller "idle" animation</label></li>
+</ul>
+<h3 id="funktionens-signatur">Funktionens signatur</h3>
+<p>Når vi skriver sådan en funktion kalder vi "den måde funktionen ser
+ud på" for dens signatur.</p>
+<p>Så i det her tilfælde vil vi have en funktion som:</p>
+<ul>
+<li>hedder <code>handle_move_animation</code></li>
+<li>tager en <code>horizontal_direction</code> af typen
+<code>float</code> som input parameter</li>
+<li>ikke returnerer noget</li>
+</ul>
+<p>Så det skriver vi:</p>
+<p><code>func handle_move_animation(horizontal_direction: float) -&gt; void:</code></p>
+<p>Det var skridt 1</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Tag en
+<code>horizontal_direction</code> som input og returner ikke
+noget</label></li>
+<li><label><input type="checkbox" />Find ud af om vi skal spille "walk"
+eller "idle" animation</label></li>
+</ul>
+<h3 id="hvilken-animation-skal-vi-spille">Hvilken animation skal vi
+spille?</h3>
+<p>Hvad var det vi aftalte ovenfor?</p>
+<blockquote>
+<p>Hvis <code>horizontal_direction == 0</code> så spil "idle"
+animationen, ellers så spil "walk" animationen.</p>
+</blockquote>
+<p>OK, nemt:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> horizontal_direction <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    sprite.<span class="fu">play</span>(<span class="st">&quot;idle&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    sprite.<span class="fu">play</span>(<span class="st">&quot;walk&quot;</span>)</span></code></pre></div>
+<p>Det var skridt 2</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Tag en
+<code>horizontal_direction</code> som input og returner ikke
+noget</label></li>
+<li><label><input type="checkbox" checked="" />Find ud af om vi skal
+spille "walk" eller "idle" animation</label></li>
+</ul>
+<p>Her er hele vores script</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class_name</span> AnimationComponent</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Nodes&quot;</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> sprite: AnimatedSprite2D</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_move_animation</span>(direction: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> horizontal_direction <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        sprite.<span class="fu">play</span>(<span class="st">&quot;idle&quot;</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        sprite.<span class="fu">play</span>(<span class="st">&quot;walk&quot;</span>)</span></code></pre></div>
+<h3 id="men">Men...</h3>
+<p>Nu har vi sagt at der <em>skal</em> være en animation der hedder
+"idle" og en der hedder "walk" på de scenes vi vil bruge sammen med
+vores <code>AnimationComponent</code>.</p>
+<p>Men det er vel også OK, hvis vi sørger for at bruge de navne kan vi
+tilgæld nemt styre alle animationer ved at tilføje en
+<code>AnimationComponent</code> og binde den op med den rigtige
+<code>AnimatedSprite2D</code> og så skal vi ikke tænke på mere...det er
+da nemt.</p>
+<h2 id="tilføj-animationcompoent-til-player">Tilføj
+<code>AnimationCompoent</code> til <code>Player</code></h2>
+<p>Vi skal igennem det samme show som da vi tilføjede
+<code>GravityComponent</code>, <code>HorizontalMovementComponent</code>
+og <code>InputComponent</code>. Du kan sikkert huske det men for en god
+ordens skyld:</p>
+<p>Præcis på samme måde som vi tilføjede <code>GravityComponent</code>
+tilføjer vi nu <code>HorizontalMovementComponent</code> til vores
+<code>Player</code> ved at:</p>
+<ol type="1">
+<li>Tilføje en
+<code>@export var animation_component: AnimationComponent</code> til
+vores <code>Player</code> script</li>
+<li>"Instantiate Child scene" og tilføje
+<code>animation_component.tscn</code> på vores <code>Player</code></li>
+<li>Assigne <code>AnimationComponent</code> til "Animation Component" i
+"Inspectoren" for vores "Player"</li>
+</ol>
+<p>Og! Som noget nyt skal vi have bundet vores <code>Player</code>s
+<code>AnimatedSprite2D</code> fast til <code>sprite</code> variablen på
+vores <code>AnimationComponent</code>. Det gør vi sådan her:</p>
+<ol type="1">
+<li>I venstre side af skærmen, under <code>Player</code> klikker vi på
+den <code>AnimationComponent</code> som vi lige tilføjede.</li>
+<li>I "Inspectoren" i højre side kan vi se at der under "Aninamtion
+Component" er en "Nodes" gruppe, og i den er der en "Sprite" værdi som
+vi kan trykke "Assign" ud for</li>
+</ol>
+<p>Det ser sådan her ud</p>
+<p><img src="../../assets/07/assign_sprite.png"
+alt="assign_sprite" /></p>
+<ol start="3" type="1">
+<li>Tryk på "Assign" og vælg <code>AnimatedSprite2D</code> under vores
+<code>Player</code> node</li>
+</ol>
+<p><img src="../../assets/07/select_sprite.png"
+alt="select_sprite" /></p>
+<h3 id="så-mangler-vi-lige-en-vigtig-detalje">Så mangler vi lige en
+vigtig detalje</h3>
+<p>Nemlig en "walk" animation.</p>
+<p>Den laver du præcis som du lavede din "idle" animation. Under assets
+kan du finde et sprite sheet der hedder "space-marine-walk.png" som du
+kan trække ind i dit projekt og bruge.</p>
+<p>Det ser sådan her ud:</p>
+<p><img src="../../assets/07/walk-animation.png"
+alt="walk-animation" /></p>
+<p>Kør din animation.</p>
+<p>Hmmm...den ser lidt sjov ud hvis du looper animationen, som om der er
+en frame der ikke skal være der.</p>
+<p>Fjern den første frame ved at klikke på den, og så på skraldespanden
+i øverste højre hjørne</p>
+<p><img src="../../assets/07/delete_frame.png" alt="delete_frame" /></p>
+<p>Kør så animationen igen. Bedre!</p>
+<h2 id="brug-animationcomponent-i-vores-player-script">Brug
+<code>AnimationComponent</code> i vores <code>Player</code> script</h2>
+<p>Så er vi klar til den sjove del, nemlig at bruge vores
+<code>AnimationComponent</code> sammen med vores
+<code>Player</code>.</p>
+<p>Vi <em>kunne</em> godt smide vores kode sammen med de andre i
+<code>_physics_process</code> men...at styre en animation har vel
+<em>egentlig</em> ikke noget med fysik motoren at gøre har det?</p>
+<p>Nej så lad os i stedet bruge den almindelige <code>_process</code>
+funktion som vi også brugte i vores 2D space shooter.</p>
+<p>Vi tilføjer</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_process</span>(delta: float) <span class="op">-&gt;</span> void:</span></code></pre></div>
+<p>Og hvad gør vi så? Ja vi har jo vores
+<code>animation_component</code> og på den har vi vores
+<code>handle_move_animation</code> funktion som vi kan kalde med den
+aktuelle <code>horizontal_direction</code> som vi kan få fra vores
+<code>input_component</code>.</p>
+<p>Det ser sådan her ud:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    animation_component.<span class="fu">handle_move_animation</span>(input_component.horizontal_direction)</span></code></pre></div>
+<p>Kør dit spil.</p>
+<p>Jaeh ja! Vores <code>AnimatedSprite2D</code> spiller "idle"
+animationen når vi står stille og "walk" når vi bevæger os.</p>
+<p>Meeen...når vi bevæger os mod venstre vender vores
+<code>AnimatedSprite2D</code> sig ikke om, men moonwalker i stedet og
+ja, det er ser da også meget fedt ud men vi er kræsne så vi vil hellere
+have at figuren vender sig rigtigt.</p>
+<h2 id="vend-dig-om">Vend dig om!</h2>
+<p>Det er heldigvis en nem opgave i Godot.</p>
+<p>Vi kigger i <a
+href="https://docs.godotengine.org/en/stable/classes/class_animatedsprite2d.html#class-animatedsprite2d-property-flip-h">dokumentation</a>
+og ser at på <code>AnimatedSprite2D</code> finder vi en property der
+hedder <code>flip_h</code></p>
+<p>Der står:</p>
+<blockquote>
+<p>If true, texture is flipped horizontally.</p>
+</blockquote>
+<p>Det betyder at vi kan sige til vores <code>AnimatedSprite2D</code> at
+den skal vende animationen spejlvendt hvis
+<code>flip_h = true</code>.</p>
+<p>Så nu skal vi bare finde ud af hvad der kan afgøre at vi skal sætte
+<code>flip_h</code> til at være <code>true</code>.</p>
+<p>Igen har vi vores <code>horizontal_direction</code>.</p>
+<p>Hvis den er -1 går vi mod venstre og så vil vi gerne sætte
+<code>flip_h = true</code>.</p>
+<p>Lad os rette det i vores <code>AnimationComponent</code>.</p>
+<h3 id="tilføjelse-til-vores-animationcomponent-script">Tilføjelse til
+vores <code>AnimationComponent</code> script</h3>
+<p>Hop ind i <code>animation_component</code> scriptet.</p>
+<p>Det her kan gøres på mange måder men lad os lave en ny funktion som
+er lidt defensiv og så kan vi kalde den fra vores
+<code>handle_move_animation</code>.</p>
+<p>Så vi laver en ny funktion med følgende signatur:</p>
+<p><code>func handle_horizontal_flip(horizontal_direction: float) -&gt; void:</code></p>
+<p>Og hvad vil vi så? Altså</p>
+<ul>
+<li>Hvis <code>horizontal_direction == 0</code> vil vi ikke gøre
+noget.</li>
+<li>Hvis <code>horizontal_direction &lt; 0</code> vil vi sige
+<code>flip_direction = true</code></li>
+<li>Hvis <code>horizontal_direction &gt; 0</code> vil vi sige
+<code>flip_direction = false</code></li>
+</ul>
+<p>Det ser sådan her ud:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_horizontal_flip</span>(horizontal_direction: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># hvis horizontal_direction == 0 vil vi ikke gøre noget</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> horizontal_direction <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="co"># return betyder...stop her</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Hvis `horizontal_direction &lt; 0`</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> horizontal_direction <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># vil vi sige `flip_direction = true</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        sprite.flip_h <span class="op">=</span> <span class="va">true</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Hvis `horizontal_direction &gt; 0</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># vil vi sige `flip_direction = false`</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        sprite.flip_h <span class="op">=</span> <span class="va">false</span></span></code></pre></div>
+<p>Så mangler vi bare at kalde vores funktion fra
+<code>handle_move_animation</code></p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_move_animation</span>(horizontal_direction: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">handle_horizontal_flip</span>(horizontal_direction)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> horizontal_direction <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        sprite.<span class="fu">play</span>(<span class="st">&quot;idle&quot;</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        sprite.<span class="fu">play</span>(<span class="st">&quot;walk&quot;</span>)</span></code></pre></div>
+<p>Her er hele vores script:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class_name</span> AnimationComponent</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Nodes&quot;</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> sprite: AnimatedSprite2D</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_horizontal_flip</span>(horizontal_direction: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> horizontal_direction <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> horizontal_direction <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        sprite.flip_h <span class="op">=</span> <span class="va">true</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        sprite.flip_h <span class="op">=</span> <span class="va">false</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_move_animation</span>(horizontal_direction: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">handle_horizontal_flip</span>(horizontal_direction)</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> horizontal_direction <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>        sprite.<span class="fu">play</span>(<span class="st">&quot;idle&quot;</span>)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>        sprite.<span class="fu">play</span>(<span class="st">&quot;walk&quot;</span>)</span></code></pre></div>
+<p>Kør dit spil igen og nyd hvordan vores spiller nu vender sig rigtigt
+når vi skifter retning.</p>
+<h2 id="godt-arbejde">Godt arbejde!</h2>
+<p>Det kan godt være at du stadig tænker</p>
+<blockquote>
+<p>Hvorfor pokker skal vi lave alle de komponenter, er det ikke bare en
+masse arbejde?</p>
+</blockquote>
+<p>Men prøv at tænk på hvor nemt det bliver når vi skal til at lave
+vores <code>Walker</code>. Hvis vi bare sørger for at lave en "walk" og
+en "idle" animation behøver vi - næsten - ikke gøre mere for at få
+animationer foræret, det er da fedt!</p>
+<p>Men...vi glæder os over det forkerte, lad os være glade for at vi nu
+har en <code>AnimationComponent</code> og at vores <code>Player</code>
+begynder at komme til live.</p>
+<p>I <a href="../lesson08/">næste</a> level vil vi forsøge at få vores
+<code>Player</code> til at kunne hoppe også, så når du er klar kan du
+hoppe videre...vi ses!</p>
 </article>
 </body>
 </html>

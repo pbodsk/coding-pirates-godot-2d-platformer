@@ -2,9 +2,11 @@
 
 [ext_resource type="Script" uid="uid://ddwmv8jqiba6q" path="res://characters/player.gd" id="1_3eadt"]
 [ext_resource type="Texture2D" uid="uid://mty6wjmlmcii" path="res://assets/characters/space-marine-idle.png" id="1_dnjla"]
+[ext_resource type="Texture2D" uid="uid://c3jdjlq2dwxlq" path="res://assets/characters/space-marine-walk.png" id="3_j31ep"]
 [ext_resource type="PackedScene" uid="uid://m260ltqajvd2" path="res://components/gravity_component.tscn" id="3_tory2"]
 [ext_resource type="PackedScene" uid="uid://depeln7t8u8a6" path="res://components/horizontal_movement_component.tscn" id="4_x0jl3"]
 [ext_resource type="PackedScene" uid="uid://be6suy2nwk373" path="res://components/input_component.tscn" id="5_evndh"]
+[ext_resource type="PackedScene" uid="uid://d4hvjwjuskpbs" path="res://components/animation_component.tscn" id="7_6t23p"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ntv8e"]
 radius = 14.0
@@ -26,6 +28,46 @@ region = Rect2(96, 0, 48, 48)
 atlas = ExtResource("1_dnjla")
 region = Rect2(144, 0, 48, 48)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_n8jd0"]
+atlas = ExtResource("3_j31ep")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q605b"]
+atlas = ExtResource("3_j31ep")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eho78"]
+atlas = ExtResource("3_j31ep")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8sqrr"]
+atlas = ExtResource("3_j31ep")
+region = Rect2(192, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6rrl0"]
+atlas = ExtResource("3_j31ep")
+region = Rect2(240, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eus45"]
+atlas = ExtResource("3_j31ep")
+region = Rect2(288, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vcag3"]
+atlas = ExtResource("3_j31ep")
+region = Rect2(336, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h076o"]
+atlas = ExtResource("3_j31ep")
+region = Rect2(384, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lcfw7"]
+atlas = ExtResource("3_j31ep")
+region = Rect2(432, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b0vde"]
+atlas = ExtResource("3_j31ep")
+region = Rect2(480, 0, 48, 48)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_evndh"]
 animations = [{
 "frames": [{
@@ -44,10 +86,46 @@ animations = [{
 "loop": 1,
 "name": &"idle",
 "speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n8jd0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q605b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eho78")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8sqrr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6rrl0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eus45")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vcag3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h076o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lcfw7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b0vde")
+}],
+"loop": 1,
+"name": &"walk",
+"speed": 9.0
 }]
 
-[node name="Player" type="CharacterBody2D" unique_id=1934841766 node_paths=PackedStringArray("gravity_component", "horizontal_movement_component", "input_component")]
+[node name="Player" type="CharacterBody2D" unique_id=1934841766 node_paths=PackedStringArray("animation_component", "gravity_component", "horizontal_movement_component", "input_component")]
 script = ExtResource("1_3eadt")
+animation_component = NodePath("AnimationComponent")
 gravity_component = NodePath("GravityComponent")
 horizontal_movement_component = NodePath("HorizontalMovementComponent")
 input_component = NodePath("InputComponent")
@@ -57,8 +135,10 @@ shape = SubResource("CapsuleShape2D_ntv8e")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=143006957]
 sprite_frames = SubResource("SpriteFrames_evndh")
-animation = &"idle"
+animation = &"walk"
 autoplay = "idle"
+frame = 1
+frame_progress = 0.9332797
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=614652152]
 zoom = Vector2(4, 4)
@@ -68,3 +148,6 @@ zoom = Vector2(4, 4)
 [node name="HorizontalMovementComponent" parent="." unique_id=1987594452 instance=ExtResource("4_x0jl3")]
 
 [node name="InputComponent" parent="." unique_id=1582684102 instance=ExtResource("5_evndh")]
+
+[node name="AnimationComponent" parent="." unique_id=1902683484 node_paths=PackedStringArray("sprite") instance=ExtResource("7_6t23p")]
+sprite = NodePath("../AnimatedSprite2D")

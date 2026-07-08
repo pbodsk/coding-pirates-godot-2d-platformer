@@ -472,7 +472,7 @@ class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb14-1">
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> horizontal_change_speed: float <span class="op">=</span> <span class="fl">0.0</span></span>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    horizontal_change_speed <span class="op">=</span> ground_accelleration_speed <span class="cf">if</span> direction <span class="op">!=</span> <span class="dv">0</span> <span class="cf">else</span> ground_decelleration_speed</span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    body.velocity.x <span class="op">=</span> <span class="bu">move_toward</span>(body.velocity.x, direction <span class="op">*</span> speed, horizontal_change_speed)</span></code></pre></div>
-<p>Og det var step 4 Det var step 3</p>
+<p>Og det var step 4</p>
 <ul class="task-list">
 <li><label><input type="checkbox" checked="" />tager en
 <code>CharacterBody2D</code> og en <code>direction</code> som input og
@@ -489,7 +489,7 @@ accellerere eller decellerere</label></li>
 </ul>
 <h3 id="tilføj-horizontalmovementcomponent-til-player">Tilføj
 <code>HorizontalMovementComponent</code> til <code>Player</code></h3>
-<p>Præcis på samme måde som vi tilføjede <code>GravityComponent</code>
+<p>[Præcis på samme måde som vi tilføjede <code>GravityComponent</code>
 tilføjer vi nu <code>HorizontalMovementComponent</code> til vores
 <code>Player</code> ved at:</p>
 <ol type="1">
@@ -500,7 +500,7 @@ til vores <code>Player</code> script</li>
 <code>horizontal_movement_component.tscn</code> på vores
 <code>Player</code></li>
 <li>Assigne <code>HorizontalMovementComponent</code> til "Horizontal
-Movement Component" i "Inspectoren" for vores "Player"</li>
+Movement Component" i "Inspectoren" for vores "Player" ]</li>
 </ol>
 <p><img src="../../assets/06/assign_horizontal_movement_component.png"
 alt="assign_horizontal_movement_component" /></p>
@@ -588,8 +588,9 @@ kigger vi på i <a href="../lesson07/">næste lektion</a>.</p>
 <h2 id="sådan">Sådan!</h2>
 <p>Vi er nu kommet godt i gang med komponenter og har nogle fine
 byggeklodser som vi kan bruge senere også.</p>
-<p>Næste gang vil vi prøve at lave en <code>AnimationComponent</code> så
-vores spiller ser lidt mere realistisk ud.</p>
+<p><a href="../lesson07/">Næste gang</a> vil vi prøve at lave en
+<code>AnimationComponent</code> så vores spiller ser lidt mere
+realistisk ud.</p>
 </article>
 </body>
 </html>

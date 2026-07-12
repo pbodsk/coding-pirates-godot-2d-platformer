@@ -119,14 +119,16 @@ I din `gravity_component.gd` fil skriver du:
 ```gdscript
 extends Node
 
-func handle_gravity(body: CharacterBody2D) -> void:
+func handle_gravity(body: CharacterBody2D, delta: float) -> void:
 ```
 
 Altså, en funktion der:
 
 - hedder `handle_gravity`
-- tager en parameter kaldet `body` af typen `CharacterBody2D`
+- tager en parameter kaldet `body` af typen `CharacterBody2D` og en parameter kaldet `delta` af type `float`
 - ikke returnerer nogen værdi
+
+Hvad skal vi bruge `delta` til? Den bruger vi for at sikre at hastigheden stiger støt, ligesom hvis du selv hoppede ud fra et højt sted (du skal ikke prøve!).
 
 Det var step 1
 - [X] Tager en `CharacterBody2D` som input parameter
@@ -138,7 +140,7 @@ Videre
 ```gdscript
 extends Node
 
-func handle_gravity(body: CharacterBody2D) -> void:
+func handle_gravity(body: CharacterBody2D, delta: float) -> void:
     if not body.is_on_floor():
         
 ```
@@ -154,7 +156,7 @@ Videre
 ```gdscript
 extends Node
 
-func handle_gravity(body: CharacterBody2D) -> void:
+func handle_gravity(body: CharacterBody2D, delta: float) -> void:
     if not body.is_on_floor():
         body.velocity.y += ???
 ```
@@ -165,12 +167,14 @@ Hmmm...hvad skal vores gravity være? Lad os lave en varibel til det, så man ka
 extends Node
 
 @export_subgroup("Settings")
-@export var gravity: float = 100
+@export var gravity: float = 1000
 
-func handle_gravity(body: CharacterBody2D) -> void:
+func handle_gravity(body: CharacterBody2D, delta: float) -> void:
 	if not body.is_on_floor():
-		body.velocity.y += gravity
+		body.velocity.y += gravity * delta
 ```
+
+Bemærk at vi ganger `gravity` med `delta` for at sikre at vores hastighed stiger støt
 
 Det var step 3
 - [X] Tager en `CharacterBody2D` som input parameter
@@ -203,11 +207,11 @@ class_name GravityComponent
 extends Node
 
 @export_subgroup("Settings")
-@export var gravity: float = 100
+@export var gravity: float = 1000
 
-func handle_gravity(body: CharacterBody2D) -> void:
+func handle_gravity(body: CharacterBody2D, delta: float) -> void:
 	if not body.is_on_floor():
-		body.velocity.y += gravity
+		body.velocity.y += gravity * delta
 ```
 
 3. Tilbage i dit `player.gd` kan du nu tilføje en referance til dit script sådan her:
@@ -291,7 +295,7 @@ extends CharacterBody2D
 @export var gravity_component: GravityComponent
 
 func _physics_process(delta: float) -> void:
-	gravity_component.handle_gravity(self)
+	gravity_component.handle_gravity(self, delta)
 ```
 
 Det var trin 2
@@ -318,7 +322,7 @@ extends CharacterBody2D
 @export var gravity_component: GravityComponent
 
 func _physics_process(delta: float) -> void:
-	gravity_component.handle_gravity(self)
+	gravity_component.handle_gravity(self, delta)
 	
 	move_and_slide()
 ```

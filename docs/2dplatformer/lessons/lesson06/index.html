@@ -512,7 +512,7 @@ til vores <code>_physics_process</code> og så bare sætter værdien til -1
 f.eks.</p>
 <div class="sourceCode" id="cb15"><pre
 class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_physics_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    gravity_component.<span class="fu">handle_gravity</span>(<span class="va">self</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    gravity_component.<span class="fu">handle_gravity</span>(<span class="va">self</span>, delta)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    horizontal_movement_component.<span class="fu">handle_horizontal_movement</span>(<span class="va">self</span>, <span class="dv">1</span>)</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">move_and_slide</span>()</span></code></pre></div>
 <p>Prøv at kør dit spil nu. Din <code>Player</code> skulle nu gerne
@@ -576,7 +576,7 @@ class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb17-1">
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> input_component: InputComponent</span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_physics_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    gravity_component.<span class="fu">handle_gravity</span>(<span class="va">self</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    gravity_component.<span class="fu">handle_gravity</span>(<span class="va">self</span>, delta)</span>
 <span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    horizontal_movement_component.<span class="fu">handle_horizontal_movement</span>(<span class="va">self</span>, input_component.horizontal_direction)</span>
 <span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">move_and_slide</span>()</span></code></pre></div>
 <h3 id="test">Test</h3>

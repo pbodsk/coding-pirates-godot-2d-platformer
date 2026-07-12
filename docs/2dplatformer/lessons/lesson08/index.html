@@ -27,13 +27,366 @@
       vertical-align: middle;
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../../style/github-markdown.css" />
   <link rel="stylesheet" href="../../style/style.css" />
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="lektion-8">Lektion 8</h1>
+<h1 id="godot-2d-platformer---level-8-hop">Godot 2D Platformer - level 8
+hop!</h1>
+<p>I <a href="../lesson07/">level 7</a> fik vores <code>Player</code>
+lidt mere liv og kan nu løbe i begge retninger. Det er jo meget godt men
+den skal vel også kunne hoppe. Lad os få det til at ske i denne
+lektion.</p>
+<p>Du kender godt første spørgsmål.</p>
+<h2 id="hvad-er-det-vi-gerne-vil">Hvad er det vi gerne vil?</h2>
+<p>Få vores spiller til at hoppe!</p>
+<p>Godt, hvad kræver det?</p>
+<p>Ja det kræver vel at vi ved om der er trykket på en tast så vi skal
+bede vores <code>CharacterBody2D</code> om at hoppe.</p>
+<p>Godt, det var den første ting vi skal lave så:</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />find ud af om der er trykket på
+"up"</label></li>
+</ul>
+<p>OK, når så vi har det, hvad vil vi så, eller, sagt på en anden måde,
+hvordan fik vi vores <code>CharacterBody2D</code> til at bevæge sig fra
+side til side? Lad os lige kigge i vores
+<code>HorizontalMovementComponent</code>:</p>
+<p><code>body.velocity.x = move_toward(body.velocity.x, direction * speed, horizontal_change_speed)</code></p>
+<p>Ah ja, det var <code>velocity.x</code> vi skruede på.</p>
+<p>Men hvis vi så vil have vores <code>CharacterBody2D</code> til at
+hoppe <em>op</em>, så må det vel være <code>velocity.y</code> vi skal
+ændre, og det skal vel være et negativt tal sådan at vi bevæger os opad,
+tættere på 0 som er øverste venstre hjørne.</p>
+<p>Så noget kode som det her:</p>
+<p><code>body.velocity.y = -100</code></p>
+<p>Kunne måske gøre det?</p>
+<p>Men hvordan kommer vi så ned igen?</p>
+<p>Det er vel vores <code>GravityComponent</code> der styrer det, husk
+at den har den her funktion:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_gravity</span>(body: CharacterBody2D, delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> body.<span class="fu">is_on_floor</span>():</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        body.velocity.y <span class="op">+=</span> gravity</span></code></pre></div>
+<p>Så...hvis <code>body</code> ikke står på gulvet, så træk den ned mod
+gulvet. Nemt!</p>
+<p>Lad os opdatere vores liste:</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />find ud af om der er trykket på
+"up"</label></li>
+<li><label><input type="checkbox" />lav en ny <code>JumpComponent</code>
+som kan opdatere <code>velocity.y</code></label></li>
+</ul>
+<p>Og så kan vi vist godt starte.</p>
+<h2 id="find-ud-af-om-der-er-trykket-på-up">Find ud af om der er trykket
+på "up"</h2>
+<p>Vi laver en ny funktion i vores <code>InputComponent</code>.</p>
+<ul>
+<li>Funktionen kalder vi <code>jump_was_pressed</code></li>
+<li>den tager ingen input</li>
+<li>den returnerer en bool værdi (bool er en forkortelse for Boolean som
+betyder at værdien kan være sand eller falsk, ja eller nej, 1 eller
+0)</li>
+</ul>
+<p>Prøv og se om du selv kan skrive signaturen.</p>
+<p>Vores funktion skal bare svare på et simpelt spørgsmål: Har spilleren
+trykket på vores "up" knap.</p>
+<p>Igen, prøv og se om du selv kan skrive den linie kode der skal til,
+kig evt. i vores gamle 2D space shooter, der gjorde vi det samme.</p>
+<p>Her er vores bud:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">jump_was_pressed</span>() <span class="op">-&gt;</span> bool:</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Input.<span class="fu">is_action_just_pressed</span>(<span class="st">&quot;up&quot;</span>)</span></code></pre></div>
+<p>Hak ved første skridt</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />find ud af om der er
+trykket på "up"</label></li>
+<li><label><input type="checkbox" />lav en ny <code>JumpComponent</code>
+som kan opdatere <code>velocity.y</code></label></li>
+</ul>
+<h2 id="lav-en-ny-jumpcomponent">Lav en ny
+<code>JumpComponent</code></h2>
+<p>Du har gjordet det nogle gange efterhånden.</p>
+<ol type="1">
+<li>Lav en ny Node2D</li>
+<li>Kald den "JumpComponent"</li>
+<li>Gem dem som <code>jump_component.tscn</code> under "components"</li>
+<li>Tilføj et script til "JumpComponent"</li>
+</ol>
+<p>Det ser sådan her ud:</p>
+<p><img src="../../assets/08/jump_component.png"
+alt="jump_component" /></p>
+<h2 id="script">Script</h2>
+<p>Scriptet kan vi også starte på, det skal have en
+<code>class_name</code> som de andre</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class_name</span> JumpComponent</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node</span></code></pre></div>
+<p>Og så skal vi have lavet en funktion:</p>
+<ul>
+<li>som vi kalder <code>handle_jump</code></li>
+<li>den skal tage to input parametre
+<ul>
+<li>en <code>CharacterBody2D</code> som vi kalder <code>body</code></li>
+<li>en <code>bool</code> som vi kalder <code>jump_requested</code></li>
+</ul></li>
+<li>og den skal ikke ikke returnere noget</li>
+</ul>
+<p>Igen, prøv selv, du kan godt :)</p>
+<p>Hvad var det så vores funktion skulle gøre?</p>
+<p>Vi blev enige om at den skulle opdatere <code>velocity.y</code> på
+den <code>body</code> den arbejder med <em>hvis</em> der var trykket på
+"up".</p>
+<p>Men...lille krølle!</p>
+<p>Den skal vel <em>kun</em> opdatere <code>velocity.y</code> hvis vi
+<em>står</em> på jorden. Hvis vi beder den om at opdatere
+<code>velocity.y</code> mens vi er <em>i luften</em>, jamen så bliver vi
+vel ved med at flyve opad, det dur ikke.</p>
+<p>Så...vi er nødt til at kigge på om <code>body.is_on_floor()</code> og
+kun hvis det er tilfældet vil vi ændre på <code>velocity.y</code>.</p>
+<p>Så altså:</p>
+<ol type="1">
+<li>Lav en <code>@export var jump_velocity: float = -350</code> så vi
+kan justere hvor højt der skal hoppes.</li>
+<li>Tilføj til vores funktion som du lige har lavet en signatur til så
+den:</li>
+</ol>
+<ul>
+<li>Kigger om <code>jump_requested</code> og body.is_on_floor()</li>
+<li>Og hvis det er sandt, så opdaterer den <code>vody.velocity.y</code>
+til at være lig med <code>jump_velocity</code></li>
+</ul>
+<p>Prøv selv, du kan stadig godt.</p>
+<p>Her er vores færdige script</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class_name</span> JumpComponent</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Settings&quot;</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> jump_velocity: float <span class="op">=</span> <span class="op">-</span><span class="fl">350.0</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_jump</span>(body: CharacterBody2D, jump_requested: bool) <span class="op">-&gt;</span> void:</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> jump_requested <span class="kw">and</span> body.<span class="fu">is_on_floor</span>():</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        body.velocity.y <span class="op">=</span> jump_velocity</span></code></pre></div>
+<p>Det var andet skridt</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />find ud af om der er
+trykket på "up"</label></li>
+<li><label><input type="checkbox" checked="" />lav en ny
+<code>JumpComponent</code> som kan opdatere
+<code>velocity.y</code></label></li>
+</ul>
+<h2 id="tilføj-jumpcomponent-til-player">Tilføj
+<code>JumpComponent</code> til <code>Player</code></h2>
+<p>Vi har været der før.</p>
+<p>Præcis på samme måde som vi tilføjede <code>GravityComponent</code>
+tilføjer vi nu <code>JumpComponent</code> til vores <code>Player</code>
+ved at:</p>
+<ol type="1">
+<li>Tilføje en <code>@export var jump_component: JumpComponent</code>
+til vores <code>Player</code> script</li>
+<li>"Instantiate Child scene" og tilføje
+<code>jump_component.tscn</code> på vores <code>Player</code></li>
+<li>Assigne <code>JumpComponent</code> til "Jump Component" i
+"Inspectoren" for vores "Player"</li>
+</ol>
+<h2 id="opdater-player-script">Opdater <code>Player</code> script</h2>
+<p>Nu kan vi i <code>_physics_process</code> kalde
+<code>handle_jump</code> på vores <code>jump_component</code>. Tilføj
+den her linie i _physics_process funktionen:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>jump_component.<span class="fu">handle_jump</span>(<span class="va">self</span>, input_component.<span class="fu">jump_was_pressed</span>())</span></code></pre></div>
+<p>Og kør så dit spil og prøv og hop</p>
+<p><img src="../../assets/08/jump.png" alt="jump" /></p>
+<p>Det ser jo sådan set OK ud...bortset fra at når vi hopper løber vi
+stadig gennem luften. Det kan vi godt gøre bedre ved at tilføje et par
+nye animationer.</p>
+<h2 id="opdater-vores-animationcomponent">Opdater vores
+<code>AnimationComponent</code></h2>
+<p>Hvad vil vi?</p>
+<p>Vi vil gerne tilføje to nye animationer:</p>
+<ul>
+<li>"jump" til når vi bevæger os opad i vores hop</li>
+<li>"fall" til når vi bevæger os nedad i vores hop</li>
+</ul>
+<p>Tilføj dem. du skal bruge <code>space-marine-jump.png</code> til dem
+begge to og så skal du kun vælge <em>nogle</em> frames.</p>
+<ul>
+<li>til "jump" vælger du de tre første</li>
+<li>til "fall" vælger du de tre sidte.</li>
+</ul>
+<h2 id="men-hvordan-ved-vi-om-vi-hopper-eller-falder">Men hvordan ved vi
+om vi hopper eller falder?</h2>
+<p>Nu har vi vores animationer, men de kræver jo så at vi kan se om man
+bevæger sig opad eller nedad...hvem kan fortælle os det mon?</p>
+<p><code>GravityComponent</code> kunne være et godt bud. Vi har den her
+funktion nu:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_gravity</span>(body: CharacterBody2D, delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> body.<span class="fu">is_on_floor</span>():</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        body.velocity.y <span class="op">+=</span> gravity <span class="op">*</span> delta</span></code></pre></div>
+<p>Så den kigger allerede på om man ikke står på en platform.</p>
+<p>Vi kan vel udvide den, så den også lige gemmer to variabler:</p>
+<ul>
+<li><code>var is_jumping: bool</code> hvis vi <em>ikke</em> er
+<code>on_floor</code> og vi hopper opad, altså hvis velocity.y &lt;
+0</li>
+<li><code>var is_falling: bool</code> hvis vi <em>ikke</em> er
+<code>on_floor</code> og vi falder nedad, altså hvis velocity.y &gt;
+0</li>
+</ul>
+<h3 id="udvid-gravitycomponent">Udvid <code>GravityComponent</code></h3>
+<p>Vi kan:</p>
+<ul>
+<li>tilføje <code>var is_jumping: bool</code></li>
+<li>tilføje <code>var is_falling: bool</code></li>
+<li>hvis <em>ikke</em> vi <code>is_on_floor()</code> så kigger vi på
+hvad <code>body.velocity.y</code> er:
+<ul>
+<li>hvis den er &lt; 0 bevæger vi os opad og så er
+<code>is_jumping = true</code></li>
+<li>hvis den er &gt; 0 er tyngdekraften begyndt at trække os nedad og så
+er <code>is_falling = true</code></li>
+</ul></li>
+<li>hvis vi <code>is_on_floor()</code> så er vi lige flinke og sætter
+dem begge to til false.</li>
+</ul>
+<p>Prøv selv, her er vores script</p>
+<p>Det ser sådan her ud:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class_name</span> GravityComponent</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Settings&quot;</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> gravity: float <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> is_jumping: bool <span class="op">=</span> <span class="va">false</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> is_falling: bool <span class="op">=</span> <span class="va">false</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_gravity</span>(body: CharacterBody2D, delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> body.<span class="fu">is_on_floor</span>():</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        body.velocity.y <span class="op">+=</span> gravity <span class="op">*</span> delta</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> body.velocity.y <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Vi flytter os opad</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>            is_jumping <span class="op">=</span> <span class="va">true</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>            is_falling <span class="op">=</span> <span class="va">false</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> body.velocity.y <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Vi falder nedad</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>            is_jumping <span class="op">=</span> <span class="va">false</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>            is_falling <span class="op">=</span> <span class="va">true</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>        is_jumping <span class="op">=</span> <span class="va">false</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>        is_falling <span class="op">=</span> <span class="va">false</span></span></code></pre></div>
+<h2 id="tilbage-til-animationcomponent">Tilbage til
+<code>AnimationComponent</code></h2>
+<p>Eftersom vores <code>Walker</code> <em>ikke</em> skal kunne hoppe vil
+vi ikke have logikken for hvilken animation der skal vises ind i den
+eksisterende funktion, så vi laver en ny:</p>
+<ul>
+<li>funktionen skal hedde <code>handle_jump_animation</code></li>
+<li>den skal tage to input parametre:
+<ul>
+<li><code>is_jumping</code> af typen <code>bool</code></li>
+<li><code>is_falling</code> af typen <code>bool</code></li>
+</ul></li>
+<li>og den skal ikke returnere nogen værdi</li>
+<li>hvis <code>is_jumping</code> så spil "jump" animationen</li>
+<li>hvis <code>is_falling</code> så spil "fall" animationen</li>
+</ul>
+<p>Prøv at skriv den i scriptet for <code>AnimationComponent</code>, her
+er vores bud:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_jump_animation</span>(is_jumping: bool, is_falling: bool) <span class="op">-&gt;</span> void:</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> is_jumping:</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        sprite.<span class="fu">play</span>(<span class="st">&quot;jump&quot;</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> is_falling:</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        sprite.<span class="fu">play</span>(<span class="st">&quot;fall&quot;</span>)</span></code></pre></div>
+<h2 id="tilføj-til-player-script">Tilføj til <code>Player</code>
+script</h2>
+<p>Sidste skridt, brug vores nye funktion i vores <code>Player</code>
+script, prøv at se om du kan regne ud hvad der skal tilføjes i
+<code>_process</code> funktionen.</p>
+<p>Her er vores bud hvis du giver fortabt:</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    animation_component.<span class="fu">handle_move_animation</span>(input_component.horizontal_direction)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    animation_component.<span class="fu">handle_jump_animation</span>(gravity_component.is_jumping, gravity_component.is_falling)</span></code></pre></div>
+<p>Prøv nu at kør dit spil igen og nyd de fine animationer</p>
+<p><img src="../../assets/08/jumping_animation.png"
+alt="jumping_animation" /></p>
+<h2 id="tada">Tada</h2>
+<p>Vores spil begynder at ligne noget nu. Vi kan bevæge os og vi kan
+hoppe fra platform til platform.</p>
+<p>I <a href="../lesson09/">næste lektion</a> skal vi til at skyde, vi
+ses!</p>
 </article>
 </body>
 </html>

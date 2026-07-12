@@ -348,7 +348,7 @@ Vi har jo godtnok ikke nogen måde at opsamle tastaturtryk på endnu, men vi kan
 
 ```gdscript
 func _physics_process(delta: float) -> void:
-	gravity_component.handle_gravity(self)
+	gravity_component.handle_gravity(self, delta)
 	horizontal_movement_component.handle_horizontal_movement(self, 1)
 	move_and_slide()
 ```
@@ -410,7 +410,7 @@ extends CharacterBody2D
 @export var input_component: InputComponent
 
 func _physics_process(delta: float) -> void:
-	gravity_component.handle_gravity(self)
+	gravity_component.handle_gravity(self, delta)
 	horizontal_movement_component.handle_horizontal_movement(self, input_component.horizontal_direction)
 	move_and_slide()
 ```

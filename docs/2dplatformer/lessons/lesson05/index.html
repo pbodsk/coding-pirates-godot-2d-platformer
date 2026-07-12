@@ -248,14 +248,18 @@ ved at øge <code>velocity.y</code> værdien</label></li>
 <div class="sourceCode" id="cb1"><pre
 class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_gravity</span>(body: CharacterBody2D) <span class="op">-&gt;</span> void:</span></code></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_gravity</span>(body: CharacterBody2D, delta: float) <span class="op">-&gt;</span> void:</span></code></pre></div>
 <p>Altså, en funktion der:</p>
 <ul>
 <li>hedder <code>handle_gravity</code></li>
 <li>tager en parameter kaldet <code>body</code> af typen
-<code>CharacterBody2D</code></li>
+<code>CharacterBody2D</code> og en parameter kaldet <code>delta</code>
+af type <code>float</code></li>
 <li>ikke returnerer nogen værdi</li>
 </ul>
+<p>Hvad skal vi bruge <code>delta</code> til? Den bruger vi for at sikre
+at hastigheden stiger støt, ligesom hvis du selv hoppede ud fra et højt
+sted (du skal ikke prøve!).</p>
 <p>Det var step 1</p>
 <ul class="task-list">
 <li><label><input type="checkbox" checked="" />Tager en
@@ -269,7 +273,7 @@ ved at øge <code>velocity.y</code> værdien</label></li>
 <div class="sourceCode" id="cb2"><pre
 class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_gravity</span>(body: CharacterBody2D) <span class="op">-&gt;</span> void:</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_gravity</span>(body: CharacterBody2D, delta: float) <span class="op">-&gt;</span> void:</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> body.<span class="fu">is_on_floor</span>():</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        </span></code></pre></div>
 <p>Det var step 2</p>
@@ -285,7 +289,7 @@ ved at øge <code>velocity.y</code> værdien</label></li>
 <div class="sourceCode" id="cb3"><pre
 class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_gravity</span>(body: CharacterBody2D) <span class="op">-&gt;</span> void:</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_gravity</span>(body: CharacterBody2D, delta: float) <span class="op">-&gt;</span> void:</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> body.<span class="fu">is_on_floor</span>():</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        body.velocity.y <span class="op">+=</span> ???</span></code></pre></div>
 <p>Hmmm...hvad skal vores gravity være? Lad os lave en varibel til det,
@@ -295,11 +299,13 @@ Vores script ser nu sådan her ud:</p>
 class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Settings&quot;</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> gravity: float <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> gravity: float <span class="op">=</span> <span class="dv">1000</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_gravity</span>(body: CharacterBody2D) <span class="op">-&gt;</span> void:</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_gravity</span>(body: CharacterBody2D, delta: float) <span class="op">-&gt;</span> void:</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> body.<span class="fu">is_on_floor</span>():</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        body.velocity.y <span class="op">+=</span> gravity</span></code></pre></div>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        body.velocity.y <span class="op">+=</span> gravity <span class="op">*</span> delta</span></code></pre></div>
+<p>Bemærk at vi ganger <code>gravity</code> med <code>delta</code> for
+at sikre at vores hastighed stiger støt</p>
 <p>Det var step 3</p>
 <ul class="task-list">
 <li><label><input type="checkbox" checked="" />Tager en
@@ -340,11 +346,11 @@ class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb5-1"><
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Settings&quot;</span>)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> gravity: float <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> gravity: float <span class="op">=</span> <span class="dv">1000</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_gravity</span>(body: CharacterBody2D) <span class="op">-&gt;</span> void:</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_gravity</span>(body: CharacterBody2D, delta: float) <span class="op">-&gt;</span> void:</span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> body.<span class="fu">is_on_floor</span>():</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        body.velocity.y <span class="op">+=</span> gravity</span></code></pre></div>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        body.velocity.y <span class="op">+=</span> gravity <span class="op">*</span> delta</span></code></pre></div>
 <ol start="3" type="1">
 <li>Tilbage i dit <code>player.gd</code> kan du nu tilføje en referance
 til dit script sådan her:</li>
@@ -453,7 +459,7 @@ class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb8-1"><
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> gravity_component: GravityComponent</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_physics_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    gravity_component.<span class="fu">handle_gravity</span>(<span class="va">self</span>)</span></code></pre></div>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    gravity_component.<span class="fu">handle_gravity</span>(<span class="va">self</span>, delta)</span></code></pre></div>
 <p>Det var trin 2</p>
 <ul class="task-list">
 <li><label><input type="checkbox" checked="" />have hooket ind i physics
@@ -487,7 +493,7 @@ class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb9-1"><
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> gravity_component: GravityComponent</span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_physics_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    gravity_component.<span class="fu">handle_gravity</span>(<span class="va">self</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    gravity_component.<span class="fu">handle_gravity</span>(<span class="va">self</span>, delta)</span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">move_and_slide</span>()</span></code></pre></div>
 <p>Og så kør dit spil igen.</p>

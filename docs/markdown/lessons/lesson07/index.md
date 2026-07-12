@@ -129,7 +129,7 @@ Men det er vel også OK, hvis vi sørger for at bruge de navne kan vi tilgæld n
 ## Tilføj `AnimationCompoent` til `Player`
 Vi skal igennem det samme show som da vi tilføjede `GravityComponent`, `HorizontalMovementComponent` og `InputComponent`. Du kan sikkert huske det men for en god ordens skyld:
 
-Præcis på samme måde som vi tilføjede `GravityComponent` tilføjer vi nu `HorizontalMovementComponent` til vores `Player` ved at:
+Præcis på samme måde som vi tilføjede `GravityComponent` tilføjer vi nu `AnimationComponent` til vores `Player` ved at:
 
 1. Tilføje en `@export var animation_component: AnimationComponent` til vores `Player` script
 2. "Instantiate Child scene" og tilføje `animation_component.tscn` på vores `Player`
@@ -297,4 +297,3 @@ Men prøv at tænk på hvor nemt det bliver når vi skal til at lave vores `Walk
 Men...vi glæder os over det forkerte, lad os være glade for at vi nu har en `AnimationComponent` og at vores `Player` begynder at komme til live.
 
 I [næste](../lesson08/) level vil vi forsøge at få vores `Player` til at kunne hoppe også, så når du er klar kan du hoppe videre...vi ses!
-

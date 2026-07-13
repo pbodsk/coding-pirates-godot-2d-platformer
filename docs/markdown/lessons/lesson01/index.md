@@ -1,7 +1,7 @@
 # Godot 2D Platformer - level 1, opsætning
 Velkommen til endnu en Godot guide serie!
 
-I denne guide serie skal vi lave endnuet 2D spil, for der er stadig så meget vi kan lære bare om 2D i Godot.
+I denne guide serie skal vi lave endnu et 2D spil, for der er stadig så meget vi kan lære bare om 2D i Godot.
 
 Vi skal lave et 2D platform spil hvor den tapre space pirate Piry McPirate skal bevæge sig på platforme og elevatorer mens han nedkæmper ondsindede Walkers, samler førstehjælpspakker op og bare holder sig i live
 

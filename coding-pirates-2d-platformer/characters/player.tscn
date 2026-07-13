@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://be6suy2nwk373" path="res://components/input_component.tscn" id="5_evndh"]
 [ext_resource type="PackedScene" uid="uid://d4hvjwjuskpbs" path="res://components/animation_component.tscn" id="7_6t23p"]
 [ext_resource type="PackedScene" uid="uid://cltou8tmgxpvw" path="res://components/jump_component.tscn" id="8_6t23p"]
+[ext_resource type="PackedScene" uid="uid://cuwcw64nicc6d" path="res://components/shoot_component.tscn" id="9_q605b"]
+[ext_resource type="PackedScene" uid="uid://ddjlawejh1qta" path="res://scenes/bullet.tscn" id="10_eho78"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ntv8e"]
 radius = 14.0
@@ -177,13 +179,14 @@ animations = [{
 "speed": 9.0
 }]
 
-[node name="Player" type="CharacterBody2D" unique_id=1934841766 node_paths=PackedStringArray("animation_component", "gravity_component", "horizontal_movement_component", "input_component", "jump_component")]
+[node name="Player" type="CharacterBody2D" unique_id=1934841766 node_paths=PackedStringArray("animation_component", "gravity_component", "horizontal_movement_component", "input_component", "jump_component", "shoot_component")]
 script = ExtResource("1_3eadt")
 animation_component = NodePath("AnimationComponent")
 gravity_component = NodePath("GravityComponent")
 horizontal_movement_component = NodePath("HorizontalMovementComponent")
 input_component = NodePath("InputComponent")
 jump_component = NodePath("JumpComponent")
+shoot_component = NodePath("ShootComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1088840334]
 shape = SubResource("CapsuleShape2D_ntv8e")
@@ -204,5 +207,8 @@ zoom = Vector2(4, 4)
 
 [node name="AnimationComponent" parent="." unique_id=1902683484 node_paths=PackedStringArray("sprite") instance=ExtResource("7_6t23p")]
 sprite = NodePath("../AnimatedSprite2D")
+
+[node name="ShootComponent" parent="." unique_id=515494828 instance=ExtResource("9_q605b")]
+bullet_scene = ExtResource("10_eho78")
 
 [node name="JumpComponent" parent="." unique_id=1470843113 instance=ExtResource("8_6t23p")]

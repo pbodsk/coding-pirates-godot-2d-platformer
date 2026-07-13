@@ -8,3 +8,6 @@ func _process(delta: float) -> void:
 
 func jump_was_pressed() -> bool:
 	return Input.is_action_just_pressed("up")
+
+func shoot_was_pressed() -> bool:
+	return Input.is_action_just_pressed("fire")

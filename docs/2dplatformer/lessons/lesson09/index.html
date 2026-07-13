@@ -27,13 +27,654 @@
       vertical-align: middle;
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../../style/github-markdown.css" />
   <link rel="stylesheet" href="../../style/style.css" />
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="lektion-9">Lektion 9</h1>
+<h1 id="godot-2d-platformer---level-9-skyd">Godot 2D Platformer - level
+9 skyd!</h1>
+<p>I <a href="../lesson08/">level 8</a> fik vi vores <code>Player</code>
+til at hoppe så nu kan vi bevæge os rundt men hvis vi skal overleve
+mødet med fjender skal vi også kunne skyde, lad os kigge på det i denne
+lektion.</p>
+<p>Så...</p>
+<h2 id="hvad-er-det-vi-gerne-vil">Hvad er det vi gerne vil?</h2>
+<p>Få vores spiller til at skyde!</p>
+<p>OK, det har vi jo gjort før i vores 2D space shooter, mest da vi
+skulle sætte kugler fra vores fjender. Det kræver at vi:</p>
+<ul>
+<li>Opdager at der er trykket på "skyd"</li>
+<li>Opretter en ny <code>Bullet</code> scene</li>
+<li>Sætter <code>Bullet</code>s position og retning ud fra vores egen
+position og retning</li>
+<li>Lader <code>Bullet</code>s script håndtere resten</li>
+</ul>
+<p>Første skridt er let, ligesom vi kunne spørge vores
+<code>InputComponent</code> om <code>jump_was_pressed()</code> så vil vi
+også kunne spørge om <code>shoot_was_pressed()</code></p>
+<p>Så skal vi have lavet en ny <code>Bullet</code> scene af typen
+<code>Area2D</code> og have sat en <code>AnimatedSprite2D</code> og så
+videre på den.</p>
+<p>Og til sidste del kan vi lave en <code>ShootComponent</code> med en
+funktion som vi - til at starte med - giver:</p>
+<ul>
+<li>Vores position</li>
+<li>Vores retning</li>
+</ul>
+<p>Og ud fra det kan <code>ShootComponent</code> så</p>
+<ul>
+<li>Oprette en <code>Bullet</code></li>
+<li>Sætte position og retning på <code>Bullet</code></li>
+<li>Tilføje <code>Bullet</code> til vores "verden" så den bevæger
+sig</li>
+</ul>
+<p>Så...tre ting vi skal have lavet, vi kan lave en liste så vi kan
+krydse af efterhånden som vi kommer fremad.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Tilføj
+<code>shoot_was_pressed()</code> til
+<code>InputComponent</code></label></li>
+<li><label><input type="checkbox" />Lav en ny <code>Bullet</code>
+scene</label></li>
+<li><label><input type="checkbox" />Lav en ny
+<code>ShootComponent</code> som vi kan bruge til at skyde
+med</label></li>
+</ul>
+<p>Lad os fyre den af!</p>
+<h2 id="tilføj-shoot_was_pressed-til-inputcomponent">Tilføj
+<code>shoot_was_pressed()</code> til <code>InputComponent</code></h2>
+<p>Nemt! Kig på vores eksisterende <code>InputComponent</code> og se om
+du kan lave funktionen selv inden du kigger her nedenfor. Du skal
+~stjæle~ søge kraftig inspiration i den eksisterende
+<code>jump_was_pressed()</code> funktion.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">shoot_was_pressed</span>() <span class="op">-&gt;</span> bool:</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Input.<span class="fu">is_action_just_pressed</span>(<span class="st">&quot;fire&quot;</span>)</span></code></pre></div>
+<p>Bang! Videre</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Tilføj
+<code>shoot_was_pressed()</code> til
+<code>InputComponent</code></label></li>
+<li><label><input type="checkbox" />Lav en ny <code>Bullet</code>
+scene</label></li>
+<li><label><input type="checkbox" />Lav en ny
+<code>ShootComponent</code> som vi kan bruge til at skyde
+med</label></li>
+</ul>
+<h2 id="lav-en-ny-bullet-scene">Lav en ny <code>Bullet</code> scene</h2>
+<p>I "scenes" mappen laver du:</p>
+<ul>
+<li>En ny scene af typen <code>Area2D</code></li>
+<li>Som du giver navnet "Bullet"</li>
+<li>Og gemmer som "bullet.tscn" i "scenes" mappen</li>
+</ul>
+<p>Og så tilføjer du:</p>
+<ul>
+<li>En <code>AnimatedSprite2D</code> node</li>
+<li>En <code>CollisionShape2D</code> node</li>
+<li>En <code>VisibleOnScreenNotifier</code> så vi kan rydde op når vi
+forsvinder</li>
+<li>Et script som du gemmer sammen med scenen under navnet
+"bullet.gd"</li>
+</ul>
+<p>Det ser sådan her ud</p>
+<p><img src="../../assets/09/bullet_scene.png" alt="bullet_scene" /></p>
+<h3 id="tilføj-animation-og-collision-shape">Tilføj animation og
+collision shape</h3>
+<p>Under de assets du downloadede kan du finde filen "bullet.png" som
+har to billeder.</p>
+<ul>
+<li>Opret en ny mappe kaldet "bullets" under "assets" og træk så
+"bullets.png" ind i den nye mappe</li>
+<li>Nu kan du bruge den på din <code>AnimatedSprite2D</code> til at lave
+en animation som vi kalder for "shoot"</li>
+<li>Tilføj en "Rectangle" shape til din <code>CollisionShape2D</code> og
+ret den til så den passer med spidsen af vores kugle (det er den lyseblå
+frame)</li>
+<li>Ret også størrelsen på din <code>VisibleOnScreenNotifier</code> til
+så den passer med størrelsen af vores kugle billede (det er den
+lilla/rødlige frame)</li>
+</ul>
+<p>Nu skulle det gerne se sådan her ud ved dig</p>
+<p><img src="../../assets/09/animation_and_collision.png"
+alt="animation_and_collision" /></p>
+<h3 id="og-så-en-vigtig-ting-som-du-ikke-vil-springe-over-at-læse">Og så
+en vigtig ting som du <em>ikke</em> vil springe over at læse!</h3>
+<p>Godt :)</p>
+<p>Vi skal jo lige huske at sætte "CollisionLayer" og "CollisionMask"
+for vores <code>Bullet</code>, ellers kommer den jo aldrig til at ramme
+noget.</p>
+<p>Så:</p>
+<ol type="1">
+<li>Vælg din <code>Bullet</code> i venstre side</li>
+<li>I "Inspectoren" i højre side finder du sektionen omkring
+"CollisionObject2D"</li>
+</ol>
+<p>Og herunder finder du nu settings for "CollisionLayer" og
+"CollisionMask" ved at folde "Collision" sektionen ud</p>
+<p>Kan du huske dem?</p>
+<ul>
+<li>CollisionLayer...hvilket lag vil vi gerne selv være i? Vi har jo
+lavet et lag kaldet "Bullets" (nummer 4) så det vælger vi</li>
+<li>CollisionMask...hvilke lag vil vi gerne støde sammen med? Det er vel
+næsten alt, Terrain, Player og Enemies, lag 1, 2 og 3, så dem vælger
+vi</li>
+</ul>
+<p>Vær sikker på at det ser sådan her ud:</p>
+<p><img src="../../assets/09/collision_setup.png"
+alt="collision_setup" /></p>
+<h3 id="script">Script</h3>
+<p>Videre til vores script. Vi vil - i første omgang - gerne tre
+ting:</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Lave en <code>add</code> funktion så
+vi kan tilføje en <code>Bullet</code> et andet sted fra</label></li>
+<li><label><input type="checkbox" />Implementere
+<code>_physics_process</code> så vores kugle flytter sig</label></li>
+<li><label><input type="checkbox" />Lytte på vores
+<code>VisibleOnScreenNotifier2D</code> og fjerne vores kugle når den
+flyver ud af skærmen</label></li>
+</ul>
+<p>Lad os tage dem en af gangen</p>
+<h4 id="add-funktion">Add funktion</h4>
+<p>Hvad vil vi?</p>
+<p>Vi vil have en funktion som vi kalder <code>add</code> og som
+tager:</p>
+<ul>
+<li>En position som vi kalder <code>pos</code> som er af typen
+<code>Vector2</code> som fortæller os hvor kuglen skal placeres</li>
+<li>En direction som vi kalder <code>dir</code> som er af typen
+<code>Vector</code> som fortælles os om vi skal skyde mod venstre (x =
+-1) eller højre (x = 1) afhængigt af hvor den der har skudt kigger
+henad</li>
+<li>Et offset som vi kalder <code>offset</code> som er af typen
+<code>Vector2</code> så vi kan justere positionen lidt (så det ser ud
+som om skuddet kommer fra spidsen af et gevær og ikke inde fra maven af
+vores <code>Player</code> f.eks)</li>
+<li>Funktionen skal ikke returnere noget</li>
+</ul>
+<p>Lad os skrive signaturen:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">add</span>(pos: Vector2, dir: Vector2, offset: Vector2) <span class="op">-&gt;</span> void:</span></code></pre></div>
+<p>Og så kan vi bruge de paremetre til at:</p>
+<ul>
+<li>Beregne og sætte vores <code>Bullet</code>s <code>position</code>
+som også er en <code>Vector2</code> (altså en X og en Y værdi).
+<ul>
+<li>X værdien er pos.x + (offset.x * dir)</li>
+<li>Y værdien er pos.y + (offset.y * dir)</li>
+</ul></li>
+<li>Gemme <code>dir</code> så vi kan bruge den i
+<code>_physics_process</code></li>
+<li>Finde ud af om vi skal flippe <code>AnimatedSprite2D.flip_h</code>
+ud fra <code>dir</code></li>
+<li>Starte <code>AnimatedSprite2D</code>s animation</li>
+</ul>
+<p>Det ser sådan her ud:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Skal vi skyde mod venstre eller højre</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> direction: Vector2 <span class="op">=</span> Vector2.RIGHT</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">add</span>(pos: Vector2, dir: Vector2, offset: Vector2) <span class="op">-&gt;</span> void:</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># regn x og y ud for vores bullet</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> x_pos <span class="op">=</span> pos.x <span class="op">+</span> (dir.x <span class="op">*</span> offset.x)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> y_pos <span class="op">=</span> pos.y <span class="op">+</span> (dir.y <span class="op">*</span> offset.y)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># og sæt vores Bullets position ud fra de </span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># udregnede værdier</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    position <span class="op">=</span> <span class="fu">Vector2</span>(x_pos, y_pos)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># gem direction</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    direction <span class="op">=</span> dir</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># hvordan skal vores animation vende?</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="va">$AnimatedSprite2D</span>.flip_h <span class="op">=</span> dir.x <span class="op">&lt;</span> <span class="dv">0</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="va">$AnimatedSprite2D</span>.<span class="fu">play</span>(<span class="st">&quot;shoot&quot;</span>)</span></code></pre></div>
+<p>Puha, det var det første - og heldigvis sværeste skridt:</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Lave en <code>add</code>
+funktion så vi kan tilføje en <code>Bullet</code> et andet sted
+fra</label></li>
+<li><label><input type="checkbox" />Implementere
+<code>_physics_process</code> så vores kugle flytter sig</label></li>
+<li><label><input type="checkbox" />Lytte på vores
+<code>VisibleOnScreenNotifier2D</code> og fjerne vores kugle når den
+flyver ud af skærmen</label></li>
+</ul>
+<h4 id="_physics_process"><code>_physics_process</code></h4>
+<p>Implementationen af <code>_physics_process</code> er lettere.</p>
+<p>Vi skal bruge:</p>
+<ul>
+<li>en hastighed</li>
+<li>en delta værdi</li>
+<li>en retning</li>
+</ul>
+<p>Det eneste vi ikke har er en hastighed så lad os tilføje det som en
+<code>@export var speed: float = 400</code> øverst i vores script.</p>
+<p>Og så ser <code>_physics_process</code> sådan her ud:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_physics_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    position <span class="op">+=</span> speed <span class="op">*</span> delta <span class="op">*</span> direction</span></code></pre></div>
+<p>Her er hele vores script:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Area2D</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Properties&quot;</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> speed: float <span class="op">=</span> <span class="fl">400.0</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Skal vi skyde mod venstre eller højre</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> direction: Vector2 <span class="op">=</span> Vector2.RIGHT</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">add</span>(pos: Vector2, dir: Vector2, offset: Vector2) <span class="op">-&gt;</span> void:</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># regn x og y ud for vores bullet</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> x_pos <span class="op">=</span> pos.x <span class="op">+</span> (dir.x <span class="op">*</span> offset.x)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> y_pos <span class="op">=</span> pos.y <span class="op">+</span> (dir.y <span class="op">*</span> offset.y)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># og sæt vores Bullets position ud fra de </span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># udregnede værdier</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    position <span class="op">=</span> <span class="fu">Vector2</span>(x_pos, y_pos)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># gem direction</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    direction <span class="op">=</span> dir</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># hvordan skal vores animation vende?</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="va">$AnimatedSprite2D</span>.flip_h <span class="op">=</span> dir.x <span class="op">&lt;</span> <span class="dv">0</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="va">$AnimatedSprite2D</span>.<span class="fu">play</span>(<span class="st">&quot;shoot&quot;</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_physics_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    position <span class="op">+=</span> speed <span class="op">*</span> delta <span class="op">*</span> direction</span></code></pre></div>
+<p>Tada</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Lave en <code>add</code>
+funktion så vi kan tilføje en <code>Bullet</code> et andet sted
+fra</label></li>
+<li><label><input type="checkbox" checked="" />Implementere
+<code>_physics_process</code> så vores kugle flytter sig</label></li>
+<li><label><input type="checkbox" />Lytte på vores
+<code>VisibleOnScreenNotifier2D</code> og fjerne vores kugle når den
+flyver ud af skærmen</label></li>
+</ul>
+<h4 id="fjerne-kugle-når-den-forlader-skærmen">Fjerne kugle når den
+forlader skærmen</h4>
+<p>Det vi gerne vil her - som vi også gjorde i vores 2D space shooter -
+er, at connecte til det signal der hedder "screen_exited" på vores
+<code>VisibleOnScreenNotifier2D</code></p>
+<p>Vi har tidligere brugt "Inspectoren" til at connecte til Signals
+men...vi er gamle og garvede nu, så vi kan gøre det hele i vores
+script.</p>
+<p>Det kræver at vi</p>
+<ul>
+<li>i <code>_ready</code> siger at vi gerne vil lytte på "screen_exited"
+og hvad der skal ske når det signal bliver sendt</li>
+<li>og så laver vi den funktion der skal kaldes når "screen_exited"
+kaldes.</li>
+</ul>
+<p>Det ser sådan her ud, først fortæller vi at vi gerne vil connected
+til "screen_exited" på vores <code>VisibleOnScreenNotifier2D</code> og
+at når det signal bliver fyret, så vil vi kalde en funktion som vi
+kalder <code>_on_screen_exited</code></p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_ready</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">$VisibleOnScreenNotifier2D</span>.<span class="bu">connect</span>(<span class="st">&quot;screen_exited&quot;</span>, <span class="co">_on_screen_exited</span>)</span></code></pre></div>
+<p>Og nu vil der så komme røde streger på den linie vi lige skrev og vi
+vil få fejlen:</p>
+<blockquote>
+<p>Error at (10, 57): Identifier "_on_screen_exited" not declared in the
+current scope.</p>
+</blockquote>
+<p>Hvilket bare betyder: "Hey!!! Du har sagt at der skal kaldes en
+funktion der hedder <code>_on_screen_exited</code> men jeg kan ikke
+finde den!! Hjælp!! Stop alt!!</p>
+<p>Rolig nu, vi skal jo først til at lave den, det gør vi nu:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">_on_screen_exited</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">queue_free</span>()</span></code></pre></div>
+<p>Og så blev der ro. Her er hele vores script:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Area2D</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Properties&quot;</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> speed: float <span class="op">=</span> <span class="fl">400.0</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Skal vi skyde mod venstre eller højre</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> direction: Vector2 <span class="op">=</span> Vector2.RIGHT</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_ready</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="va">$VisibleOnScreenNotifier2D</span>.<span class="bu">connect</span>(<span class="st">&quot;screen_exited&quot;</span>, <span class="co">_on_screen_exited</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">add</span>(pos: Vector2, dir: Vector2, offset: Vector2) <span class="op">-&gt;</span> void:</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># regn x og y ud for vores bullet</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> x_pos <span class="op">=</span> pos.x <span class="op">+</span> (dir.x <span class="op">*</span> offset.x)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> y_pos <span class="op">=</span> pos.y <span class="op">+</span> (dir.y <span class="op">*</span> offset.y)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># og sæt vores Bullets position ud fra de </span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># udregnede værdier</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    position <span class="op">=</span> <span class="fu">Vector2</span>(x_pos, y_pos)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># gem direction</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    direction <span class="op">=</span> dir</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># hvordan skal vores animation vende?</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="va">$AnimatedSprite2D</span>.flip_h <span class="op">=</span> dir.x <span class="op">&lt;</span> <span class="dv">0</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="va">$AnimatedSprite2D</span>.<span class="fu">play</span>(<span class="st">&quot;shoot&quot;</span>)</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_physics_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    position <span class="op">+=</span> speed <span class="op">*</span> delta <span class="op">*</span> direction</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">_on_screen_exited</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">queue_free</span>()</span></code></pre></div>
+<p>Tada igen</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Lave en <code>add</code>
+funktion så vi kan tilføje en <code>Bullet</code> et andet sted
+fra</label></li>
+<li><label><input type="checkbox" checked="" />Implementere
+<code>_physics_process</code> så vores kugle flytter sig</label></li>
+<li><label><input type="checkbox" checked="" />Lytte på vores
+<code>VisibleOnScreenNotifier2D</code> og fjerne vores kugle når den
+flyver ud af skærmen</label></li>
+</ul>
+<p>Og vi kan strege endnu mere</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Tilføj
+<code>shoot_was_pressed()</code> til
+<code>InputComponent</code></label></li>
+<li><label><input type="checkbox" checked="" />Lav en ny
+<code>Bullet</code> scene</label></li>
+<li><label><input type="checkbox" />Lav en ny
+<code>ShootComponent</code> som vi kan bruge til at skyde
+med</label></li>
+</ul>
+<p>Videre til sidste del som binder det hele sammen</p>
+<h2 id="lav-en-ny-shootcomponent">Lav en ny
+<code>ShootComponent</code></h2>
+<p>Vi skal have lavet en ny component som vi kan bruge til at skyde med,
+det er det sædvanlige cirkus</p>
+<ol type="1">
+<li>Lav en ny Node2D</li>
+<li>Kald den "ShootComponent"</li>
+<li>Gem dem som <code>shoot_component.tscn</code> under
+"components"</li>
+<li>Tilføj et script til "ShootComponent"</li>
+</ol>
+<p>Det ser sådan her ud:</p>
+<p><img src="../../assets/09/shoot_component.png"
+alt="shoot_component" /></p>
+<h3 id="script-1">Script</h3>
+<p>Vores script skal:</p>
+<ol type="1">
+<li>Afgøre om vi kan skyde eller ej, så vi skal bruge en
+<code>var can_shoot: bool = true</code></li>
+<li>Hvis vi kan skyde, så lav en ny <code>Bullet</code> scene, så vi
+skal også bruge en <code>PackedScene</code> som vi gjorde i vores 2D
+space shooter</li>
+<li>Kalde <code>add</code> på vores nye <code>Bullet</code></li>
+<li>Starte en cooldown timer så vi ikke kan skyde lige med det
+samme</li>
+</ol>
+<p>Lad os tage det skridt for skridt</p>
+<h4 id="skelet-og-variabler-vi-skal-bruge">Skelet og variabler vi skal
+bruge</h4>
+<p>Som vi fandt ud af ovenfor skal vi bruge nogle variabler:</p>
+<ol type="1">
+<li><code>can_shoot: bool = true</code> for at afgøre om vi kan skyde
+eller ej</li>
+<li><code>@export var bullet_scene: PackedScene</code> for at kunne lave
+en ny <code>Bullet</code></li>
+<li><code>@export var shoot_cooldown_period: float = 0.5</code> for at
+vi ikke kan skyde lige med det samme</li>
+</ol>
+<p>Lad os lave det, sammen med det sædvanlige <code>class_name</code> i
+toppen af vores script.</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class_name</span> ShootComponent</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Nodes&quot;</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> bullet_scene: PackedScene</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> shoot_cooldown_period: float <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> can_shoot: bool <span class="op">=</span> <span class="va">true</span></span></code></pre></div>
+<h4
+id="handle_shoot_requested-funktion"><code>handle_shoot_requested</code>
+funktion</h4>
+<p>Vi skal have lavet en funktion</p>
+<ul>
+<li>Der hedder <code>handle_shoot_requested</code></li>
+<li>Som tager en input parameter kaldet <code>pos</code> af typen
+<code>Vector2</code></li>
+<li>Og en anden input parameter kaldet <code>dir</code> også af typen
+<code>Vector2</code></li>
+<li>Og en tredje input parameter kaldet <code>offset</code> også af
+typen <code>Vector2</code></li>
+<li>Og som ikke returnerer noget</li>
+</ul>
+<p>Lad os lave den signatur:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_shoot_requested</span>(pos: Vector2, dir: Vector2, offset: Vector2) <span class="op">-&gt;</span> void:</span></code></pre></div>
+<p>Og så logikken</p>
+<ul>
+<li>Kan vi skyde?</li>
+<li>Hvis vi kan skyde så lav en ny <code>Bullet</code> og kald
+<code>add</code> på den</li>
+<li>Og tilføj den til view hierakiet</li>
+<li>Og start en cooldown timer</li>
+</ul>
+<p>Omkring timer. Her har vi også tidligere lavet en <code>Timer</code>
+og forbundet til den, men det kan vi også gøre smartere som du kan se
+nedenfor:</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_shoot_requested</span>(pos: Vector2, dir: Vector2, offset: Vector2) <span class="op">-&gt;</span> void:</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># må vi overhovedet skyde?</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> can_shoot:</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        <span class="co"># næh...nå men så stopper vi da bare her!</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># lav en ny bullet</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> bullet <span class="op">=</span> bullet_scene.<span class="fu">instantiate</span>()</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># og sæt den op med de rigtige værdier</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    bullet.<span class="fu">add</span>(pos, dir, offset)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># og smid den i view hierakiet</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">get_tree</span>().root.<span class="fu">add_child</span>(bullet)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># sørg for at vi ikke kan skyde med det samme</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    can_shoot <span class="op">=</span> <span class="va">false</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># vent!</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    await <span class="fu">get_tree</span>().<span class="fu">create_timer</span>(shoot_cooldown_period).timeout</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># og sig at nu kan vi skyde igen</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    can_shoot <span class="op">=</span> <span class="va">true</span></span></code></pre></div>
+<p>Det skulle være det for vores <code>ShootComponent</code> i første
+omgang</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Tilføj
+<code>shoot_was_pressed()</code> til
+<code>InputComponent</code></label></li>
+<li><label><input type="checkbox" checked="" />Lav en ny
+<code>Bullet</code> scene</label></li>
+<li><label><input type="checkbox" checked="" />Lav en ny
+<code>ShootComponent</code> som vi kan bruge til at skyde
+med</label></li>
+</ul>
+<p>Sidste runde!</p>
+<h2 id="tilføj-shootcomponent-til-player">Tilføj
+<code>ShootComponent</code> til <code>Player</code></h2>
+<p>Vi har været der før.</p>
+<ol type="1">
+<li>Tilføj en <code>@export var shoot_component: ShootComponent</code>
+til vores <code>Player</code> script</li>
+<li>"Instantiate Child scene" og tilføje
+<code>shoot_component.tscn</code> på vores <code>Player</code></li>
+<li>Assigne <code>ShootComponent</code> til "Shoot Component" i
+"Inspectoren" for vores "Player"</li>
+</ol>
+<p>Men! Vi skal også lige huske at trække "bullet.tscn" til "Bullet
+Scene" på vores "ShootComponent" under vores "Player"</p>
+<p>Så.</p>
+<ol type="1">
+<li>Under "Player" i venstre side vælger du "ShootComponent"</li>
+<li>I "Inspectoren" i højre side finder du "ShootComponent" og herunder
+"Nodes"</li>
+</ol>
+<p><img src="../../assets/09/assign_packed_scene.png"
+alt="assign_packed_scene" /></p>
+<ol start="3" type="1">
+<li>Nu kan du trække din "bullet.tscn" til "Bullet Scene" så den bliver
+assigned</li>
+</ol>
+<p><img src="../../assets/09/packed_scene_assigned.png"
+alt="packed_scene_assignedt" /></p>
+<h2 id="opdater-player-script">Opdater <code>Player</code> script</h2>
+<p>Og så...endelig, efter meget arbejde, er vi der hvor det bliver
+nemt.</p>
+<p>I vores <code>Player</code> script kan vi nu i
+<code>_process</code>:</p>
+<p>Spørge vores <code>InputComponent</code> om
+<code>shoot_was_pressed()</code> og hvis det var tilfældet skal vi regne
+ud om vi kigger mod venstre eller højre, hvem kan hjælpe os med det?</p>
+<p>Det kan <code>AnimationComponent</code> vel, den har styr på om
+<code>flip_h</code> er sat eller ej.</p>
+<h3 id="udvid-animationcomponent">Udvid
+<code>AnimationComponent</code></h3>
+<p>Vi laver lige en lille hjælpefunktion på
+<code>AnimationComponent</code> som kan give os:</p>
+<ul>
+<li>-1 hvis vi kigger mod venstre</li>
+<li>1 hvis vi kigger mod højre</li>
+</ul>
+<p>Tilføj den her funktion i din <code>AnimationComponent</code></p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">get_sprite_direction</span>() <span class="op">-&gt;</span> float:</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span> <span class="cf">if</span> sprite.flip_h <span class="cf">else</span> <span class="dv">1</span></span></code></pre></div>
+<h3 id="tilbage-i-player-script">Tilbage i <code>Player</code>
+script</h3>
+<p>Hvor vi nu har alle brikker:</p>
+<ol type="1">
+<li>Hvis vores <code>InputComponent</code> siger at
+<code>shoot_was_pressed()</code></li>
+<li>Så spørger vi <code>AnimationComponent</code> om
+<code>get_sprite_direction()</code></li>
+<li>Og så kan vi kalde <code>handle_shoot_requested</code>
+på<code>ShootComponent</code> med:</li>
+</ol>
+<ul>
+<li>Vores egen <code>position</code></li>
+<li>Den <code>direction</code> vi lige har fået at vide</li>
+<li>Et offset på x = 16 så vi får lidt luft på X aksen mellem vores
+<code>CharacterBody2D</code> og <code>Bullet</code></li>
+</ul>
+<p>Det ser sådan her ud i <code>_process</code>:</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> input_component.<span class="fu">shoot_was_pressed</span>():</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> direction <span class="op">=</span> Vector2.LEFT <span class="cf">if</span> animation_component.<span class="fu">get_sprite_direction</span>() <span class="op">==</span> <span class="op">-</span><span class="dv">1</span> <span class="cf">else</span> Vector2.RIGHT</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    shoot_component.<span class="fu">handle_shoot_requested</span>(position, direction, <span class="fu">Vector2</span>(<span class="dv">16</span>, <span class="dv">0</span>))</span></code></pre></div>
+<p>Og for en god ordens skyld er her hele vores <code>Player</code>
+script:</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> CharacterBody2D</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Nodes&quot;</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> animation_component: AnimationComponent</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> gravity_component: GravityComponent</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> horizontal_movement_component: HorizontalMovementComponent</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> input_component: InputComponent</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> jump_component: JumpComponent</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> shoot_component: ShootComponent</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_physics_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    gravity_component.<span class="fu">handle_gravity</span>(<span class="va">self</span>, delta)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    horizontal_movement_component.<span class="fu">handle_horizontal_movement</span>(<span class="va">self</span>, input_component.horizontal_direction)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    jump_component.<span class="fu">handle_jump</span>(<span class="va">self</span>, input_component.<span class="fu">jump_was_pressed</span>())</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">move_and_slide</span>()</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    animation_component.<span class="fu">handle_move_animation</span>(input_component.horizontal_direction)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    animation_component.<span class="fu">handle_jump_animation</span>(gravity_component.is_jumping, gravity_component.is_falling)</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> input_component.<span class="fu">shoot_was_pressed</span>():</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>        <span class="kw">var</span> direction <span class="op">=</span> Vector2.LEFT <span class="cf">if</span> animation_component.<span class="fu">get_sprite_direction</span>() <span class="op">==</span> <span class="op">-</span><span class="dv">1</span> <span class="cf">else</span> Vector2.RIGHT</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>        shoot_component.<span class="fu">handle_shoot_requested</span>(position, direction, <span class="fu">Vector2</span>(<span class="dv">16</span>, <span class="dv">0</span>))</span></code></pre></div>
+<h2 id="sandhedens-time">Sandhedens time</h2>
+<p>Kør dit spil og prøv at skyd! Pew pew!</p>
+<h2 id="kanon">Kanon!</h2>
+<p>Det var en lang lektion men nu kan vi skyde og er klar til at møde
+nogle fjender. Men hvor er de? Lad os begynde at tilføje dem i næste
+lektion, nu skulle alt vores komponent arbejde gerne begynde at gøre det
+nemt. Vi kan i alle tilfælde bruge <code>GravityComponent</code>,
+<code>MoveComponent</code> og <code>AnimationComponent</code> med det
+samme, vi skal godtnok lige regne ud hvordan vi fortæller vores fjender
+hvilken vej de skal gå men det er der heldigvis <em>også</em> en løsning
+på.</p>
+<p>Glæd dig og vi ses i <a href="../lesson10/">næste lektion</a>!</p>
 </article>
 </body>
 </html>

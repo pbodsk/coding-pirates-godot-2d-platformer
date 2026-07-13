@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cuwcw64nicc6d"]
+
+[ext_resource type="Script" uid="uid://dqew6kpl3sr44" path="res://components/shoot_component.gd" id="1_ppmhr"]
+
+[node name="ShootComponent" type="Node" unique_id=515494828]
+script = ExtResource("1_ppmhr")

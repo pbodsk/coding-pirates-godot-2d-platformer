@@ -8,6 +8,7 @@ var direction: Vector2 = Vector2.RIGHT
 
 func _ready() -> void:
 	$VisibleOnScreenNotifier2D.connect("screen_exited", _on_screen_exited)
+	connect("body_entered", _on_body_entered)
 
 func add(pos: Vector2, dir: Vector2, offset: Vector2) -> void:
 	# regn x og y ud for vores bullet
@@ -28,6 +29,8 @@ func add(pos: Vector2, dir: Vector2, offset: Vector2) -> void:
 func _physics_process(delta: float) -> void:
 	position += speed * delta * direction
 	
+func _on_body_entered(body: Node2D) -> void:
+	queue_free()
+	
 func _on_screen_exited() -> void:
-	print("bye")
 	queue_free()

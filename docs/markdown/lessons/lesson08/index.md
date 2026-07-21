@@ -272,6 +272,8 @@ Prøv nu at kør dit spil igen og nyd de fine animationer
 ![jumping_animation](../../assets/08/jumping_animation.png)
 
 ## Tada
-Vores spil begynder at ligne noget nu. Vi kan bevæge os og vi kan hoppe fra platform til platform.
+Vores spil begynder at ligne noget nu. For at citere the Julekalender 
+
+> I can hop I can run and it's very very fun
 
 I [næste lektion](../lesson09/) skal vi til at skyde, vi ses!

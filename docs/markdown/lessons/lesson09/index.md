@@ -102,12 +102,13 @@ Vær sikker på at det ser sådan her ud:
 ![collision_setup](../../assets/09/collision_setup.png)
 
 ### Script
-Videre til vores script. Vi vil - i første omgang - gerne tre ting:
+Videre til vores script. Vi vil - i første omgang - gerne fire ting:
 
 - [ ] Lave en `add` funktion så vi kan tilføje en `Bullet` et andet sted fra
 - [ ] Implementere `_physics_process` så vores kugle flytter sig
 - [ ] Lytte på vores `VisibleOnScreenNotifier2D` og fjerne vores kugle når den flyver ud af skærmen
-
+- [ ] Fjerne kugle når den rammer en væg
+ 
 Lad os tage dem en af gangen
 
 #### Add funktion
@@ -163,6 +164,7 @@ Puha, det var det første - og heldigvis sværeste skridt:
 - [X] Lave en `add` funktion så vi kan tilføje en `Bullet` et andet sted fra
 - [ ] Implementere `_physics_process` så vores kugle flytter sig
 - [ ] Lytte på vores `VisibleOnScreenNotifier2D` og fjerne vores kugle når den flyver ud af skærmen
+- [ ] Fjerne kugle når den rammer en væg
 
 #### `_physics_process`
 Implementationen af `_physics_process` er lettere.
@@ -218,6 +220,7 @@ Tada
 - [X] Lave en `add` funktion så vi kan tilføje en `Bullet` et andet sted fra
 - [X] Implementere `_physics_process` så vores kugle flytter sig
 - [ ] Lytte på vores `VisibleOnScreenNotifier2D` og fjerne vores kugle når den flyver ud af skærmen
+- [ ] Fjerne kugle når den rammer en væg
 
 #### Fjerne kugle når den forlader skærmen
 Det vi gerne vil her - som vi også gjorde i vores 2D space shooter - er, at connecte til det signal der hedder "screen_exited" på vores `VisibleOnScreenNotifier2D`
@@ -290,6 +293,87 @@ Tada igen
 - [X] Lave en `add` funktion så vi kan tilføje en `Bullet` et andet sted fra
 - [X] Implementere `_physics_process` så vores kugle flytter sig
 - [X] Lytte på vores `VisibleOnScreenNotifier2D` og fjerne vores kugle når den flyver ud af skærmen
+- [ ] Fjerne kugle når den rammer en væg
+
+Så mangler vi bare en ting
+
+#### Fjerne kugle når den rammer en væg
+I første omgang er vi bare interesserede i at fjerne vores kugle når den rammer "nogetsomhelst".
+
+Tønk tilbage på vores 2D space shooter, der brugte vi:
+
+`_on_area_entered(area: Area2D)`
+
+Det er næsten det samme vi vil her, i stedet for:
+
+`_on_area_entered`
+
+vil vi bruge
+
+`_on_body_entered`
+
+Hvorfor det?
+
+Fordi der i [dokumentationen](https://docs.godotengine.org/en/stable/classes/class_area2d.html#class-area2d-signal-body-entered) omkring `on_body_entered` står:
+
+> Emitted when the received body enters this area. body can be a PhysicsBody2D or a TileMap. TileMaps are detected if their TileSet has collision shapes configured. Requires monitoring to be set to true.
+
+Hvilket jo er perfekt i vores tilfælde hvor vi bruger `PhysicsBody2D` (`CharacterBody2D` "arver" fra `PhysicsBody2D`) til vores Player og senere og Enemy og vi bruger TileMaps til vores levels.
+
+Så vi vil altså i vores script:
+
+- `connect`e "body_entered" signalet til en funktion vi laver, den funktion skal tage en parameter af typen `Node2D` som input parameter
+- i den funktion i første omgang kalde `queue_free()`
+
+Lad os skrive det kode. Prøv og se om du selv kan inden du kigger på vores script her:
+
+```gdscript
+extends Area2D
+
+@export_subgroup("Properties")
+@export var speed: float = 400.0
+
+# Skal vi skyde mod venstre eller højre
+var direction: Vector2 = Vector2.RIGHT
+
+func _ready() -> void:
+	$VisibleOnScreenNotifier2D.connect("screen_exited", _on_screen_exited)
+	connect("body_entered", _on_body_entered)
+
+func add(pos: Vector2, dir: Vector2, offset: Vector2) -> void:
+	# regn x og y ud for vores bullet
+	var x_pos = pos.x + (dir.x * offset.x)
+	var y_pos = pos.y + (dir.y * offset.y)
+	
+	# og sæt vores Bullets position ud fra de 
+	# udregnede værdier
+	position = Vector2(x_pos, y_pos)
+	
+	# gem direction
+	direction = dir
+	
+	# hvordan skal vores animation vende?
+	$AnimatedSprite2D.flip_h = dir.x < 0
+	$AnimatedSprite2D.play("shoot")
+	
+func _physics_process(delta: float) -> void:
+	position += speed * delta * direction
+	
+func _on_body_entered(body: Node2D) -> void:
+	queue_free()
+	
+func _on_screen_exited() -> void:
+	queue_free()
+```
+
+Kør dit spil igen og prøv at skyd ind i muren og se at dine skud forsvinder.
+
+Det var sidste punkt på listen
+
+- [X] Lave en `add` funktion så vi kan tilføje en `Bullet` et andet sted fra
+- [X] Implementere `_physics_process` så vores kugle flytter sig
+- [X] Lytte på vores `VisibleOnScreenNotifier2D` og fjerne vores kugle når den flyver ud af skærmen
+- [X] Fjerne kugle når den rammer en væg
 
 Og vi kan strege endnu mere
 

@@ -649,4 +649,4 @@ tile_set = SubResource("TileSet_ntv8e")
 [node name="Enemies" type="Node2D" parent="." unique_id=2114501910]
 
 [node name="Walker" parent="Enemies" unique_id=1247923865 instance=ExtResource("8_t0hvh")]
-position = Vector2(184, 242)
+position = Vector2(155, 256)

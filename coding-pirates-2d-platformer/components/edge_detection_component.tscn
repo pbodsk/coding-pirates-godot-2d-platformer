@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bs3a0kj11122g"]
+
+[ext_resource type="Script" uid="uid://2erg1rijl7vh" path="res://components/edge_detection_component.gd" id="1_kiuo5"]
+
+[node name="EdgeDetectionComponent" type="Node" unique_id=845282613]
+script = ExtResource("1_kiuo5")

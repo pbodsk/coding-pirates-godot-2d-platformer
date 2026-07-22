@@ -27,13 +27,341 @@
       vertical-align: middle;
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../../style/github-markdown.css" />
   <link rel="stylesheet" href="../../style/style.css" />
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="lektion-11">Lektion 11</h1>
+<h1 id="godot-2d-platformer---level-11-fjender-der-vender">Godot 2D
+Platformer - level 11 fjender der vender</h1>
+<p>I <a href="../lesson10/">level 10</a> Fik vi lavet en Walker der
+tramper frem og...nej ikke tilbage...endnu, det jo det vi skal at lave
+nu.</p>
+<h2 id="problemet">Problemet</h2>
+<p>Lad os lige gentage problemet.</p>
+<ul>
+<li>Vi har en Walker</li>
+<li>Den Walker har en <code>HorizontalMovementComponent</code></li>
+<li>En <code>HorizontalMovementComponent</code> kræver en
+<code>direction</code> for at vide hvilken vej vi skal gå</li>
+<li><code>direction</code> skal være enten -1 hvis vi vil gå til venstre
+eller 1 hvis vi vil gå til højre</li>
+<li>Hvor skal vi få den direction fra?</li>
+</ul>
+<p>I <a href="../lesson10/">level 10</a> løste vi det ved at sætte
+direction til altid at være 1, hvilket betød at vi altid gik mod højre
+og på et tidspunkt faldt vi ud over den platform vi gik på.</p>
+<p>Så...vi vil gerne lavet "noget" sådan at vores Walker kan</p>
+<ul>
+<li>Gå på en platform, lad os sige at den starter med at gå mod højre så
+<code>direction</code> = 1</li>
+<li>Når den rammer <em>højre</em> kant af platformen vil vi gerne have
+den til at vende om, altså flippe <code>direction</code> til -1</li>
+<li>Og omvendt, når den rammer <em>venstre</em> kant af platformen vil
+vi gerne have den til at vende om igen, altså flippe
+<code>direction</code> tilbage til 1</li>
+</ul>
+<p>Den gode nyhed er at det er nemt i Godot, vi kan bruge det der hedder
+en <code>RayCast2D</code> til at hjælpe os.</p>
+<h2 id="raycast2d"><code>RayCast2D</code></h2>
+<p>Vi læser i <a
+href="https://docs.godotengine.org/en/stable/classes/class_raycast2d.html">dokumentationen</a>
+hvor der står:</p>
+<blockquote>
+<p>A raycast represents a ray from its origin to its target_position
+that finds the closest object along its path, if it intersects any.</p>
+</blockquote>
+<p>Huh?? OK vi læser det lige 4 gange mere og oversætter.</p>
+<p>Altså, det er "noget" som kan sende en ray, altså en stråle fra dens
+origin, altså der hvor den er og hvis den stråle rammer nogle objekter
+på sin vej, så får vi besked. Forestil dig en lommelygte som du kan lyse
+med i et mørkt rum og som gør at du kan se ting som lyset rammer.</p>
+<p>OK, hvad kan vi bruge det til?</p>
+<p>Vi kunne jo sætte en <code>RayCast2D</code> node lige til venstre for
+vores Walker og en anden <code>RayCast2D</code> node lige til højre for
+vores Walker og lade dem begge to pege ned i jorden, og så kunne vi
+spørge om de to rammer noget.</p>
+<p>Hvis de begge to rammer noget ved vi at der er platform under os</p>
+<p><img src="../../assets/11/platform.png" alt="platform" /></p>
+<p>Hvis den venstre <em>ikke</em> rammer noget ved vi at vi har ramt
+venstre side af platformen og kan så vende om</p>
+<p><img src="../../assets/11/left_edge.png" alt="left_edge" /></p>
+<p>Og omvendt, hvis den højre <em>ikke</em> rammer noget ved vi at vi
+har ramt højre side af platformen og kan så vende om</p>
+<p><img src="../../assets/11/right_edge.png" alt="right_edge" /></p>
+<p>Lad os lave det!</p>
+<p>Hvad skal vi lave? Vi skal</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Have tilføjet to
+<code>RayCast2D</code> noder til vores Walker</label></li>
+<li><label><input type="checkbox" />Have lavet en
+<code>EdgeDetectionComponent</code> som tager to <code>RayCast2D</code>
+noder og en <code>current_direction</code> som input og som så kan give
+os en opdateret <code>direction</code> tilbage</label></li>
+<li><label><input type="checkbox" />Bruge vores nye
+<code>EdgeDetectionComponent</code> sammen med vores Walker</label></li>
+</ul>
+<p>Lad os komme i gang</p>
+<h2 id="tilføj-raycast2d-noder-til-vores-walker">Tilføj
+<code>RayCast2D</code> noder til vores Walker</h2>
+<ul>
+<li>Find <code>walker.tscn</code> i 2D mode og vælg/klik på rod "Walker"
+noden</li>
+<li>Tilføj en <code>RayCast2D</code> child node</li>
+<li>Omdøb den til at hedde "LeftEdgeDetector"</li>
+<li>Træk den på plads så den sidder lige ud for venstre fod</li>
+<li>I "Inspectoren" i venstre side skal vi lige rette et par ting
+<ul>
+<li>Under "RayCast2D" kan du rette y værdien for "Target Position" til
+at være 10, der er ingen grund til at kigge længere væk end 10
+pixels</li>
+<li>Sæt "Collision Mask" til "Terrain", altså 1 sådan at vi kigger efter
+om vi rammer platforme</li>
+</ul></li>
+</ul>
+<p>Det skulle gerne se sådan her ud</p>
+<p><img src="../../assets/11/left_edge_component.png"
+alt="left_edge_component" /></p>
+<p>Nu kan du kopiere din LeftEdgeComponent og rette kopien til at hedde
+"RightEdgeComponent" og sætte den ud for din Walkers højre fod.</p>
+<p>Det var skridt et</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Have tilføjet to
+<code>RayCast2D</code> noder til vores Walker</label></li>
+<li><label><input type="checkbox" />Have lavet en
+<code>EdgeDetectionComponent</code> som tager to <code>RayCast2D</code>
+noder og en <code>current_direction</code> som input og som så kan give
+os en opdateret <code>direction</code> tilbage</label></li>
+<li><label><input type="checkbox" />Bruge vores nye
+<code>EdgeDetectionComponent</code> sammen med vores Walker</label></li>
+</ul>
+<h2 id="lav-ny-edgedetectioncomponent">Lav ny
+<code>EdgeDetectionComponent</code></h2>
+<p>Vi kan starte med skelettet, det har ikke ændret sig.</p>
+<ol type="1">
+<li>Lav en ny Node</li>
+<li>Kald den "EdgeDetectionComponent"</li>
+<li>Gem dem som <code>edge_detection_component.tscn</code> under
+"components"</li>
+<li>Tilføj et script til "EdgeDetectionComponent"</li>
+<li>Tilføj <code>class_name EdgeDetectionComponent</code> til vores
+script</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class_name</span> EdgeDetectionComponent</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node</span></code></pre></div>
+<p>Og så er vi klar til logikken.</p>
+<h3 id="adgang-til-left-og-right-raycast2d-noder">Adgang til left og
+right <code>RayCast2D</code> noder</h3>
+<p>Ligesom i vores <code>AnimationComponent</code> laver vi det sådan at
+vi, når vi sætter vores <code>EdgeDetectionComponent</code> op, skal
+sætte en <code>left_edge_detector</code> og en
+<code>right_edge_detector</code> op fra starten, så skal vi ikke bekymre
+os om det mere.</p>
+<p>Det betyder at vi skal have to <code>@export</code> variabler af
+typen <code>RayCast2D</code> og vi er lige gode ved fremtids os selv og
+putter dem i en fin subgroup så vi kan se dem i "Inspectoren" når vi
+skal konfigurere.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Nodes&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> left_edge_detector: RayCast2D</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> right_edge_detector: RayCast2D</span></code></pre></div>
+<h3
+id="handle_edge_detection-funktion"><code>handle_edge_detection</code>
+funktion</h3>
+<p>Og så er vi klar til selve logikken. Hvad er det nu vi gerne vil?</p>
+<p>Vi vil gerne tage den nuværende <code>direction</code> som vores
+Walker går i som en input parameter og så vil vi kigge på om</p>
+<ul>
+<li>Hvis <code>left_edge_detector</code> <em>og</em>
+<code>right_edge_detector</code> begge to rammer jorden, så er vi stadig
+på en platform og så sender vi bare den nuværende <code>direction</code>
+retur</li>
+<li>Hvis <code>left_edge_detector</code> <em>ikke</em> rammer jorden er
+vi på vej ud over venstre kant og skal derfor vende os om og gå mod
+højre, altså skal <code>direction</code> nu være 1</li>
+<li>Omvendt, hvis <code>right_edge_detector</code> <em>ikke</em> rammer
+jorden er vi på vej ud over højre kant og skal derfor vende os om og gå
+mod venstre, altså skal <code>direction</code> nu være -1</li>
+</ul>
+<p>Det efterlader så spørgsmålet...hvordan kan vi spørge en
+<code>RayCast2D</code> node om den rammer jorden? Vi må tilbage i
+dokumentationen og grave og vi finder funktionen <a
+href="https://docs.godotengine.org/en/stable/classes/class_raycast2d.html#class-raycast2d-method-is-colliding">is_colliding</a>,
+det er jo præcis den vi skal bruge.</p>
+<p>Så har vi alle brikker til puslespillet og kan gå i gang, prøv
+selv!</p>
+<ul>
+<li>Funktionen skal hedde <code>handle_edge_detection</code></li>
+<li>Den skal tage en parameter af typen <code>float</code> som vi kalder
+<code>current_direction</code></li>
+<li>Den skal returnere en værdi af typen <code>float</code></li>
+<li>Og så skal den indeholde logikken ovenfor</li>
+</ul>
+<p>Her er hele vores forsøg</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class_name</span> EdgeDetectionComponent</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Nodes&quot;</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> left_edge_detector: RayCast2D</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> right_edge_detector: RayCast2D</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_edge_detection</span>(current_direction: float) <span class="op">-&gt;</span> float:</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># rammer både venstre og højre edge detector jorden?</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> left_edge_detector.<span class="fu">is_colliding</span>() <span class="kw">and</span> right_edge_detector.<span class="fu">is_colliding</span>():</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># ja det gjorde de, så bare gå videre i samme retning</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> current_direction</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># nå, vi er ved at ramme en kant</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># er det venstre kant?</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> left_edge_detector.<span class="fu">is_colliding</span>():</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># ja det er det, vend om og gå mod højre</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="fl">1.0</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># det var ikke venstre kant, er det højre så?</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> right_edge_detector.<span class="fu">is_colliding</span>():</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>        <span class="co"># ja det er det, vend om og gå mod venstre</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="op">-</span><span class="fl">1.0</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># logisk skulle vi ikke kunne ende her så vi returnerer </span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># current_direction</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> current_direction</span></code></pre></div>
+<p>Det var skridt to</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Have tilføjet to
+<code>RayCast2D</code> noder til vores Walker</label></li>
+<li><label><input type="checkbox" checked="" />Have lavet en
+<code>EdgeDetectionComponent</code> som tager to <code>RayCast2D</code>
+noder og en <code>current_direction</code> som input og som så kan give
+os en opdateret <code>direction</code> tilbage</label></li>
+<li><label><input type="checkbox" />Bruge vores nye
+<code>EdgeDetectionComponent</code> sammen med vores Walker</label></li>
+</ul>
+<h2 id="brug-vores-nye-edgedetectioncomponent-med-vores-walker">Brug
+vores nye <code>EdgeDetectionComponent</code> med vores Walker</h2>
+<p>Det er den nemme del!</p>
+<ul>
+<li>Du skal have tilføjet <code>EdgeDetectionComponent</code> som en en
+Child Scene på din <code>walker.tsch</code></li>
+<li>Og som en
+<code>@export var edge_detection_component: EdgeDetectionComponent</code>
+i dit <code>walker.gd</code> script</li>
+<li>Og så skal du have bundet tingene sammen, husk at sætte
+<code>LeftEdgeDetector</code> og <code>RightEdgeDetector</code> op i de
+to variabler du lavede i dit <code>edge_detector_component.gd</code>
+script</li>
+</ul>
+<p>Det ser sådan her ud:</p>
+<p><img src="../../assets/11/edge_detectors.png"
+alt="edge_detectors" /></p>
+<p>Og så kan vi opdatere vores <code>walker.gd</code> script til at
+opdatere <code>current_movement_direction</code> ved hjælp af
+<code>edge_detection_component.handle_edge_detection</code> i
+<code>_physics_process</code></p>
+<p>Her er hele <code>walker.gd</code> scriptet:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> CharacterBody2D</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Nodes&quot;</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> animation_component: AnimationComponent</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> edge_detection_component: EdgeDetectionComponent</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> gravity_component: GravityComponent</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> horizontal_movement_component: HorizontalMovementComponent</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> current_movement_direction: float <span class="op">=</span> <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_ready</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    horizontal_movement_component.speed <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_physics_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    gravity_component.<span class="fu">handle_gravity</span>(<span class="va">self</span>, delta)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    current_movement_direction <span class="op">=</span> edge_detection_component.<span class="fu">handle_edge_detection</span>(current_movement_direction)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    horizontal_movement_component.<span class="fu">handle_horizontal_movement</span>(<span class="va">self</span>, current_movement_direction)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Husk den her!</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">move_and_slide</span>()</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    animation_component.<span class="fu">handle_move_animation</span>(current_movement_direction)</span></code></pre></div>
+<p>Kør dit spil og hold øje med Walkeren der nu forhåbenlig går frem og
+tilbage på platformen.</p>
+<p><img src="../../assets/11/going_left.png" alt="going_left" /> <img
+src="../../assets/11/going_right.png" alt="going_right" /></p>
+<h2 id="godt-arbejde">Godt arbejde!</h2>
+<p>Vi har nu nogle fjender der bevæger sig <em>nogenlunde</em>
+intelligent. Hvis du vil kan du jo også bruge
+<code>EdgeDetectionComponent</code> til at få fjender til at gå mellem
+to vægge, det kræver bare at dine <code>RayCast2D</code> noder peger til
+siderne i stedet for at pege nedad.</p>
+<p>I <a href="../lesson12/">næste lektion</a> skal vi til at skyde på
+vores fjender, vi ses!</p>
 </article>
 </body>
 </html>

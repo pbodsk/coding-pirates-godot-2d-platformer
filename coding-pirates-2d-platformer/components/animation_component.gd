@@ -25,6 +25,10 @@ func handle_jump_animation(is_jumping: bool, is_falling: bool) -> void:
 		sprite.play("jump")
 	elif is_falling:
 		sprite.play("fall")
+	
+func handle_die_animationn() -> void:
+	sprite.play("die")
+	await sprite.animation_finished
 		
 func get_sprite_direction() -> float:
 	return -1 if sprite.flip_h else 1

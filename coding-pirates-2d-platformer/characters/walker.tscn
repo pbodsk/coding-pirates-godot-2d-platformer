@@ -2,10 +2,48 @@
 
 [ext_resource type="Texture2D" uid="uid://d14repi0kni1h" path="res://assets/characters/bipedal-unit.png" id="1_pskpe"]
 [ext_resource type="Script" uid="uid://b8mmb7025ubyb" path="res://characters/walker.gd" id="1_sfykv"]
+[ext_resource type="Texture2D" uid="uid://dxrjiajx6xu2k" path="res://assets/characters/explosion-animation.png" id="2_knics"]
 [ext_resource type="PackedScene" uid="uid://m260ltqajvd2" path="res://components/gravity_component.tscn" id="3_0prvb"]
 [ext_resource type="PackedScene" uid="uid://depeln7t8u8a6" path="res://components/horizontal_movement_component.tscn" id="4_7yp6b"]
 [ext_resource type="PackedScene" uid="uid://d4hvjwjuskpbs" path="res://components/animation_component.tscn" id="5_kgfmb"]
 [ext_resource type="PackedScene" uid="uid://bs3a0kj11122g" path="res://components/edge_detection_component.tscn" id="6_u7cfi"]
+[ext_resource type="PackedScene" uid="uid://vwy1s2jsbqnb" path="res://components/health_component.tscn" id="7_jrh2i"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sgcdj"]
+atlas = ExtResource("2_knics")
+region = Rect2(0, 0, 112, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t281e"]
+atlas = ExtResource("2_knics")
+region = Rect2(112, 0, 112, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sx5ny"]
+atlas = ExtResource("2_knics")
+region = Rect2(224, 0, 112, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wwhqx"]
+atlas = ExtResource("2_knics")
+region = Rect2(336, 0, 112, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o5gpj"]
+atlas = ExtResource("2_knics")
+region = Rect2(448, 0, 112, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2pg14"]
+atlas = ExtResource("2_knics")
+region = Rect2(560, 0, 112, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m13iy"]
+atlas = ExtResource("2_knics")
+region = Rect2(672, 0, 112, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w32s2"]
+atlas = ExtResource("2_knics")
+region = Rect2(784, 0, 112, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_plby7"]
+atlas = ExtResource("2_knics")
+region = Rect2(896, 0, 112, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_sfykv"]
 atlas = ExtResource("1_pskpe")
@@ -41,6 +79,38 @@ region = Rect2(480, 0, 80, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ntv8e"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sgcdj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t281e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sx5ny")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wwhqx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o5gpj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2pg14")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m13iy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w32s2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_plby7")
+}],
+"loop": 0,
+"name": &"die",
+"speed": 8.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_sfykv")
@@ -79,19 +149,20 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u7cfi"]
 size = Vector2(50, 58)
 
-[node name="Walker" type="CharacterBody2D" unique_id=1247923865 node_paths=PackedStringArray("animation_component", "edge_detection_component", "gravity_component", "horizontal_movement_component")]
+[node name="Walker" type="CharacterBody2D" unique_id=1247923865 node_paths=PackedStringArray("animation_component", "edge_detection_component", "gravity_component", "health_component", "horizontal_movement_component")]
 collision_layer = 4
 script = ExtResource("1_sfykv")
 animation_component = NodePath("AnimationComponent")
 edge_detection_component = NodePath("EdgeDetectionComponent")
 gravity_component = NodePath("GravityComponent")
+health_component = NodePath("HealthComponent")
 horizontal_movement_component = NodePath("HorizontalMovementComponent")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=79800270]
 sprite_frames = SubResource("SpriteFrames_ntv8e")
-animation = &"walk"
-frame = 6
-frame_progress = 0.6672442
+animation = &"die"
+frame = 8
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1074534230]
 position = Vector2(-1, 3)
@@ -107,6 +178,8 @@ right_edge_detector = NodePath("../RightEdgeDetector")
 
 [node name="AnimationComponent" parent="." unique_id=1902683484 node_paths=PackedStringArray("sprite") instance=ExtResource("5_kgfmb")]
 sprite = NodePath("../AnimatedSprite2D")
+
+[node name="HealthComponent" parent="." unique_id=1996299564 instance=ExtResource("7_jrh2i")]
 
 [node name="LeftEdgeDetector" type="RayCast2D" parent="." unique_id=1188257018]
 position = Vector2(-16, 32)

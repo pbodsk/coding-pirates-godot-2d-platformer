@@ -2,6 +2,7 @@ extends Area2D
 
 @export_subgroup("Properties")
 @export var speed: float = 400.0
+@export var damage: int = 1
 
 # Skal vi skyde mod venstre eller højre
 var direction: Vector2 = Vector2.RIGHT
@@ -30,6 +31,9 @@ func _physics_process(delta: float) -> void:
 	position += speed * delta * direction
 	
 func _on_body_entered(body: Node2D) -> void:
+	if body is CharacterBody2D:
+		body.hit(damage)
+		
 	queue_free()
 	
 func _on_screen_exited() -> void:

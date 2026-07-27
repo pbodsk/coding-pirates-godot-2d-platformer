@@ -100,9 +100,9 @@
 <article class="markdown-body">
 <h1 id="godot-2d-platformer---level-12-fjender-der-dør">Godot 2D
 Platformer - level 12 fjender der dør</h1>
-<p>I <a href="../lesson11/">level 11</a> Fik vi vores Walker til at gå
+<p>I <a href="../lesson11/">level 11</a> fik vi vores Walker til at gå
 frem og tilbage på en platform.</p>
-<p>Lad os fejre det ved at kunne skyde dem!</p>
+<p>Lad os fejre det, ved at kunne skyde dem!</p>
 <h2 id="hvad-skal-vi-lave">Hvad skal vi lave</h2>
 <p>Lad os tænke os om. Hvilke dele er involveret når vi skal have
 fjenderne til at blive ramt af skud?</p>
@@ -291,7 +291,7 @@ class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb6-1"><
 <span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">_on_screen_exited</span>() <span class="op">-&gt;</span> void:</span>
 <span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">queue_free</span>()</span></code></pre></div>
-<p>Perfekt, det var skridt et:</p>
+<p>Perfekt, det var step et:</p>
 <ul class="task-list">
 <li><label><input type="checkbox" checked="" />Udvid <code>Bullet</code>
 til at kunne se <em>hvad</em> den har ramt</label></li>
@@ -639,7 +639,7 @@ class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb15-1">
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_physics_process</span>(<span class="va">false</span>)</span>
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># vent på at die animationen spiller færdig</span></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    await animation_component.<span class="fu">handle_die_animationn</span>()</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    await animation_component.<span class="fu">handle_die_animation</span>()</span>
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># og ryd pænt op</span></span>
 <span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">queue_free</span>()</span></code></pre></div>
@@ -704,7 +704,7 @@ class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb16-1">
 <span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_physics_process</span>(<span class="va">false</span>)</span>
 <span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>    <span class="co"># vent på at die animationen spiller færdig</span></span>
-<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>    await animation_component.<span class="fu">handle_die_animationn</span>()</span>
+<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>    await animation_component.<span class="fu">handle_die_animation</span>()</span>
 <span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a>    <span class="co"># og ryd pænt op</span></span>
 <span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a>    <span class="fu">queue_free</span>()</span></code></pre></div>

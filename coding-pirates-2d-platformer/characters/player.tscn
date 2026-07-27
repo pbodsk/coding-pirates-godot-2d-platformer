@@ -180,6 +180,7 @@ animations = [{
 }]
 
 [node name="Player" type="CharacterBody2D" unique_id=1934841766 node_paths=PackedStringArray("animation_component", "gravity_component", "horizontal_movement_component", "input_component", "jump_component", "shoot_component")]
+collision_layer = 2
 script = ExtResource("1_3eadt")
 animation_component = NodePath("AnimationComponent")
 gravity_component = NodePath("GravityComponent")

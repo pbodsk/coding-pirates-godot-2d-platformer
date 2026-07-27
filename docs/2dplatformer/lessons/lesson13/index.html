@@ -27,13 +27,636 @@
       vertical-align: middle;
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../../style/github-markdown.css" />
   <link rel="stylesheet" href="../../style/style.css" />
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="lektion-11">Lektion 11</h1>
+<h1
+id="godot-2d-platformer---level-13-fjender-der-vender---part-ii">Godot
+2D Platformer - level 13 fjender der vender - part II</h1>
+<p>Efter <a href="../lesson12/">level 12</a> kan vi nu skyde vores
+<code>Walker</code> og det er jo meget godt, men også samtidig lidt
+snyd, for den kan ikke skyde os!</p>
+<p>Lad os få rettet op på det. I den her level og den næste level vil vi
+lave det sådan at:</p>
+<ul>
+<li>En <code>Walker</code> stopper med at gå og vender sig efter vores
+<code>Player</code> når spilleren kommer tæt kommer tæt nok på
+<code>Walkeren</code></li>
+<li>Når <code>Player</code> er i nærheden og <code>Walker</code>en har
+vendt sig efter den, vil <code>Walker</code>en skyde salver af kugler
+efter <code>Player</code></li>
+</ul>
+<p>Første del klarer vi i denne level og i <a href="../lesson14/">næste
+level</a> begynder vi så at skyde.</p>
+<p>Lad os tænke os om</p>
+<h2 id="hvad-er-det-vi-gerne-vil">Hvad er det vi gerne vil?</h2>
+<p>Vores <code>Walker</code> går frem og tilbage på en platform. Nu vil
+vi gerne lave det sådan at når vores <code>Player</code> kommer "tæt på"
+<code>Walker</code>en skal den</p>
+<ul>
+<li>Stoppe med at gå</li>
+<li>Vende sig efter <code>Player</code>en</li>
+</ul>
+<p>Hvordan kan vi gøre det?</p>
+<p>Vi kan være kreative og tilføje en ny <code>CollisionShape2D</code>
+til et nyt <code>Area2D</code> som vi tilføjer på vores
+<code>Walker</code> Lad os kalde det area for
+<code>MovementDetectionArea</code>. Den <code>CollisionShape2D</code>
+kan vi så lave større end vores <code>Walker</code>. Husk at et
+<code>Area2D</code> kan sende to forskellige <em>signals</em> som vi kan
+bruge:</p>
+<ul>
+<li><a
+href="https://docs.godotengine.org/en/stable/classes/class_area2d.html#class-area2d-signal-body-entered">body-entered</a>
+når vores <code>MovementDetectionArea</code> støder sammen med en
+<code>CollisionBody2D</code> som vi har registreret i vores
+"collision_mask"</li>
+<li><a
+href="https://docs.godotengine.org/en/stable/classes/class_area2d.html#class-area2d-signal-body-exited">body-exited</a>
+når vores <code>MovementDetectionArea</code> ikke længere støder sammen
+med en <code>CollisionBody2D</code> som vi har registreret i vores
+"collision_mask"</li>
+</ul>
+<p>Alt det kan vi pakke pænt ned i en
+<code>MovementDetectionComponent</code> som vi kan give vores
+<code>Walker</code>s <code>MovementDetectionArea</code> som
+parameter.</p>
+<p>Så kan vi lade vores <code>MovementDetectionComponent</code> connecte
+til "body-entered" og "body-exited" signalerne på det
+<code>MovementDetectionArea</code> den har fået ind, og lade den holde
+styr på om der er en <code>Player</code> i nærheden.</p>
+<p>Og med det kan vi i vores <code>Walker</code>s
+<code>_physics_process</code> checke om der er en <code>Player</code> i
+nærheden eller ej, og ud fra det kan vi så standse vores
+<code>Walker</code> og med lidt snedig vektor matematik få den til at
+vende sig efter <code>Player</code>en.</p>
+<p>Vi har vist nok nu til at kunne lave en indledende liste:</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Lav en ny
+<code>MovementDetectionComponent</code></label></li>
+<li><label><input type="checkbox" />Lav et nyt <code>Area2D</code> og
+<code>CollisionShape2D</code> på vores <code>Walker</code></label></li>
+<li><label><input type="checkbox" />Tilføj
+<code>MovementDetectionComponent</code> til
+<code>Walker</code></label></li>
+<li><label><input type="checkbox" />Skriv logik på <code>Walker</code>
+der kan afgøre om der er en <code>Player</code> i nærheden eller
+ej</label></li>
+<li><label><input type="checkbox" />Vend <code>Walker</code> efter
+<code>Player</code> når den er i nærheden og stop med at gå</label></li>
+<li><label><input type="checkbox" />Gå når <code>Player</code> ikke
+længere er i nærheden</label></li>
+</ul>
+<p>Let's go!</p>
+<h2 id="lav-en-ny-movementdetectioncomponent">Lav en ny
+<code>MovementDetectionComponent</code></h2>
+<p>Du kender rutinen så du får det bare i stikordsform nu:</p>
+<ul>
+<li>Ny komponent som vi kalder
+<code>MovementDetectionComponent</code></li>
+<li>Tilføj script</li>
+<li>I script skal der være en
+<code>@export var detection_area: Area2D</code></li>
+<li>Og så skal du i <code>_ready</code> funktionen connecte to
+funktioner som du skriver til signalerne "body_entered", og
+"body_exited"</li>
+<li>Endelig skal vi også lige have en
+<code>func has_target() -&gt; bool</code> som vi kan bruge i
+<code>Walker</code>s <code>_physics_process</code> til at afgøre om der
+er en <code>Player</code> i nærheden eller ej</li>
+</ul>
+<p>Prøv og se om du selv kan.</p>
+<p>Her er vores forsøg:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class_name</span> MovementDetectionComponent</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_group</span>(<span class="st">&quot;Nodes&quot;</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> detection_area: Area2D</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> target: Node2D <span class="op">=</span> <span class="va">null</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_ready</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    detection_area.body_entered.<span class="bu">connect</span>(<span class="co">_on_body_entered</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    detection_area.body_exited.<span class="bu">connect</span>(<span class="co">_on_body_exited</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">has_target</span>() <span class="op">-&gt;</span> bool:</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> target <span class="op">!=</span> <span class="va">null</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Connected functions</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">_on_body_entered</span>(body: Node2D) <span class="op">-&gt;</span> void:</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    target <span class="op">=</span> body</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">_on_body_exited</span>(body: Node2D) <span class="op">-&gt;</span> void:</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    target <span class="op">=</span> <span class="va">null</span></span></code></pre></div>
+<p>Det var step 1</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Lav en ny
+<code>MovementDetectionComponent</code></label></li>
+<li><label><input type="checkbox" />Lav et nyt <code>Area2D</code> og
+<code>CollisionShape2D</code> på vores <code>Walker</code></label></li>
+<li><label><input type="checkbox" />Tilføj
+<code>MovementDetectionComponent</code> til
+<code>Walker</code></label></li>
+<li><label><input type="checkbox" />Skriv logik på <code>Walker</code>
+der kan afgøre om der er en <code>Player</code> i nærheden eller
+ej</label></li>
+<li><label><input type="checkbox" />Vend <code>Walker</code> efter
+<code>Player</code> når den er i nærheden og stop med at gå</label></li>
+<li><label><input type="checkbox" />Gå når <code>Player</code> ikke
+længere er i nærheden</label></li>
+</ul>
+<p>Videre.</p>
+<h2 id="lav-et-nyt-area2d-og-collisionshape2d-på-vores-walker">Lav et
+nyt <code>Area2D</code> og <code>CollisionShape2D</code> på vores
+<code>Walker</code></h2>
+<p>Heller ikke så meget nyt her, så igen får du det i stikordsform</p>
+<ul>
+<li>Tilføj et nyt <code>Area2D</code> direkte under din
+<code>Walker</code>s <code>CharacterBody2D</code> rod node</li>
+<li>Kald dit tilføjede <code>Area2D</code> for
+<code>MovementDetectionArea</code></li>
+<li>Tilføje en <code>CollisionShape2D</code> som child på dit
+<code>MovementDetectionArea</code></li>
+<li>Giv det en <code>RectangleShape2D</code> som Shape i
+"Inspectoren"</li>
+<li>Tilret din <code>RectangleShape2D</code> så den er bredere end din
+<code>Walker</code></li>
+<li>Husk at sætte "Collision Layer" til "Enemy" (layer 3) og "Collision
+Mask" til "Player" (layer 2) for dit
+<code>MovementDetectionArea</code></li>
+</ul>
+<p>Her er vores forsøg</p>
+<p><img src="../../assets/13/movement_detection_area.png"
+alt="movement_detection_area" /></p>
+<p>Det var step 2</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Lav en ny
+<code>MovementDetectionComponent</code></label></li>
+<li><label><input type="checkbox" checked="" />Lav et nyt
+<code>Area2D</code> og <code>CollisionShape2D</code> på vores
+<code>Walker</code></label></li>
+<li><label><input type="checkbox" />Tilføj
+<code>MovementDetectionComponent</code> til
+<code>Walker</code></label></li>
+<li><label><input type="checkbox" />Skriv logik på <code>Walker</code>
+der kan afgøre om der er en <code>Player</code> i nærheden eller
+ej</label></li>
+<li><label><input type="checkbox" />Vend <code>Walker</code> efter
+<code>Player</code> når den er i nærheden og stop med at gå</label></li>
+<li><label><input type="checkbox" />Gå når <code>Player</code> ikke
+længere er i nærheden</label></li>
+</ul>
+<h2 id="tilføj-movementdetectioncomponent-til-walker">Tilføj
+<code>MovementDetectionComponent</code> til <code>Walker</code></h2>
+<p>Igen...stikord :)</p>
+<ul>
+<li>Tilføj <code>MovementDetectionComponent</code> til
+<code>Walker</code> både i 2D editoren og i <code>walker.gd</code>
+scriptet</li>
+<li>Husk at connect <code>MovementDetectionArea</code> til
+<code>detection_area</code> variablen som vi oprettede i vores
+<code>movement_detection_component.gd</code> script</li>
+</ul>
+<p>Det ser sådan her ud ved os:</p>
+<p><img src="../../assets/13/movement_detection_component_assigned.png"
+alt="movement_detection_component_assigned" /></p>
+<p>Det var step 3</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Lav en ny
+<code>MovementDetectionComponent</code></label></li>
+<li><label><input type="checkbox" checked="" />Lav et nyt
+<code>Area2D</code> og <code>CollisionShape2D</code> på vores
+<code>Walker</code></label></li>
+<li><label><input type="checkbox" checked="" />Tilføj
+<code>MovementDetectionComponent</code> til
+<code>Walker</code></label></li>
+<li><label><input type="checkbox" />Skriv logik på <code>Walker</code>
+der kan afgøre om der er en <code>Player</code> i nærheden eller
+ej</label></li>
+<li><label><input type="checkbox" />Vend <code>Walker</code> efter
+<code>Player</code> når den er i nærheden og stop med at gå</label></li>
+<li><label><input type="checkbox" />Gå når <code>Player</code> ikke
+længere er i nærheden</label></li>
+</ul>
+<p>Tju hej hvor det gå, men nu kommer vi også til de lidt mere svære
+ting :)</p>
+<h2
+id="skriv-logik-på-walker-der-kan-afgøre-om-der-er-en-player-i-nærheden-eller-ej">Skriv
+logik på <code>Walker</code> der kan afgøre om der er en
+<code>Player</code> i nærheden eller ej</h2>
+<p>Nu har vi en komponent der kan fortælle os om der er en
+<code>Player</code> i nærheden af vores <code>Walker</code> eller ej.
+Lad os prøve at se om den virker.</p>
+<p>Vi kan starte simpelt med at lave en ny funktion som vi kalder
+<code>handle_player_detection() -&gt; void</code>.</p>
+<p>I den kan vi så lave en hurtig <code>if</code> sætning og bare printe
+ud om der er en <code>Player</code> i nærheden.</p>
+<p>Det ser sådan her ud:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_player_detection</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> movement_detection_component.<span class="fu">has_target</span>():</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&quot;Player nearby&quot;</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&quot;Nothing here&quot;</span>)</span></code></pre></div>
+<p>Kald din nye funktion som en del af
+<code>_physics_process</code>:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_physics_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    gravity_component.<span class="fu">handle_gravity</span>(<span class="va">self</span>, delta)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">handle_player_detection</span>()</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    current_movement_direction <span class="op">=</span> edge_detection_component.<span class="fu">handle_edge_detection</span>(current_movement_direction)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    horizontal_movement_component.<span class="fu">handle_horizontal_movement</span>(<span class="va">self</span>, current_movement_direction)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Husk den her!</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">move_and_slide</span>()</span></code></pre></div>
+<p>Kør dit spil og prøv at bevæg dig tæt på din <code>Walker</code>. Du
+skulle gerne se tekst i din "Output" konsol a'la det her:</p>
+<blockquote>
+<p>Nothing here ... Player nearby ... Nothing here ...</p>
+</blockquote>
+<p>Hvis ikke du gør så check at du har sat din <code>Player</code>s
+"Collision Layer" til "Player" (layer 2) og at alt er forbundet som det
+skal være.</p>
+<p>Det var en start på step 4</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Lav en ny
+<code>MovementDetectionComponent</code></label></li>
+<li><label><input type="checkbox" checked="" />Lav et nyt
+<code>Area2D</code> og <code>CollisionShape2D</code> på vores
+<code>Walker</code></label></li>
+<li><label><input type="checkbox" checked="" />Tilføj
+<code>MovementDetectionComponent</code> til
+<code>Walker</code></label></li>
+<li><label><input type="checkbox" checked="" />Skriv logik på
+<code>Walker</code> der kan afgøre om der er en <code>Player</code> i
+nærheden eller ej</label></li>
+<li><label><input type="checkbox" />Vend <code>Walker</code> efter
+<code>Player</code> når den er i nærheden og stop med at gå</label></li>
+<li><label><input type="checkbox" />Gå når <code>Player</code> ikke
+længere er i nærheden</label></li>
+</ul>
+<h2
+id="vend-walker-efter-player-når-den-er-i-nærheden-og-stop-med-at-gå">Vend
+<code>Walker</code> efter <code>Player</code> når den er i nærheden og
+stop med at gå</h2>
+<p>Nå, nu bliver det interessant. Vi vil gerne vende os i retning af
+<code>Player</code> når den er i nærheden, hvordan kan vi gøre det?</p>
+<p>Vi er vel nødt til at vide <em>hvor</em> vores <code>Player</code> er
+i forhold til vores <code>Walker</code> og ud fra det kan vi så regne en
+retning ud.</p>
+<p>Husk at i Godot 2D er vores noder egentlig bare koordinater i et
+koordinat system.</p>
+<p>Så f.eks. kunne</p>
+<ul>
+<li>vores <code>Player</code> stå i position (1,1)</li>
+<li>vores <code>Walker</code> stå i position (10, 1)</li>
+</ul>
+<p>Og det ville betyde at vores <code>Player</code> stod til venstre for
+<code>Walker</code>en (x værdien er mindre) og vi skulle derfor kalde
+vores <code>animation_component</code>s
+<code>handle_horizontal_flip</code> med -1</p>
+<p>Omvendt hvis</p>
+<ul>
+<li>vores <code>Player</code> stod i position (20,1)</li>
+<li>vores <code>Walker</code> stod i position (10, 1)</li>
+</ul>
+<p>ville vores <code>Player</code> stå til højre for
+<code>Walker</code>en og vi skulle derfor kalde vores
+<code>animation_component</code>s <code>handle_horizontal_flip</code>
+med 1.</p>
+<p>Urgh...det lyder som en frygtelig masse matematik...og så udenfor
+skoletiden! Det gider vi jo ikke.</p>
+<p>Godt nyt...det behøver vi heller ikke, Godot kan klare alt det her
+for os forholdsvist nemt.</p>
+<p>Vi kan lave en ny funktion på vores
+<code>MovementDetectionComponent</code> som kan regne ud hvor vores
+<code>Walker</code> står i forhold til vores <code>Player</code>.</p>
+<p>Det ser sådan her ud:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">direction_to_target</span>(from: Node2D) <span class="op">-&gt;</span> Vector2:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Har vi overhovedet et target?</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> target <span class="op">==</span> <span class="va">null</span>:</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Næh, nå men så bare returner 0, 0</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> Vector2.ZERO</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Træk de to positioner fra hinanden</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># og returner en normaliseret værdi</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># altså en Vector hvor x og y begge er mellem 0 og 1</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (target.global_position <span class="op">-</span> from.global_position).<span class="fu">normalized</span>()</span></code></pre></div>
+<p>Det her er den interessante linie:</p>
+<p><code>return (target.global_position - from.global_position).normalized()</code></p>
+<p>Vi trækker "from"s globale position (som er en <code>Vector2</code>)
+fra vores "target"s globale position.</p>
+<p>Det giver os så en <code>Vector2</code> som fortæller os hvor target
+er i forhold til from.</p>
+<p>Tilsidst kalder vi <a
+href="https://docs.godotengine.org/en/stable/classes/class_vector2.html#class-vector2-method-normalized">normalized</a>.</p>
+<p>I dokumentationen står der:</p>
+<blockquote>
+<p>Returns the result of scaling the vector to unit length.</p>
+</blockquote>
+<p>Huh?? Ja, rolig, det betyder bare at vi altid får en værdi som er
+justeret ned så både x og y værdien er et tal mellem -1 og 1.</p>
+<p>Lad os prøve at erstatte vores <code>handle_player_detection</code> i
+<code>walker.gd</code> med det her og se hvad den skriver ud:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_player_detection</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> direction <span class="op">=</span> movement_detection_component.<span class="fu">direction_to_target</span>(<span class="va">self</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(direction)</span></code></pre></div>
+<p>Kør dit spil igen og prøv at få din <code>Walker</code> til at se
+dig.</p>
+<p>Hvis vi står til venstre for <code>Walker</code>en får vi værdier som
+dem her:</p>
+<blockquote>
+<p>(-0.999904, 0.013846) (-0.999556, 0.029783)</p>
+</blockquote>
+<p>Hvis vi står til højre for <code>Walker</code>en får vi værdier som
+dem her:</p>
+<blockquote>
+<p>(0.972757, 0.231828) (0.971871, 0.235513)</p>
+</blockquote>
+<p>Og hvis <code>Walker</code>en <em>ikke</em> kan se os får vi</p>
+<blockquote>
+<p>(0, 0)</p>
+</blockquote>
+<p>Godt. Det kan vi bruge til noget i vores
+<code>handle_player_detection</code></p>
+<ul>
+<li>Hvis movement_detection_component.has_target() <em>og</em>
+<code>player_detected</code> er <code>false</code>
+<ul>
+<li>Så sætter vi lige et <code>player_detected</code> flag til
+<code>true</code> så vi kan se at vi er i gang med at vende os (husk at
+<code>_physics_process</code> kører 60 gange i sekundet, vi vil kun
+vende os første gang vi opdager at der er en <code>Player</code> tæt
+på)</li>
+<li>Og så finder vi ud af hvor <code>Walker</code>en er i forhold til
+<code>Player</code></li>
+<li>Og så gemmer vi den gamle retning vi gik i i en variabel vi kalder
+<code>previous_movement_direction</code></li>
+<li>Og så sætter vi <code>current_movement_direction</code> til 0 så vi
+står stille</li>
+<li>Og vender os rigtigt ved at kalde
+<code>animation_component.handle_horizontal_flip</code></li>
+</ul></li>
+<li>Hvis <em>ikke</em> movement_detection_component.has_target()
+<em>og</em> <code>player_detected</code> er <code>true</code> betyder
+det at <code>Player</code> er forsvundet for os igen
+<ul>
+<li>Så vi flipper <code>player_detected</code> til
+<code>false</code></li>
+<li>Og sætter <code>current_movement_direction</code> tilbage til dens
+gamle værdi som vi gemte i <code>previous_movement_direction</code></li>
+</ul></li>
+</ul>
+<p>Lad os prøve at skrive det, prøv endelig selv hvis du har mod på det.
+Her er vores foreslag:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_player_detection</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Der er et target og vi kan ikke behandlet det endnu</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Let&#39;s go!</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> movement_detection_component.<span class="fu">has_target</span>() <span class="kw">and</span> <span class="kw">not</span> player_detected:</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Registrer at vi er ved at vende os</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        player_detected <span class="op">=</span> <span class="va">true</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="kw">var</span> new_direction <span class="op">=</span> movement_detection_component.<span class="fu">direction_to_target</span>(<span class="va">self</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(new_direction)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Gem den gamle retning</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        previous_movement_direction <span class="op">=</span> current_movement_direction</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Stå stille</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        current_movement_direction <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Vend os rigtigt</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> new_direction.x <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>            animation_component.<span class="fu">handle_horizontal_flip</span>(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> new_direction.x <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>            animation_component.<span class="fu">handle_horizontal_flip</span>(<span class="dv">1</span>)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>                        </span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Target er væk igen og det er første loop</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># siden det forsvandt, vi nulstiller</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> <span class="op">!</span>movement_detection_component.<span class="fu">has_target</span>() <span class="kw">and</span> player_detected:</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Nulstil værdier</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>        player_detected <span class="op">=</span> <span class="va">false</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>        current_movement_direction <span class="op">=</span> previous_movement_direction</span></code></pre></div>
+<p>Og...så skal vi lige opdatere <code>_physics_process</code> så den
+kun opdaterer <code>current_movement_direction</code> hvis ikke
+<code>player_detected</code> er <code>true</code></p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_physics_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    gravity_component.<span class="fu">handle_gravity</span>(<span class="va">self</span>, delta)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">handle_player_detection</span>()</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> player_detected:</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        current_movement_direction <span class="op">=</span> edge_detection_component.<span class="fu">handle_edge_detection</span>(current_movement_direction)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    horizontal_movement_component.<span class="fu">handle_horizontal_movement</span>(<span class="va">self</span>, current_movement_direction)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Husk den her!</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">move_and_slide</span>()</span></code></pre></div>
+<p>Kør dit spil igen. Nu skulle vores <code>Walker</code> gerne vende
+sig om og stå stille når vi kommer tæt på <em>og</em> når vi så kommer
+uden for rækkevidde skulle den gerne begynde at bevæge sig igen! Det er
+da temmelig fedt!</p>
+<p>Ooooog, vi kan slette både step 5 og 6</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Lav en ny
+<code>MovementDetectionComponent</code></label></li>
+<li><label><input type="checkbox" checked="" />Lav et nyt
+<code>Area2D</code> og <code>CollisionShape2D</code> på vores
+<code>Walker</code></label></li>
+<li><label><input type="checkbox" checked="" />Tilføj
+<code>MovementDetectionComponent</code> til
+<code>Walker</code></label></li>
+<li><label><input type="checkbox" checked="" />Skriv logik på
+<code>Walker</code> der kan afgøre om der er en <code>Player</code> i
+nærheden eller ej</label></li>
+<li><label><input type="checkbox" checked="" />Vend <code>Walker</code>
+efter <code>Player</code> når den er i nærheden og stop med at
+gå</label></li>
+<li><label><input type="checkbox" checked="" />Gå når
+<code>Player</code> ikke længere er i nærheden</label></li>
+</ul>
+<p>For en god ordens skyld er her hele <code>walker.gd</code> så du kan
+sammenligne:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> CharacterBody2D</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Nodes&quot;</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> animation_component: AnimationComponent</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> edge_detection_component: EdgeDetectionComponent</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> gravity_component: GravityComponent</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> health_component: HealthComponent</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> horizontal_movement_component: HorizontalMovementComponent</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> movement_detection_component: MovementDetectionComponent</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> current_movement_direction: float <span class="op">=</span> <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> previous_movement_direction: float <span class="op">=</span> current_movement_direction</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> is_dying: bool <span class="op">=</span> <span class="va">false</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> player_detected: bool <span class="op">=</span> <span class="va">false</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_ready</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    horizontal_movement_component.speed <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    is_dying <span class="op">=</span> <span class="va">false</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_physics_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    gravity_component.<span class="fu">handle_gravity</span>(<span class="va">self</span>, delta)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">handle_player_detection</span>()</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> player_detected:</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>        current_movement_direction <span class="op">=</span> edge_detection_component.<span class="fu">handle_edge_detection</span>(current_movement_direction)</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    horizontal_movement_component.<span class="fu">handle_horizontal_movement</span>(<span class="va">self</span>, current_movement_direction)</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Husk den her!</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">move_and_slide</span>()</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># er vi ved at dø, så bare stop her</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> is_dying:</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Kun hvis vi er døde kommer vi videre her til</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Er vi så døde i mellemtiden?</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> health_component.<span class="fu">is_dead</span>():</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Ja det var vi, så kald die funktionen der</span></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># sørger for at vi dør pænt :)</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>        await <span class="fu">die</span>()</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Vi var ikke døde så vi kører bare videre</span></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>    animation_component.<span class="fu">handle_move_animation</span>(current_movement_direction)</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">hit</span>(damage: int) <span class="op">-&gt;</span> void:</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>    health_component.<span class="fu">hit</span>(damage)</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">handle_player_detection</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Der er et target og vi kan ikke behandlet det endnu</span></span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Let&#39;s go!</span></span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> movement_detection_component.<span class="fu">has_target</span>() <span class="kw">and</span> <span class="kw">not</span> player_detected:</span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Registrer at vi er ved at vende os</span></span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>        player_detected <span class="op">=</span> <span class="va">true</span></span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>        <span class="kw">var</span> new_direction <span class="op">=</span> movement_detection_component.<span class="fu">direction_to_target</span>(<span class="va">self</span>)</span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(new_direction)</span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Gem den gamle retning</span></span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a>        previous_movement_direction <span class="op">=</span> current_movement_direction</span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Stå stille</span></span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a>        current_movement_direction <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Vend os rigtigt</span></span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> new_direction.x <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a>            animation_component.<span class="fu">handle_horizontal_flip</span>(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> new_direction.x <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a>            animation_component.<span class="fu">handle_horizontal_flip</span>(<span class="dv">1</span>)</span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a>                        </span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Target er væk igen og det er første loop</span></span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a>    <span class="co"># siden det forsvandt, vi nulstiller</span></span>
+<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> <span class="op">!</span>movement_detection_component.<span class="fu">has_target</span>() <span class="kw">and</span> player_detected:</span>
+<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Nulstil værdier</span></span>
+<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a>        player_detected <span class="op">=</span> <span class="va">false</span></span>
+<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a>        current_movement_direction <span class="op">=</span> previous_movement_direction</span>
+<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">die</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a>    <span class="co"># flip is_dying så vi ikke ryger i _process igen</span></span>
+<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a>    is_dying <span class="op">=</span> <span class="va">true</span></span>
+<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a>    <span class="co"># stop så vi ikke går videre</span></span>
+<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a>    current_movement_direction <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a>    <span class="co"># gør så player kan løbe igennem animationen</span></span>
+<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_physics_process</span>(<span class="va">false</span>)</span>
+<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a>    <span class="co"># vent på at die animationen spiller færdig</span></span>
+<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a>    await animation_component.<span class="fu">handle_die_animation</span>()</span>
+<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a>    <span class="co"># og ryd pænt op</span></span>
+<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a>    <span class="fu">queue_free</span>()</span></code></pre></div>
+<h2 id="tada">Tada!</h2>
+<p>Puha, det var måske en lidt drøj omgang med vector matematik men
+heldigvis er Godot god til at hjælpe os.</p>
+<p>Skulle du nu have lyst til at læse mere om vector matematik og hvad
+man kan i Godot kan du læse mere i deres <a
+href="https://docs.godotengine.org/en/stable/tutorials/math/vector_math.html">dokumentation</a>.</p>
+<p>Og ellers skal vi vel bare videre og have vores <code>Walker</code>
+til at skyde tilbage på os når den ser os. Den gode nyhed er at vi også
+<em>her</em> skal vide <em>hvor</em> <code>Player</code> er så vi kan
+sætte kuglerne rigtigt så det var ikke spildt arbejde med det
+matematik.</p>
+<p>På gensyn i <a href="../lesson14/">næste level</a></p>
 </article>
 </body>
 </html>

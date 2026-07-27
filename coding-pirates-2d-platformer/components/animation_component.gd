@@ -26,7 +26,7 @@ func handle_jump_animation(is_jumping: bool, is_falling: bool) -> void:
 	elif is_falling:
 		sprite.play("fall")
 	
-func handle_die_animationn() -> void:
+func handle_die_animation() -> void:
 	sprite.play("die")
 	await sprite.animation_finished
 		

@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://d4hvjwjuskpbs" path="res://components/animation_component.tscn" id="5_kgfmb"]
 [ext_resource type="PackedScene" uid="uid://bs3a0kj11122g" path="res://components/edge_detection_component.tscn" id="6_u7cfi"]
 [ext_resource type="PackedScene" uid="uid://vwy1s2jsbqnb" path="res://components/health_component.tscn" id="7_jrh2i"]
+[ext_resource type="PackedScene" uid="uid://bs2y4ni1j1aqi" path="res://components/movement_detection_component.tscn" id="8_s7vee"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_sgcdj"]
 atlas = ExtResource("2_knics")
@@ -149,7 +150,10 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u7cfi"]
 size = Vector2(50, 58)
 
-[node name="Walker" type="CharacterBody2D" unique_id=1247923865 node_paths=PackedStringArray("animation_component", "edge_detection_component", "gravity_component", "health_component", "horizontal_movement_component")]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ntv8e"]
+size = Vector2(300, 42)
+
+[node name="Walker" type="CharacterBody2D" unique_id=1247923865 node_paths=PackedStringArray("animation_component", "edge_detection_component", "gravity_component", "health_component", "horizontal_movement_component", "movement_detection_component")]
 collision_layer = 4
 script = ExtResource("1_sfykv")
 animation_component = NodePath("AnimationComponent")
@@ -157,12 +161,11 @@ edge_detection_component = NodePath("EdgeDetectionComponent")
 gravity_component = NodePath("GravityComponent")
 health_component = NodePath("HealthComponent")
 horizontal_movement_component = NodePath("HorizontalMovementComponent")
+movement_detection_component = NodePath("MovementDetectionComponent")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=79800270]
 sprite_frames = SubResource("SpriteFrames_ntv8e")
-animation = &"die"
-frame = 8
-frame_progress = 1.0
+animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1074534230]
 position = Vector2(-1, 3)
@@ -179,6 +182,9 @@ right_edge_detector = NodePath("../RightEdgeDetector")
 [node name="AnimationComponent" parent="." unique_id=1902683484 node_paths=PackedStringArray("sprite") instance=ExtResource("5_kgfmb")]
 sprite = NodePath("../AnimatedSprite2D")
 
+[node name="MovementDetectionComponent" parent="." unique_id=259518299 node_paths=PackedStringArray("detection_area") instance=ExtResource("8_s7vee")]
+detection_area = NodePath("../MovementDetectionArea")
+
 [node name="HealthComponent" parent="." unique_id=1996299564 instance=ExtResource("7_jrh2i")]
 
 [node name="LeftEdgeDetector" type="RayCast2D" parent="." unique_id=1188257018]
@@ -188,3 +194,11 @@ target_position = Vector2(0, 20)
 [node name="RightEdgeDetector" type="RayCast2D" parent="." unique_id=459837532]
 position = Vector2(16, 32)
 target_position = Vector2(0, 20)
+
+[node name="MovementDetectionArea" type="Area2D" parent="." unique_id=377035933]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MovementDetectionArea" unique_id=555491041]
+position = Vector2(0, 11)
+shape = SubResource("RectangleShape2D_ntv8e")

@@ -445,7 +445,7 @@ func die() -> void:
 	set_physics_process(false)
 	
 	# vent på at die animationen spiller færdig
-	await animation_component.handle_die_animationn()
+	await animation_component.handle_die_animation()
 	
 	# og ryd pænt op
 	queue_free()
@@ -513,7 +513,7 @@ func die() -> void:
 	set_physics_process(false)
 	
 	# vent på at die animationen spiller færdig
-	await animation_component.handle_die_animationn()
+	await animation_component.handle_die_animation()
 	
 	# og ryd pænt op
 	queue_free()

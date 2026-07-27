@@ -1,5 +1,5 @@
 # Godot 2D Platformer - level 11 fjender der vender
-I [level 10](../lesson10/) Fik vi lavet en Walker der tramper frem og...nej ikke tilbage...endnu, det jo det vi skal at lave nu.
+I [level 10](../lesson10/) fik vi lavet en Walker der tramper frem og...nej ikke tilbage...endnu, det jo det vi skal at lave nu.
 
 ## Problemet
 Lad os lige gentage problemet.

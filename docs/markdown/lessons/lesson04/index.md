@@ -91,6 +91,8 @@ Du har gjort det her mange gange før så nu får du det bare i punktform og så
 4. Gem vores nye scene som "player.tscn"
 5. Tilføj en `CollisionShape2D` som sub-node du kan bruge en CapsuleShape
 6. Tilføj en `AnimatedSprite2D` som sub-node
+7. Sæt "Collision Layer" til "Player" (layer 2)
+8. Sæt "Collision Mask" til "Terrain" (layer 1)
 
 Vi streger ud
 - [X] Oprette en ny `CharacterBody2D` node

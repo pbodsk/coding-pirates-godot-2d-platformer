@@ -3,6 +3,7 @@ extends Area2D
 @export_subgroup("Properties")
 @export var speed: float = 400.0
 @export var damage: int = 1
+var group_to_hit: String
 
 # Skal vi skyde mod venstre eller højre
 var direction: Vector2 = Vector2.RIGHT
@@ -11,7 +12,10 @@ func _ready() -> void:
 	$VisibleOnScreenNotifier2D.connect("screen_exited", _on_screen_exited)
 	connect("body_entered", _on_body_entered)
 
-func add(pos: Vector2, dir: Vector2, offset: Vector2) -> void:
+func add(pos: Vector2, dir: Vector2, offset: Vector2, target_group: String) -> void:
+	# gem group_to_hit så vi kan checke det senere
+	group_to_hit = target_group
+	
 	# regn x og y ud for vores bullet
 	var x_pos = pos.x + (dir.x * offset.x)
 	var y_pos = pos.y + (dir.y * offset.y)
@@ -31,10 +35,12 @@ func _physics_process(delta: float) -> void:
 	position += speed * delta * direction
 	
 func _on_body_entered(body: Node2D) -> void:
-	if body is CharacterBody2D:
-		body.hit(damage)
+	if body is TileMapLayer:
+		queue_free()
 		
-	queue_free()
+	if body is CharacterBody2D and body.is_in_group(group_to_hit):
+		body.hit(damage)
+		queue_free()
 	
 func _on_screen_exited() -> void:
 	queue_free()

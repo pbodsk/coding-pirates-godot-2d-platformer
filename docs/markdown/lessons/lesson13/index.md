@@ -286,7 +286,6 @@ func handle_player_detection() -> void:
 		player_detected = true
 
 		var new_direction = movement_detection_component.direction_to_target(self)
-		print(new_direction)
 		# Gem den gamle retning
 		previous_movement_direction = current_movement_direction
 				
@@ -396,7 +395,6 @@ func handle_player_detection() -> void:
 		player_detected = true
 
 		var new_direction = movement_detection_component.direction_to_target(self)
-		print(new_direction)
 		# Gem den gamle retning
 		previous_movement_direction = current_movement_direction
 				

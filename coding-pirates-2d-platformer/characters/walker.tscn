@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://bs3a0kj11122g" path="res://components/edge_detection_component.tscn" id="6_u7cfi"]
 [ext_resource type="PackedScene" uid="uid://vwy1s2jsbqnb" path="res://components/health_component.tscn" id="7_jrh2i"]
 [ext_resource type="PackedScene" uid="uid://bs2y4ni1j1aqi" path="res://components/movement_detection_component.tscn" id="8_s7vee"]
+[ext_resource type="PackedScene" uid="uid://cuwcw64nicc6d" path="res://components/shoot_component.tscn" id="9_sgcdj"]
+[ext_resource type="PackedScene" uid="uid://ddjlawejh1qta" path="res://scenes/bullet.tscn" id="10_t281e"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_sgcdj"]
 atlas = ExtResource("2_knics")
@@ -153,7 +155,7 @@ size = Vector2(50, 58)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ntv8e"]
 size = Vector2(300, 42)
 
-[node name="Walker" type="CharacterBody2D" unique_id=1247923865 node_paths=PackedStringArray("animation_component", "edge_detection_component", "gravity_component", "health_component", "horizontal_movement_component", "movement_detection_component")]
+[node name="Walker" type="CharacterBody2D" unique_id=1247923865 node_paths=PackedStringArray("animation_component", "edge_detection_component", "gravity_component", "health_component", "horizontal_movement_component", "movement_detection_component", "shoot_component")]
 collision_layer = 4
 script = ExtResource("1_sfykv")
 animation_component = NodePath("AnimationComponent")
@@ -162,6 +164,7 @@ gravity_component = NodePath("GravityComponent")
 health_component = NodePath("HealthComponent")
 horizontal_movement_component = NodePath("HorizontalMovementComponent")
 movement_detection_component = NodePath("MovementDetectionComponent")
+shoot_component = NodePath("ShootComponent")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=79800270]
 sprite_frames = SubResource("SpriteFrames_ntv8e")
@@ -184,6 +187,9 @@ sprite = NodePath("../AnimatedSprite2D")
 
 [node name="MovementDetectionComponent" parent="." unique_id=259518299 node_paths=PackedStringArray("detection_area") instance=ExtResource("8_s7vee")]
 detection_area = NodePath("../MovementDetectionArea")
+
+[node name="ShootComponent" parent="." unique_id=515494828 instance=ExtResource("9_sgcdj")]
+bullet_scene = ExtResource("10_t281e")
 
 [node name="HealthComponent" parent="." unique_id=1996299564 instance=ExtResource("7_jrh2i")]
 

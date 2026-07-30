@@ -8,6 +8,9 @@ extends CharacterBody2D
 @export var jump_component: JumpComponent
 @export var shoot_component: ShootComponent
 
+func _ready() -> void:
+	add_to_group("Player")
+	
 func _physics_process(delta: float) -> void:
 	gravity_component.handle_gravity(self, delta)
 	horizontal_movement_component.handle_horizontal_movement(self, input_component.horizontal_direction)
@@ -20,4 +23,7 @@ func _process(delta: float) -> void:
 	
 	if input_component.shoot_was_pressed():
 		var direction = Vector2.LEFT if animation_component.get_sprite_direction() == -1 else Vector2.RIGHT
-		shoot_component.handle_shoot_requested(position, direction, Vector2(16, 0))
+		shoot_component.handle_shoot_requested(position, direction, Vector2(16, 0), "Enemy")
+
+func hit(damage: int) -> void:
+	print("Av! ", damage)

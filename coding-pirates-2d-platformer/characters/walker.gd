@@ -7,6 +7,7 @@ extends CharacterBody2D
 @export var health_component: HealthComponent
 @export var horizontal_movement_component: HorizontalMovementComponent
 @export var movement_detection_component: MovementDetectionComponent
+@export var shoot_component: ShootComponent
 
 var current_movement_direction: float = -1
 var previous_movement_direction: float = current_movement_direction
@@ -16,6 +17,7 @@ var player_detected: bool = false
 func _ready() -> void:
 	horizontal_movement_component.speed = 50
 	is_dying = false
+	add_to_group("Enemy")
 	
 func _physics_process(delta: float) -> void:
 	gravity_component.handle_gravity(self, delta)
@@ -24,6 +26,14 @@ func _physics_process(delta: float) -> void:
 	
 	if not player_detected:
 		current_movement_direction = edge_detection_component.handle_edge_detection(current_movement_direction)
+	else:
+		# Der er en player i nærheden...skyd!
+		
+		# først finder vi ud af retningen mellem walker og player
+		var new_direction = movement_detection_component.direction_to_target(self)
+		
+		# og så skyder vi!
+		shoot_component.handle_burst_shoot_requested(global_position, new_direction, Vector2(32, 0), "Player")
 		
 	horizontal_movement_component.handle_horizontal_movement(self, current_movement_direction)
 	
@@ -56,7 +66,7 @@ func handle_player_detection() -> void:
 		player_detected = true
 
 		var new_direction = movement_detection_component.direction_to_target(self)
-		print(new_direction)
+		
 		# Gem den gamle retning
 		previous_movement_direction = current_movement_direction
 				

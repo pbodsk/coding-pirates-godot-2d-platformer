@@ -45,7 +45,7 @@ func _process(delta: float) -> void:
 	if is_dying:
 		return
 		
-	# Kun hvis vi er døde kommer vi videre her til
+	# Kun hvis vi ikke er døde kommer vi videre her til
 	# Er vi så døde i mellemtiden?
 	if health_component.is_dead():
 		# Ja det var vi, så kald die funktionen der

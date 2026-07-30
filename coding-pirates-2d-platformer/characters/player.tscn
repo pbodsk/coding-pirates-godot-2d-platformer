@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ddwmv8jqiba6q" path="res://characters/player.gd" id="1_3eadt"]
 [ext_resource type="Texture2D" uid="uid://mty6wjmlmcii" path="res://assets/characters/space-marine-idle.png" id="1_dnjla"]
+[ext_resource type="Texture2D" uid="uid://d4cjdy6ii5cpe" path="res://assets/characters/space-marine-die.png" id="2_6rrl0"]
 [ext_resource type="Texture2D" uid="uid://cfqsxf7seme06" path="res://assets/characters/space-marine-jump.png" id="2_n8jd0"]
 [ext_resource type="Texture2D" uid="uid://c3jdjlq2dwxlq" path="res://assets/characters/space-marine-walk.png" id="3_j31ep"]
 [ext_resource type="PackedScene" uid="uid://m260ltqajvd2" path="res://components/gravity_component.tscn" id="3_tory2"]
@@ -11,10 +12,27 @@
 [ext_resource type="PackedScene" uid="uid://cltou8tmgxpvw" path="res://components/jump_component.tscn" id="8_6t23p"]
 [ext_resource type="PackedScene" uid="uid://cuwcw64nicc6d" path="res://components/shoot_component.tscn" id="9_q605b"]
 [ext_resource type="PackedScene" uid="uid://ddjlawejh1qta" path="res://scenes/bullet.tscn" id="10_eho78"]
+[ext_resource type="PackedScene" uid="uid://vwy1s2jsbqnb" path="res://components/health_component.tscn" id="12_8sqrr"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ntv8e"]
 radius = 14.0
 height = 40.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qp1es"]
+atlas = ExtResource("2_6rrl0")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qk7w8"]
+atlas = ExtResource("2_6rrl0")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3t8uj"]
+atlas = ExtResource("2_6rrl0")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rjhu2"]
+atlas = ExtResource("2_6rrl0")
+region = Rect2(144, 0, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ke0a4"]
 atlas = ExtResource("2_n8jd0")
@@ -100,6 +118,23 @@ region = Rect2(480, 0, 48, 48)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_qp1es")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qk7w8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3t8uj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rjhu2")
+}],
+"loop": 0,
+"name": &"die",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_ke0a4")
 }, {
 "duration": 1.0,
@@ -179,11 +214,12 @@ animations = [{
 "speed": 9.0
 }]
 
-[node name="Player" type="CharacterBody2D" unique_id=1934841766 node_paths=PackedStringArray("animation_component", "gravity_component", "horizontal_movement_component", "input_component", "jump_component", "shoot_component")]
+[node name="Player" type="CharacterBody2D" unique_id=1934841766 node_paths=PackedStringArray("animation_component", "gravity_component", "health_component", "horizontal_movement_component", "input_component", "jump_component", "shoot_component")]
 collision_layer = 2
 script = ExtResource("1_3eadt")
 animation_component = NodePath("AnimationComponent")
 gravity_component = NodePath("GravityComponent")
+health_component = NodePath("HealthComponent")
 horizontal_movement_component = NodePath("HorizontalMovementComponent")
 input_component = NodePath("InputComponent")
 jump_component = NodePath("JumpComponent")
@@ -194,8 +230,10 @@ shape = SubResource("CapsuleShape2D_ntv8e")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=143006957]
 sprite_frames = SubResource("SpriteFrames_evndh")
-animation = &"fall"
+animation = &"die"
 autoplay = "idle"
+frame = 2
+frame_progress = 0.5145499
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=614652152]
 zoom = Vector2(4, 4)
@@ -213,3 +251,5 @@ sprite = NodePath("../AnimatedSprite2D")
 bullet_scene = ExtResource("10_eho78")
 
 [node name="JumpComponent" parent="." unique_id=1470843113 instance=ExtResource("8_6t23p")]
+
+[node name="HealthComponent" parent="." unique_id=1996299564 instance=ExtResource("12_8sqrr")]

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.10" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>index</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../../style/github-markdown.css" />
+  <link rel="stylesheet" href="../../style/style.css" />
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="godot-2d-platformer---level-18-startskærm">Godot 2D Platformer -
+level 18 Startskærm</h1>
+<p>Vi er tæt på at have noget man kunne kalde et færdigt spil. Ja, der
+mangler flere levels og så videre men alle delene er ved at være
+her.</p>
+<p>Sidste del er en start skærm så man ikke bare starter midt i spillet.
+Den skal minde meget om vores Game Over skærm fra <a
+href="../lesson17/">level 17</a> og så have en ekstra Quit knap.</p>
+<p>Det burde være til at overkomme forholdsvist hurtigt så lad os komme
+i gang.</p>
+<h2 id="liste-tid">Liste tid</h2>
+<p>Vi skal:</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Have lavet en ny Start skærm</label>
+<ul class="task-list">
+<li><label><input type="checkbox" />Med en titel</label></li>
+<li><label><input type="checkbox" />Og en Start knap</label></li>
+<li><label><input type="checkbox" />Og en Quit knap</label></li>
+</ul></li>
+<li><label><input type="checkbox" />Brug vores nye Start skærm som start
+skærm i stedet for "Game" skærmen</label></li>
+</ul>
+<p>Lad os komme i gang!</p>
+<h2 id="ny-start-skærm">Ny Start skærm</h2>
+<p>Det minder meget om det vi lavede I <a href="../lesson17/">level
+17</a> så du kan søge kraftig inspiration i det, dog skal du lige have
+en knap mere med som skal have titlen "Quit".</p>
+<p>Kald din nye skærm for Start og gem den samme sted som du gemte din
+GameOver skærm.</p>
+<p>Her er vores forsøg, bemærk at vi har en <code>VBoxContainer</code>
+inden i en anden <code>VBoxContainer</code> så vi kan have <em>en</em>
+<code>separation</code> mellem tekst og knapper og <em>en anden</em>
+<code>separation</code> mellem de enkelte knapper.</p>
+<h3 id="script">Script</h3>
+<ul>
+<li>Lav et nyt script til din <code>start.tscn</code> skærm</li>
+<li>Tilføj variabler til start og quit button på samme måde som før, du
+ved <code>@export var start_button: Button</code> f.eks.</li>
+<li>Connect til <code>pressed</code> på dine knapper og lav to nye
+funktioner så du kan reagere på at der bliver trykket på både start og
+quit knappen.</li>
+<li>Implementer dine funktioner
+<ul>
+<li>Start knappen skal gøre præcis det samme som "Try Again" knappen i
+vores Game Over skærm</li>
+<li>Quit skal kalde <code>get_tree().quit()</code></li>
+</ul></li>
+</ul>
+<p>That's it, her er vores forsøg:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Control</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Properties&quot;</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> start_button: Button</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> quit_button: Button</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_ready</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    start_button.pressed.<span class="bu">connect</span>(<span class="co">_on_start_pressed</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    quit_button.pressed.<span class="bu">connect</span>(<span class="co">_on_quit_pressed</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">_on_start_pressed</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">get_tree</span>().<span class="fu">change_scene_to_file</span>(<span class="st">&quot;res://scenes/game.tscn&quot;</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">_on_quit_pressed</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">get_tree</span>().<span class="fu">quit</span>()</span></code></pre></div>
+<p>Det var step 1</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Have lavet en ny Start
+skærm</label>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Med en titel</label></li>
+<li><label><input type="checkbox" checked="" />Og en Start
+knap</label></li>
+<li><label><input type="checkbox" checked="" />Og en Quit
+knap</label></li>
+</ul></li>
+<li><label><input type="checkbox" />Brug vores nye Start skærm som start
+skærm i stedet for "Game" skærmen</label></li>
+</ul>
+<h2
+id="brug-vores-nye-start-skærm-som-start-skærm-i-stedet-for-game-skærmen">Brug
+vores nye Start skærm som start skærm i stedet for "Game" skærmen</h2>
+<p>Så skal vi have fortalt Godot at vi gerne vil bruge vores
+<code>start.tscn</code> som start skærm i stedet for
+<code>game.tscn</code> som vi ellers har gjort før.</p>
+<ul>
+<li>I top menuen vælger du "Project" -&gt; "Project Settings"</li>
+<li>Under "Application" -&gt; "Run" finder du "Main Scene" som i
+øjeblikket er sat til "game.tscn"</li>
+</ul>
+<p><img src="../../assets/18/game_selected.png"
+alt="game_selected" /></p>
+<ul>
+<li>Ret den til så vi i stedet bruger "start.tscn"</li>
+</ul>
+<p><img src="../../assets/18/start_selected.png"
+alt="start_selected" /></p>
+<p>Kør dit spil. Tada! Nu starter vi på start skærmen!</p>
+<p><img src="../../assets/18/start_on_start.png"
+alt="start_on_start" /></p>
+<p>Det var step 2</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Have lavet en ny Start
+skærm</label>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Med en titel</label></li>
+<li><label><input type="checkbox" checked="" />Og en Start
+knap</label></li>
+<li><label><input type="checkbox" checked="" />Og en Quit
+knap</label></li>
+</ul></li>
+<li><label><input type="checkbox" checked="" />Brug vores nye Start
+skærm som start skærm i stedet for "Game" skærmen</label></li>
+</ul>
+<p>Og....</p>
+<h2 id="det-var-det">Det var det!</h2>
+<p>Så er vi <em>faktisk</em> ved at være ved vejs ende i den her serie.
+Godt arbejde! Du har lært en masse om Godot.</p>
+<p>Hvis du har lyst er der et par bonus levels som du kan kaste dig over
+og ellers kan du jo selv udvide dit spil som du vil, f.eks. med:</p>
+<ul>
+<li>Forskellige typer fjender</li>
+<li>Forskellige våben</li>
+<li>Score</li>
+<li>Liv</li>
+<li>Flere baner</li>
+<li>Hvad du nu kan finde på</li>
+</ul>
+<p>Tak for denne gang og vi ses i en anden Godot serie :)</p>
+</article>
+</body>
+</html>

@@ -27,12 +27,266 @@
       vertical-align: middle;
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../../style/github-markdown.css" />
   <link rel="stylesheet" href="../../style/style.css" />
 </head>
 <body>
 <article class="markdown-body">
+<h1 id="godot-2d-platformer---level-17-game-over-man">Godot 2D
+Platformer - level 17 Game Over man!</h1>
+<p>I <a href="../lesson16/">sidste level</a> startede vi på UI og fik
+lavet en healtbar.</p>
+<p>Lad os fortsætte i UI sporet og lave en Game Over skærm som vi viser
+når vi er døde.</p>
+<h2 id="hvad-er-det-vi-gerne-vil">Hvad er det vi gerne vil?</h2>
+<p>Vi vil lave en ny skærm som vi viser når vi er døde.</p>
+<p>Vores skærm skal have en "Try Again!" knap som vi kan trykke på og
+starte vores spil igen.</p>
+<p>OK...det lyder jo meget simpelt, lad os prøve at skrive nogle opgaver
+så vi kan komme igang:</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Ny Game Over skærm</label></li>
+<li><label><input type="checkbox" />Naviger til Game Over når vi er
+døde</label></li>
+<li><label><input type="checkbox" />Start nyt spil fra Game Over
+skærm</label></li>
+</ul>
+<p>Let's go!</p>
+<h2 id="ny-game-over-skærm">Ny Game Over skærm</h2>
+<p>Du er så gammel og garvet nu at vi kan give dig opgaverne i
+stikordsform og så kører du bare derfra...værsågod:</p>
+<ul>
+<li>Lav en ny Scene af typen "User Interface"</li>
+<li>Omdøb scene til at hedde GameOver</li>
+<li>Gem din scene under res/scenes som "game_over.tscn"</li>
+<li>I roden af din GameOver scene tilføjer du en
+<code>VBoxContainer</code> som er endnu en container type. En
+<code>VBoxContainer</code> tager sit indhold og placerer det
+"vertikalt", altså under hinanden (gæt selv hvad en
+<code>HBoxContainer</code> gør :))</li>
+<li>Ret anchor til at være "Center"</li>
+<li>I din <code>VBoxContainer</code> tilføjer du en <code>Label</code>
+og en <code>Button</code></li>
+<li>I din <code>Label</code> skriver du i text "Game Over" (kig i
+"Inspectoren" i højre side)</li>
+<li>I din <code>Button</code> skriver du i text "Try Again"</li>
+</ul>
+<p>Det skulle gerne se sådan her ud</p>
+<p><img src="../../assets/17/game_over_initial.png"
+alt="game_over_initial" /></p>
+<p>Og ja, det ligner noget der er kastet ind med en skovl men det pudser
+vi senere, nu vil vi bare have logikken på plads :)</p>
+<p>Hak ved step 1</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Ny Game Over
+skærm</label></li>
+<li><label><input type="checkbox" />Naviger til Game Over når vi er
+døde</label></li>
+<li><label><input type="checkbox" />Start nyt spil fra Game Over
+skærm</label></li>
+</ul>
+<p>Videre.</p>
+<h2 id="naviger-til-game-over-når-vi-er-døde">Naviger til Game Over når
+vi er døde</h2>
+<p>Hvordan kommer vi fra en skærm til en anden?</p>
+<p>Det er faktisk super simpelt. Vi kan sige:</p>
+<p><code>get_tree().change_scene_to_file("navn_på_scene_vi_vil_skifte_til")</code></p>
+<p>Så! I vores <code>player.gd</code> kan vi opdatere vores
+<code>die</code> funktion så den efter at have afspillet "die"
+animationen smider os over på Game Over skærmen.</p>
+<p>Prøv at se om du selv kan sætte det sammen.</p>
+<p>Her er vores <code>die</code> funktion:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">die</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># flip is_dying så vi ikke ryger i _process igen</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    is_dying <span class="op">=</span> <span class="va">true</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># gør så player kan løbe igennem animationen</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_physics_process</span>(<span class="va">false</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># vent på at die animationen spiller færdig</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    await animation_component.<span class="fu">handle_die_animation</span>()</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">get_tree</span>().<span class="fu">change_scene_to_file</span>(<span class="st">&quot;res://scenes/game_over.tscn&quot;</span>)</span></code></pre></div>
+<p>Kør dit spil og dø.</p>
+<p>Ja...joeh, det gør jo som det skal, men det bliver meget sådan "bang
+bang", lad os lige vente et sekund så man kan nå at se dødsanimationen
+og lige tænke et enkelt "satans!!" inden man ser Game Over skærmen.</p>
+<p>Igen...vi har brugt timers tidligere så prøv at se om du selv kan
+regne ud hvad der skal gøres.</p>
+<p>Her er vores forsøg, bemærk at vi har lavet en ny
+<code>die_wait_period</code> variabel så vi kan styre det udefra hvis vi
+vil.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">die</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># flip is_dying så vi ikke ryger i _process igen</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    is_dying <span class="op">=</span> <span class="va">true</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># gør så player kan løbe igennem animationen</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_physics_process</span>(<span class="va">false</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># vent på at die animationen spiller færdig</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    await animation_component.<span class="fu">handle_die_animation</span>()</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># vent lige lidt</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    await <span class="fu">get_tree</span>().<span class="fu">create_timer</span>(die_wait_period).timeout</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Og så vis Game Over skærmen</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">get_tree</span>().<span class="fu">change_scene_to_file</span>(<span class="st">&quot;res://scenes/game_over.tscn&quot;</span>)</span></code></pre></div>
+<p>Hak ved step to</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Ny Game Over
+skærm</label></li>
+<li><label><input type="checkbox" checked="" />Naviger til Game Over når
+vi er døde</label></li>
+<li><label><input type="checkbox" />Start nyt spil fra Game Over
+skærm</label></li>
+</ul>
+<p>Videre til step tre</p>
+<h2 id="start-nyt-spil-fra-game-over-skærm">Start nyt spil fra Game Over
+skærm</h2>
+<p>Her skal vi vel bare gøre det modsatte...altså navigere til "game"
+scenen, og det skal vi så gøre fra en knap action som vi connecter til i
+vores script.</p>
+<p>Så:</p>
+<ul>
+<li>Lav et nyt script på din Game Over scene</li>
+<li>Connect</li>
+<li>Naviger tilbage til "game.tscn"</li>
+</ul>
+<p>Prøv selv :)</p>
+<p>Her er vores forsøg:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Control</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>@<span class="fu">export_subgroup</span>(<span class="st">&quot;Properties&quot;</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> try_again_button: Button</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_ready</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    try_again_button.pressed.<span class="bu">connect</span>(<span class="co">_on_try_again_pressed</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">_on_try_again_pressed</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">get_tree</span>().<span class="fu">change_scene_to_file</span>(<span class="st">&quot;res://scenes/game.tscn&quot;</span>)</span></code></pre></div>
+<p>Kør dit spil, dø, se Game Over skærmen og tryk på "Try Again"
+knappen...tada, vi kører igen :)</p>
+<p>Hak ved step tre</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Ny Game Over
+skærm</label></li>
+<li><label><input type="checkbox" checked="" />Naviger til Game Over når
+vi er døde</label></li>
+<li><label><input type="checkbox" checked="" />Start nyt spil fra Game
+Over skærm</label></li>
+</ul>
+<h2 id="var-det-det">Var det det?</h2>
+<p>Vi kunne sige at det var det, opgaven er løst...meeeeen sådan er vi
+ikke! Det ligner jo lor...noget der er kastet ind med en skovl, det kan
+vi godt gøre pænere.</p>
+<h3 id="fonts">Fonts</h3>
+<p>Vi kan f.eks. skifte font til en custom font.</p>
+<p>I assets mappen kan du finde font filen "PressStart2P-Regular.ttf"
+som du kan kopiere til dine assets (selvfølgelig i en ny mappe som du
+kalder "fonts" ;))</p>
+<p>Hvis du vil bruge en anden font kan du gå på jagt i f.eks <a
+href="https://fonts.google.com">google fonts</a>.</p>
+<p>Herefter kan du i 2D workspacet:</p>
+<ul>
+<li>Vælge din <code>Label</code></li>
+<li>I "Inspectoren" i højre side vælge "Theme Overrides" -&gt;
+"Fonts"</li>
+<li>Trække din nye font ind</li>
+</ul>
+<p><img src="../../assets/17/custom_font.png" alt="custom_font" /></p>
+<p>Og så kan du skrue på "Font Size" og ændre "Font Color" og vælge om
+der skal være en shadow og en outline.</p>
+<p>Go crazy!</p>
+<p>Og prøv dig frem med din <code>Button</code> bagefter, det er de
+samme håndtag du har at trække i her.</p>
+<p>Her er vores slut resultat.</p>
+<p><img src="../../assets/17/game_over_done.png"
+alt="game_over_done" /></p>
+<p>Bemærk at vi har smidt en <a
+href="https://docs.godotengine.org/en/stable/classes/class_colorrect.html"><code>ColorRect</code></a>
+ind som baggrund så vi kan styre baggrundsfarven. Du kan også smide et
+<a
+href="https://docs.godotengine.org/en/stable/classes/class_texturerect.html"><code>TextureRect</code></a>
+ind og bruge et billede hvis du hellere vil det. Husk bare at sætte
+anchor til "Full Rect" så det fylder hele skærmen...hvis det er det du
+vil selvfølgelig :)</p>
+<p>Bemærk også at du kan skrue på afstanden der skal være imellem
+elementer i en <code>VBoxContainer</code> under "Theme Overrides" -&gt;
+"Constants" -&gt; "Separation"</p>
+<h2 id="game-over">Game Over?</h2>
+<p>Ja for den her level i alle tilfælde!</p>
+<p>Ikke dårligt, nu mangler vi vel egentlig bare en start skærm så man
+ikke bare dropper direkte ned i vores spil. Den laver vi i <a
+href="../lesson18">næste level</a>.</p>
 </article>
 </body>
 </html>

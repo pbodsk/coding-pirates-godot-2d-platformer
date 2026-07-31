@@ -11,6 +11,7 @@ extends CharacterBody2D
 
 @export_subgroup("Properties")
 @export var health_bar: TextureProgressBar
+@export var die_wait_period: float = 1.0
 
 var is_dying: bool = false
 
@@ -64,3 +65,9 @@ func die() -> void:
 	
 	# vent på at die animationen spiller færdig
 	await animation_component.handle_die_animation()
+	
+	# vent lige lidt
+	await get_tree().create_timer(die_wait_period).timeout
+	
+	# Og så vis Game Over skærmen
+	get_tree().change_scene_to_file("res://scenes/game_over.tscn")

@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://om7vxinlr305"]
+
+[ext_resource type="FontFile" uid="uid://555qa6emh2xe" path="res://assets/fonts/PressStart2P-Regular.ttf" id="1_jaeev"]
+[ext_resource type="Script" uid="uid://cty5vds1l8mih" path="res://scenes/start.gd" id="1_u80x2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_u80x2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kdmts"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bodal"]
+
+[node name="Start" type="Control" unique_id=578155824 node_paths=PackedStringArray("start_button", "quit_button")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_u80x2")
+start_button = NodePath("VBoxContainer/VBoxContainer/StartButton")
+quit_button = NodePath("VBoxContainer/VBoxContainer/QuitButton")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1761104019]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.5254902, 0.75686276, 0.11764706, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=872687874]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -53.5
+offset_right = 20.0
+offset_bottom = 53.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 64
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=1941532567]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.6901961)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 18
+theme_override_constants/shadow_offset_y = 18
+theme_override_constants/outline_size = 16
+theme_override_fonts/font = ExtResource("1_jaeev")
+theme_override_font_sizes/font_size = 64
+text = "Shoot the Walkers"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=1909584481]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="StartButton" type="Button" parent="VBoxContainer/VBoxContainer" unique_id=266266106]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_jaeev")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxEmpty_u80x2")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_kdmts")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_bodal")
+text = "Start"
+
+[node name="QuitButton" type="Button" parent="VBoxContainer/VBoxContainer" unique_id=338642899]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_jaeev")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxEmpty_u80x2")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_kdmts")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_bodal")
+text = "Quit"

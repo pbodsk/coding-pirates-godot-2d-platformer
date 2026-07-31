@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="coding-pirates-2dPlatformer"
-run/main_scene="uid://dbdwpbnace2bg"
+run/main_scene="uid://om7vxinlr305"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 

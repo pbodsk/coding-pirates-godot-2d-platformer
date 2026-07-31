@@ -9,10 +9,18 @@ extends CharacterBody2D
 @export var jump_component: JumpComponent
 @export var shoot_component: ShootComponent
 
+@export_subgroup("Properties")
+@export var health_bar: TextureProgressBar
+
 var is_dying: bool = false
 
 func _ready() -> void:
+	# Alt hvad der har med health at gøre
 	health_component.max_health = 5
+	health_component.health = 5
+	health_bar.max_value = health_component.max_health
+	health_bar.value = health_component.health
+	
 	is_dying = false
 	add_to_group("Player")
 	
@@ -26,7 +34,10 @@ func _process(delta: float) -> void:
 	# er vi ved at dø, så bare stop her
 	if is_dying:
 		return
-		
+	
+	# Iodater health uanset om vi er igang med at dø eller ej	
+	health_bar.value = health_component.health		
+	
 	# Kun hvis vi okke er døde kommer vi videre her til
 	# Er vi så døde i mellemtiden?
 	if health_component.is_dead():

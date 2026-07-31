@@ -13,6 +13,8 @@
 [ext_resource type="PackedScene" uid="uid://cuwcw64nicc6d" path="res://components/shoot_component.tscn" id="9_q605b"]
 [ext_resource type="PackedScene" uid="uid://ddjlawejh1qta" path="res://scenes/bullet.tscn" id="10_eho78"]
 [ext_resource type="PackedScene" uid="uid://vwy1s2jsbqnb" path="res://components/health_component.tscn" id="12_8sqrr"]
+[ext_resource type="Texture2D" uid="uid://c68776g0p3q6c" path="res://assets/ui/bar_background.png" id="14_vcag3"]
+[ext_resource type="Texture2D" uid="uid://b33u1atv455ws" path="res://assets/ui/bar_foreground.png" id="15_h076o"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ntv8e"]
 radius = 14.0
@@ -214,7 +216,7 @@ animations = [{
 "speed": 9.0
 }]
 
-[node name="Player" type="CharacterBody2D" unique_id=1934841766 node_paths=PackedStringArray("animation_component", "gravity_component", "health_component", "horizontal_movement_component", "input_component", "jump_component", "shoot_component")]
+[node name="Player" type="CharacterBody2D" unique_id=1934841766 node_paths=PackedStringArray("animation_component", "gravity_component", "health_component", "horizontal_movement_component", "input_component", "jump_component", "shoot_component", "health_bar")]
 collision_layer = 2
 script = ExtResource("1_3eadt")
 animation_component = NodePath("AnimationComponent")
@@ -224,6 +226,7 @@ horizontal_movement_component = NodePath("HorizontalMovementComponent")
 input_component = NodePath("InputComponent")
 jump_component = NodePath("JumpComponent")
 shoot_component = NodePath("ShootComponent")
+health_bar = NodePath("CanvasLayer/MarginContainer/HealthBar")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1088840334]
 shape = SubResource("CapsuleShape2D_ntv8e")
@@ -253,3 +256,23 @@ bullet_scene = ExtResource("10_eho78")
 [node name="JumpComponent" parent="." unique_id=1470843113 instance=ExtResource("8_6t23p")]
 
 [node name="HealthComponent" parent="." unique_id=1996299564 instance=ExtResource("12_8sqrr")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=653347113]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=616695578]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HealthBar" type="TextureProgressBar" parent="CanvasLayer/MarginContainer" unique_id=78824020]
+custom_minimum_size = Vector2(300, 60)
+layout_mode = 2
+max_value = 5.0
+nine_patch_stretch = true
+stretch_margin_left = 3
+stretch_margin_right = 3
+texture_under = ExtResource("14_vcag3")
+texture_progress = ExtResource("15_h076o")

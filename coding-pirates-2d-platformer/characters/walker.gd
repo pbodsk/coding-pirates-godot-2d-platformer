@@ -16,6 +16,7 @@ var player_detected: bool = false
 
 func _ready() -> void:
 	horizontal_movement_component.speed = 50
+	shoot_component.burst_count = 3
 	is_dying = false
 	add_to_group("Enemy")
 	

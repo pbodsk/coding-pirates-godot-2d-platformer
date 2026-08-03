@@ -56,6 +56,9 @@ func _process(delta: float) -> void:
 func hit(damage: int) -> void:
 	health_component.hit(damage)
 	
+func increase_health(value: int) -> void:
+	health_component.increase(value)
+	
 func die() -> void:
 	# flip is_dying så vi ikke ryger i _process igen
 	is_dying = true

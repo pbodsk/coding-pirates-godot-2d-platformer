@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://2f41882cq088"]
+
+[ext_resource type="Texture2D" uid="uid://dsqx001d32nqp" path="res://assets/items/HPContainer.png" id="1_1lnpk"]
+[ext_resource type="Script" uid="uid://dwu2gfh3y1xur" path="res://items/first_aid.gd" id="1_n5doo"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ntv8e"]
+radius = 5.6526847
+height = 21.251856
+
+[node name="FirstAid" type="Area2D" unique_id=169534182]
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("1_n5doo")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=984516284]
+texture = ExtResource("1_1lnpk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=790346182]
+rotation = 0.74700093
+shape = SubResource("CapsuleShape2D_ntv8e")

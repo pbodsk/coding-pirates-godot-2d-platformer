@@ -1,4 +1,4 @@
-# Godot 2D Platformer - level 17 Game Over man!
+# Godot 2D Platformer - level 17, Game Over man!
 
 I [sidste level](../lesson16/) startede vi på UI og fik lavet en healtbar.
 

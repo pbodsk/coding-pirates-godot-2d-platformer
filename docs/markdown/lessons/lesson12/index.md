@@ -1,4 +1,4 @@
-# Godot 2D Platformer - level 12 fjender der dør
+# Godot 2D Platformer - level 12, fjender der dør
 I [level 11](../lesson11/) fik vi vores Walker til at gå frem og tilbage på en platform.
 
 Lad os fejre det, ved at kunne skyde dem!

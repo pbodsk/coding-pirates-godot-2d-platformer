@@ -1,4 +1,4 @@
-# Godot 2D Platformer - level 15 time...to die
+# Godot 2D Platformer - level 15, time...to die
 (ja, det var så et citat fra den gamle Science Fiction klassiker [Blade Runner](https://www.imdb.com/title/tt0083658/), den kan du lige skrive på listen)
 
 Efter [level 14](../lesson14/) har vi nu en `Player` der kan sige Av! når den bliver ramt af skud...det kan vi godt gøre bedre og den gode nyhed er at vi har alle byggeklodserne allerede så vi skal ikke opfinde nyt i denne level!

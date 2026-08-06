@@ -35,21 +35,69 @@
 <article class="markdown-body">
 <h1 id="coding-pirates-godot-2d-platformer">Coding Pirates Godot 2D
 Platformer</h1>
-<p>TODO: Update</p>
+<p>Velkommen til endnu en Godot guide serie!</p>
+<p>I denne guide serie skal vi lave endnu et 2D spil, for der er stadig
+så meget vi kan lære bare om 2D i Godot.</p>
+<p>Vi skal lave et 2D platform spil hvor den tapre space pirate Piry
+McPirate skal bevæge sig på platforme og elevatorer mens han nedkæmper
+ondsindede Walkers, samler førstehjælpspakker op og bare holder sig i
+live.</p>
+<p><img src="assets/gameassets/game.png" alt="game" /></p>
+<p>Udover alle de ting vi allerede kan i Godot (scripts, UI, signals og
+så videre) skal vi lære:</p>
 <ul>
-<li><a href="lessons/lesson01">Level 1, Opsætning</a></li>
-<li><a href="lessons/lesson02">Level 2, TileMap</a></li>
-<li><a href="lessons/lesson03">Level 3, Player</a></li>
-<li><a href="lessons/lesson04">Level 4, Player fortsat</a></li>
-<li><a href="lessons/lesson05">Level 5, Moduler</a></li>
-<li><a href="lessons/lesson06">Level 6, Skyd</a></li>
-<li><a href="lessons/lesson07">Level 7, Walker</a></li>
-<li><a href="lessons/lesson08">Level 8, Walker fortsat</a></li>
-<li><a href="lessons/lesson08">Level 9, Elevatorer</a></li>
+<li>At lave en level med <code>TileMapLayer</code>s.</li>
+<li>Om Physics i Godot og hvordan vi kan bruge en
+<code>CharacterBody2D</code>s til vores player og fjender sådan at de
+reagerer med tyngdekraft.</li>
+<li>Om <code>collision_layer</code> og <code>collision_mask</code>.</li>
+<li>Hvordan vi kan opbygge vores kode ved hjælp af "komponenter" sådan
+at vi kan lave en masse små "byggeklodser" som vi så kan sætte sammen,
+som vi vil på de enkelte scener vi laver.</li>
+<li>Hvordan vi kan bruge en <code>RayCast2D</code> node til at få vores
+fjender til at bevæge sig i et mønster.</li>
 </ul>
+<p>Og sikkert også en masse andet...så helt ærligt! Vi har temmelig
+travlt!! Lad os komme i gang.</p>
+<p>Her er en oversigt over de levels vi skal igennem</p>
+<h2 id="levels">Levels</h2>
+<ul>
+<li><a href="lessons/lesson01">Level 1, opsætning</a></li>
+<li><a href="lessons/lesson02">Level 2, TileMapLayers</a></li>
+<li><a href="lessons/lesson03">Level 3, TileMapLayers Part II</a></li>
+<li><a href="lessons/lesson04">Level 4, Game scene og start på
+Player</a></li>
+<li><a href="lessons/lesson05">Level 5, komponenter og start på Player
+script</a></li>
+<li><a href="lessons/lesson06">Level 6, videre med Player og
+komponenter</a></li>
+<li><a href="lessons/lesson07">Level 7, animationer</a></li>
+<li><a href="lessons/lesson08">Level 8, hop!</a></li>
+<li><a href="lessons/lesson09">Level 9, skyd!</a></li>
+<li><a href="lessons/lesson10">Level 10, fjender</a></li>
+<li><a href="lessons/lesson11">Level 11, fjender der vender</a></li>
+<li><a href="lessons/lesson12">Level 12, fjender der dør</a></li>
+<li><a href="lessons/lesson13">Level 13, fjender der vender - part
+II</a></li>
+<li><a href="lessons/lesson14">Level 14, fjender der skyder</a></li>
+<li><a href="lessons/lesson15">Level 15, time...to die</a></li>
+<li><a href="lessons/lesson16">Level 16, healthbar</a></li>
+<li><a href="lessons/lesson17">Level 17, Game Over man!</a></li>
+<li><a href="lessons/lesson18">Level 18, Startskærm</a></li>
+</ul>
+<h2 id="bonus-levels">Bonus levels</h2>
+<p>Bare når du er færdig med de andre :)</p>
+<ul>
+<li><a href="lessons/bonus01">Bonus level 01, Extra health</a></li>
+<li><a href="lessons/bonus02">Bonus level 02, Elevatorer</a></li>
+</ul>
+<h2 id="assets">Assets</h2>
 <p>Assets kan downloads her <a
 href="assets/gameassets/assets.zip">assets</a>. Det er en zip fil så den
 skal du pakke ud, sig til hvis du skal have hjælp med det.</p>
+<h2 id="get-ready-player-1">Get Ready Player 1!</h2>
+<p>Når du er klar klikker du du bare på <a href="lessons/lesson01">Level
+1, opsætning</a></p>
 </article>
 </body>
 </html>

@@ -1,4 +1,4 @@
-# Godot 2D Platformer - level 10 fjender
+# Godot 2D Platformer - level 10, fjender
 Efter [level 9](../lesson09/) kan vi nu skyde, så kunne det jo være sjovt hvis der var noget at skyde _på_ også!
 
 Lad os lave det!

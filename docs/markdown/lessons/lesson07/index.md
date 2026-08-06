@@ -1,4 +1,4 @@
-# Godot 2D Platformer - level 7 animationer
+# Godot 2D Platformer - level 7, animationer
 I [level 6](../lesson06/) fik vi vores `Player` til at bevæge sig ved at lave to komponenter, en `HorizontalMovementComponent` og en `InputComponent`.
 
 Men! Der er ikke meget sjov ved den måde vores spiller bevæger sig på. Den vender altid på den samme måde og den animerer ikke.

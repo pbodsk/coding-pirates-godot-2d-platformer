@@ -1,4 +1,4 @@
-# Godot 2D Platformer - level 8 hop!
+# Godot 2D Platformer - level 8, hop!
 I [level 7](../lesson07/) fik vores `Player` lidt mere liv og kan nu løbe i begge retninger. Det er jo meget godt men den skal vel også kunne hoppe. Lad os få det til at ske i denne lektion.
 
 Du kender godt første spørgsmål.

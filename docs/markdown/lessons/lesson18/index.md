@@ -1,4 +1,4 @@
-# Godot 2D Platformer - level 18 Startskærm
+# Godot 2D Platformer - level 18, Startskærm
 
 Vi er tæt på at have noget man kunne kalde et færdigt spil. Ja, der mangler flere levels og så videre men alle delene er ved at være her.
 

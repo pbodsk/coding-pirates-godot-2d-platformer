@@ -1,4 +1,4 @@
-# Godot 2D Platformer - level 14 fjender der skyder
+# Godot 2D Platformer - level 14, fjender der skyder
 Efter [level 13](../lesson13/) kan vores `Walker` nu standse og vende sig i retning af os når vi kommer tæt nok på den. Nu skal vi have den til at skyde efter os også.
 
 Den gode nyhed er at vi allerede har en `ShootComponent`, meeeeen for at vores spil skal være bare _lidt_ svært kunne det være fedt hvis vores `Walker` skød en salve på 5 skud efter os når den så os, så vi skal have udvidet vores `ShootComponent` med en ny funktion.

@@ -1,4 +1,4 @@
-# Godot 2D Platformer - level 13 fjender der vender - part II
+# Godot 2D Platformer - level 13, fjender der vender - part II
 Efter [level 12](../lesson12/) kan vi nu skyde vores `Walker` og det er jo meget godt, men også samtidig lidt snyd, for den kan ikke skyde os!
 
 Lad os få rettet op på det. I den her level og den næste level vil vi lave det sådan at:

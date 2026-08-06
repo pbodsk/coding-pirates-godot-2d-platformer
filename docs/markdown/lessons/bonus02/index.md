@@ -1,6 +1,6 @@
-# Godot 2D Platformer - bonus level 02, Elevatorer
+# Godot 2D Platformer - bonus level 02, Platforme
 
-I denne bonusepisode vil vi forsøge os med at lave en elevator/lift som automatisk kan køre op og ned mellem to punkter (eller fra side til side...eller skråt...eller i zig zag...no limits!)
+I denne bonusepisode vil vi forsøge os med at lave en platform/lift som automatisk kan køre op og ned mellem to punkter (eller fra side til side...eller skråt...eller i zig zag...no limits!)
 
 ![elevator_start](../../assets/bonus02/elevator_start.png)
 

@@ -1,4 +1,4 @@
-# Godot 2D Platformer - level 16 healthbar
+# Godot 2D Platformer - level 16, healthbar
 
 Vores spil begynder at ligne noget nu! I de næste par lektioner vil vi finpudse og tilføje lidt UI (user interface) sådan at vi kan starte vores spil fra en start skærm, vise en Game Over skærm når man er død og alt sådan noget.
 

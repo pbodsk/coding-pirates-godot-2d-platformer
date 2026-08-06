@@ -1,4 +1,4 @@
-# Godot 2D Platformer - level 9 skyd!
+# Godot 2D Platformer - level 9, skyd!
 I [level 8](../lesson08/) fik vi vores `Player` til at hoppe så nu kan vi bevæge os rundt men hvis vi skal overleve mødet med fjender skal vi også kunne skyde, lad os kigge på det i denne lektion.
 
 Så...

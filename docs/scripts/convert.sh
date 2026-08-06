@@ -23,7 +23,7 @@ done
 
 # Convert markdown files to HTML
 find "$SOURCE_DIR" -name "*.md" -type f | while read -r file; do
-    relative_path="${file#$SOURCE_DIR}"
+    relative_path="${file#$SOURCE_DIR/}"
     output_path="$OUTPUT_DIR/${relative_path%.md}.html"
     output_folder=$(dirname "$output_path")
 
@@ -32,13 +32,15 @@ find "$SOURCE_DIR" -name "*.md" -type f | while read -r file; do
     if [ "$relative_output_dir" = "." ]; then
         depth=0
     else
-        depth=$(awk -F/ '{print NF-1}' <<< "$relative_output_dir")
+        depth=$(awk -F/ '{print NF}' <<< "$relative_output_dir")
     fi
 
     css_prefix=""
     for ((i = 0; i < depth; i++)); do
         css_prefix="../$css_prefix"
     done
+
+    mkdir -p "$output_folder"
 
     pandoc "$file" \
         --from=gfm \

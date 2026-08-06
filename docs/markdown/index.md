@@ -46,7 +46,9 @@ Bare når du er færdig med de andre :)
 
 
 ## Assets
-Assets kan downloads her [assets](assets/gameassets/assets.zip). Det er en zip fil så den skal du pakke ud, sig til hvis du skal have hjælp med det.
+[Assets kan downloads her](assets/gameassets/assets.zip)
+
+Det er en zip fil så den skal du pakke ud, sig til hvis du skal have hjælp med det.
 
 ## Get Ready Player 1!
-Når du er klar klikker du du bare på [Level 1, opsætning](lessons/lesson01)
+Når du er klar klikker du bare på [Level 1, opsætning](lessons/lesson01)

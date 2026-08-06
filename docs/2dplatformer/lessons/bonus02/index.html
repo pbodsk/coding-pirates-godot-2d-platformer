@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.10" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>index</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../../style/github-markdown.css" />
+  <link rel="stylesheet" href="../../style/style.css" />
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="godot-2d-platformer---bonus-level-02-elevatorer">Godot 2D
+Platformer - bonus level 02, Elevatorer</h1>
+<p>I denne bonusepisode vil vi forsøge os med at lave en elevator/lift
+som automatisk kan køre op og ned mellem to punkter (eller fra side til
+side...eller skråt...eller i zig zag...no limits!)</p>
+<p><img src="../../assets/bonus02/elevator_start.png"
+alt="elevator_start" /></p>
+<p>Den "gode" nyhed er at vi ikke skal lave nye komponenter...ja vi skal
+ikke engang lave et script.</p>
+<p>Til gengæld skal du lære om <a
+href="https://docs.godotengine.org/en/stable/classes/class_animationplayer.html"><code>AnimationPlayer</code></a>
+som godt kan være lidt svær at forstå hvordan man bruger...mest fordi
+den kan så meget.</p>
+<p>Lad os komme i gang!</p>
+<h2 id="hvad-er-det-vi-gerne-vil">Hvad er det vi gerne vil?</h2>
+<p>Vi vil gerne have lavet "noget" som bevæger sig mellem to
+<code>Vector2</code> koordinater i vores <code>Level01</code> scene.</p>
+<p>Det "noget" skal egentlig bare være en simpel scene med en
+<code>Sprite2D</code> og en <code>CollisionShape2D</code> og så kan vi
+bruge en <code>AnimationPlayer</code> til at lave en animation som
+opdaterer scenens y position således at scenen flytter sig fra punkt A
+til punkt B og tilbage igen. Den animation kan vi så loope og hopla, vi
+har en elevator!</p>
+<blockquote>
+<p>Nå! Nemt! Så bruger vi da bare et <code>Area2D</code></p>
+</blockquote>
+<p>Tænker du så</p>
+<p>Først og fremmest...godt tænkt! Det vil desværre ikke du'. Hvis vi
+gør det falder vores <code>Player</code> direkte igennem vores
+<code>Lift</code>, hvorfor nu det?</p>
+<p>Ah jo...vores <code>Player</code> er jo en
+<code>CollisionShape2D</code> så den skal bruge andre scener med fysiske
+egenskaber for at du'.</p>
+<p>Vi kigger lidt i dokumentationen og finder <a
+href="https://docs.godotengine.org/en/stable/classes/class_animatablebody2d.html"><code>AnimatableBody2D</code></a>
+og vi læser:</p>
+<blockquote>
+<p>A 2D physics body that can't be moved by external forces. When moved
+manually, it affects other bodies in its path.</p>
+</blockquote>
+<p>Yes, det lyder jo lovende, vi læser videre:</p>
+<blockquote>
+<p>When AnimatableBody2D is moved, its linear and angular velocity are
+estimated and used to affect other physics bodies in its path. <em>This
+makes it useful for moving platforms, doors, and other moving
+objects.</em></p>
+</blockquote>
+<p>Hallo mand!! Det er jo lige det vi vil.</p>
+<p>Så har vi vist alle elementerne til en plan, så vi laver en
+liste:</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Lav en ny <code>Platform</code> af
+typen <code>AnimatableBody2D</code></label>
+<ul class="task-list">
+<li><label><input type="checkbox" />Den skal ha en
+<code>CollisionShape2D</code></label></li>
+<li><label><input type="checkbox" />Den skal ha en <code>Sprite2D</code>
+og så bruger vi et billede fra vores tileset til elevatoren</label></li>
+</ul></li>
+<li><label><input type="checkbox" />Tilføj en <code>Platform</code> til
+vores <code>Level01</code></label></li>
+<li><label><input type="checkbox" />Tilføj en
+<code>AnimationPlayer</code> til vores <code>Platform</code> <em>i</em>
+vores `Level01``</label></li>
+<li><label><input type="checkbox" />Animer vores <code>Platform</code>s
+y position</label></li>
+</ul>
+<p>Lad os komme i gang!</p>
+<h2 id="lav-en-ny-platform">Lav en ny <code>Platform</code></h2>
+<p>Du får det bare i stikordsform, det eneste nye her er at du skal være
+sikker på at vælge en <code>AnimatableBody2D</code> som rod
+scene/node:</p>
+<ul>
+<li>Lav en ny 2D node af typen <code>AnimatableBody2D</code></li>
+<li>Omdøb den til at hedde "Platform"</li>
+<li>Gem den i "items" mappen</li>
+<li>Tilføj en <code>Sprite2D</code></li>
+<li>Tilføj en <code>CollisionShape2D</code></li>
+<li>Husk at sætte "collision_layer" til Terrain (layer 1) og
+"collision_mask" til Player (layer 2) så vi kan stå på platformen</li>
+</ul>
+<p>Og så skal vi have valgt et billede.</p>
+<p>Vi vil gerne bruge de samme billeder som vi brugte til vores
+platforme, altså en del af tilesettet.</p>
+<p>Men betyder det at vi skal til at lave et helt nyt
+<code>TileMapLayer</code> og alt muligt...for <em>det</em> gider vi
+altså ikke!</p>
+<p>Nej...rolig, vi kan snyde.</p>
+<p>Som du måske kan huske fra vores 2D space shooter kan vi bruge
+"regions" af et billede, altså sige: "giv mig et udklip af billedet, det
+skal starte i x = 16, y = 32 og det skal være 16 px højt og 16 px bredt"
+f.eks.</p>
+<p>Lad os gøre det her.</p>
+<p>Du kan trække "1_Industrial_Tileset_1B.png" ind på din
+<code>Sprite2D</code>, den har de pæneste platforme.</p>
+<p>Vælg nu din <code>Sprite2D</code> i venstre side og kig i
+"Inspectoren" i højre side.</p>
+<p>Under Sprite2D finder du "Region" som du kan sætte et flueben ud for,
+gør det.</p>
+<p>Nu kan vi få lov til at vælge hvilket "Rect" (rectangle) vi gerne vil
+bruge af billedet.</p>
+<p>Vores tiles er 16 x 16 pixels og vi vil gerne bruge den del der er i
+øverste venstre hjørne og som er markeret med en rød firkant her</p>
+<p><img src="../../assets/bonus02/1_Industrial_Tileset_1B.png"
+alt="tileset" /></p>
+<p>Så vi skal starte i:</p>
+<p>x = 0 y = 0</p>
+<p>Og så skal vi bruge 6 tiles i bredden og 2 i højden, så vi sætter</p>
+<p>w = 96 h = 32</p>
+<p>Se billedet her:</p>
+<p><img src="../../assets/bonus02/platform_from_tiles.png"
+alt="platform_from_tiles" /></p>
+<p>Og vupti! Så har vi en platform...nemt!</p>
+<p>Vi kan strege på listen</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Lav en ny
+<code>Platform</code> af typen <code>AnimatableBody2D</code></label>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Den skal ha en
+<code>CollisionShape2D</code></label></li>
+<li><label><input type="checkbox" checked="" />Den skal ha en
+<code>Sprite2D</code> og så bruger vi et billede fra vores tileset til
+elevatoren</label></li>
+</ul></li>
+<li><label><input type="checkbox" />Tilføj en <code>Platform</code> til
+vores <code>Level01</code></label></li>
+<li><label><input type="checkbox" />Tilføj en
+<code>AnimationPlayer</code> til vores <code>Platform</code> <em>i</em>
+vores `Level01``</label></li>
+<li><label><input type="checkbox" />Animer vores <code>Platform</code>s
+y position</label></li>
+</ul>
+<p>Videre, de to næste er også nemme</p>
+<h2 id="tilføj-en-platform-til-vores-level01">Tilføj en
+<code>Platform</code> til vores <code>Level01</code></h2>
+<p>Ovre i vores <code>Level01</code> har vi allerede lavet en container
+til "Platforms" så vi markerer den og vælger "Instantiate Child Scene"
+og vælger herefter vores nye <code>platform.tscn</code>.</p>
+<p>Til sidst flytter vi den lige ned hvor vi godt kunne tænke os at den
+skulle være.</p>
+<p><img src="../../assets/bonus02/platform_in_place.png"
+alt="platform_in_place" /></p>
+<p>Og så kan vi køre vores spil og prøve at hoppe op på den og se at vi
+bliver stående</p>
+<p><img src="../../assets/bonus02/platform_ready.png"
+alt="platform_ready" /></p>
+<p>Hvis ikke du gør, så check lige at du har sat "collision_layer" og
+"collision_mask" korrekt.</p>
+<p>Vi streger igen</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Lav en ny
+<code>Platform</code> af typen <code>AnimatableBody2D</code></label>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Den skal ha en
+<code>CollisionShape2D</code></label></li>
+<li><label><input type="checkbox" checked="" />Den skal ha en
+<code>Sprite2D</code> og så bruger vi et billede fra vores tileset til
+elevatoren</label></li>
+</ul></li>
+<li><label><input type="checkbox" checked="" />Tilføj en
+<code>Platform</code> til vores <code>Level01</code></label></li>
+<li><label><input type="checkbox" />Tilføj en
+<code>AnimationPlayer</code> til vores <code>Platform</code> <em>i</em>
+vores `Level01``</label></li>
+<li><label><input type="checkbox" />Animer vores <code>Platform</code>s
+y position</label></li>
+</ul>
+<p>Videre!</p>
+<h2 id="tilføj-en-animationplayer-til-vores-platform">Tilføj en
+<code>AnimationPlayer</code> til vores <code>Platform</code></h2>
+<p>Du tænker måske:</p>
+<blockquote>
+<p>Det der med at animere...hvorfor er det ikke platformen selv der kan
+stå for det?</p>
+</blockquote>
+<p>Igen...det er godt tænkt, du har fattet hvad det går ud på :)</p>
+<p>Grunden til at vi ikke kan sætte en <code>AnimationPlayer</code>
+<em>direkte</em> på vores <code>Platform</code> i selve
+<code>platform.tscn</code> er, at vi gerne vil animere y værdien for
+vores platform (eller x hvis du gerne vil have den til at køre fra side
+til side) i <em>selve</em> <code>Level01</code>, og den kender vi jo
+ikke ovre i vores <code>Platform</code>. Vi kunne måske godt lave noget
+med at sende det med over som parametre og så sætte det op meeeeen, det
+bliver måske også en kende for bøvlet.</p>
+<p>Så derfor er vi nødt til at tilføje vores
+<code>AnimationPlayer</code> der hvor vi skal bruge vores
+<code>Platform</code>, altså i det her tilfælde i
+<code>Level01</code>.</p>
+<p>Så derfor:</p>
+<ul>
+<li>Marker din <code>Platform</code> under Platforms i
+<code>Level01</code></li>
+<li>Højreklik og vælg "Add Child Nodd" (eller brug genvejen hvis du
+kender den)</li>
+<li>Vælg en <code>AnimationPlayer</code></li>
+</ul>
+<p>Det skulle gerne se sådan her ud:</p>
+<p><img src="../../assets/bonus02/animation_player_added.png"
+alt="animation_player_added" /></p>
+<p>Det var sådan set bare det vi skulle her, så vi streger igen</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Lav en ny
+<code>Platform</code> af typen <code>AnimatableBody2D</code></label>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Den skal ha en
+<code>CollisionShape2D</code></label></li>
+<li><label><input type="checkbox" checked="" />Den skal ha en
+<code>Sprite2D</code> og så bruger vi et billede fra vores tileset til
+elevatoren</label></li>
+</ul></li>
+<li><label><input type="checkbox" checked="" />Tilføj en
+<code>Platform</code> til vores <code>Level01</code></label></li>
+<li><label><input type="checkbox" checked="" />Tilføj en
+<code>AnimationPlayer</code> til vores <code>Platform</code> <em>i</em>
+vores `Level01``</label></li>
+<li><label><input type="checkbox" />Animer vores <code>Platform</code>s
+y position</label></li>
+</ul>
+<p>Sidste skridt.</p>
+<h2 id="animer-vores-platforms-y-position">Animer vores
+<code>Platform</code>s y position</h2>
+<p>Nu skal du være vågen. Det er ikke svært at bruge en
+<code>AnimationPlayer</code> men der er lige lidt ting man skal igennem
+så følg godt med.</p>
+<h3 id="opret-ny-animation">Opret ny animation</h3>
+<ol type="1">
+<li>I venstre side vælger du din <code>AnimationPlayer</code></li>
+<li>I bunden kan du nu vælge "Animation" fanen</li>
+<li>Tryk så på "Animation" og vælg "New", kald din animation for
+"move"</li>
+</ol>
+<p><img src="../../assets/bonus02/animation_player_start.png"
+alt="animation_player_start" /></p>
+<p>Nu får vi et nyt "animation track" hvor vi kan skrue på en masse
+ting, f.eks.</p>
+<ol type="1">
+<li>Længden på animationen</li>
+<li>Skal animationen loope eller ej</li>
+<li>Hvilken type track er det her (den er tom lige nu)</li>
+</ol>
+<h3 id="tilføj-property-track">Tilføj property track</h3>
+<p>Vi vil gerne lave et "property track" som man kan bruge til at
+opdatere properties, altså position, size, scale, rotation og så
+videre.</p>
+<p>Her i <a
+href="https://docs.godotengine.org/en/stable/tutorials/animation/animation_track_types.html">dokumentationen</a>
+kan du se en liste over hvilke typer af tracks der ellers er.</p>
+<p>For at oprette et nyt "property track" skal du:</p>
+<ol type="1">
+<li>Klikke på plusset i venstre hjørne</li>
+<li>Vælge "Property Track"</li>
+</ol>
+<p><img src="../../assets/bonus02/property_track.png"
+alt="property_track" /></p>
+<p>Så bliver du spurgt hvilken node du gerne vil animere. Det er jo
+vores <code>Platform</code> så den vælger vi</p>
+<p><img src="../../assets/bonus02/select_node.png"
+alt="select_node" /></p>
+<p>Så bliver vi spurgt hvilken property vi gerne vil animere, i vores
+tilfælde er det "position" som vi finder under "Node2D" så den vælger
+vi</p>
+<p><img src="../../assets/bonus02/select_property.png"
+alt="select_property" /></p>
+<p>Og det var det, nu har vi et nyt property track på vores
+<code>Platform</code> som gør at vi kan animere dens
+<code>position</code></p>
+<p><img src="../../assets/bonus02/property_track_added.png"
+alt="property_track_added" /></p>
+<p>Nemt hva!</p>
+<h3 id="lav-animation">Lav animation</h3>
+<p>Nå, men så er vi klar til at lave vores animation! Bare rolig, det er
+knap så bøvlet</p>
+<p>Vi vil gerne lave en animation der er 10 sekunder lang og som looper
+så start med at rette de to ting.</p>
+<p><img src="../../assets/bonus02/update_properties.png"
+alt="update_properties" /></p>
+<p>Og så kan vi animere y værdien...hvordan gør vi det?</p>
+<p>Hvis du i venstre side af skærmen vælger din <code>Platform</code>
+<strong>mens du har "Animation" åbnet i bundet af skærmen</strong> og så
+kigger i "Inspectoren" i højre side vil du se at der er kommet nogle små
+nøgler ud for properties. Det betyder at vi kan animere dem.</p>
+<p>Så, mens du har "Animation" åbnet kan du nu i "Inspectoren" i højre
+side, under Node2D -&gt; Transform trykke på nøglen ud for
+"Position"</p>
+<p>Nu er der kommet et punkt i vores animation</p>
+<p><img src="../../assets/bonus02/first_animation_point.png"
+alt="first_animation_point" /></p>
+<p>Hvis du klikker på det kan du se properties i højre side</p>
+<p><img src="../../assets/bonus02/first_step_properties.png"
+alt="first_step_properties" /></p>
+<p>Her kan vi se at punktet er i time 0 (altså i starten af animationen)
+og at værdierne på det tidspunkt (på vores platform) er:</p>
+<p>x = -35 y = 336</p>
+<p>Nu vil vi så gerne gøre sådan at vores lift efter 5 sekunder (altså
+halvvejs i vores animation) har flyttet sig 150 pixels opad.</p>
+<p>Så vi tager fat i den blå streg som lige nu står i 0.0 og flytter den
+hen så tæt på 5.0 som vi kan (bare rolig, vi kan fin-tune det i
+properties senere), hvis den er svær at få fat på kan du også bare
+skrive værdien 5.0</p>
+<p><img src="../../assets/bonus02/ready_for_step2.png"
+alt="ready_for_step2" /></p>
+<p>Og så skal vi fortalt vores animation hvad y værdien skal være efter
+5 sekunder så vi:</p>
+<ol type="1">
+<li>Finder den samme Position under "Inspectoren" som før</li>
+<li>Retter y værdien til den nuværende værdi - 150 for at få platformen
+til at flytte sig opad</li>
+<li>Trykker på nøglen igen</li>
+<li>Kan se at nu har vi et nye animation point efter 5 sekunder</li>
+</ol>
+<p><img src="../../assets/bonus02/second_animation_point.png"
+alt="second_animation_point" /></p>
+<p>Så nu vil vores animation altså bruge 5 sekunder på at flytte liften
+150 pixels opad...fedt! Så skal vi bare ned igen så vi efter 10 sekunder
+er tilbage hvor vi startede, så derfor:</p>
+<ul>
+<li>Flytter vi den blå streg hen til 10.0 (eller skriver 10.0)</li>
+<li>Finder den samme Position under "Inspectoren" som før</li>
+<li>Sikrer os at den er tilbage i startpunktet</li>
+<li>Trykker på nøglen igen</li>
+</ul>
+<p>Tada, nu har vi en animation med 3 punkter:</p>
+<p>Punkt 1 i 0.0</p>
+<p><img src="../../assets/bonus02/step_one_done.png"
+alt="step_one_done" /></p>
+<p>Punkt 2 i 5.0 hvor y værdien er ændret</p>
+<p><img src="../../assets/bonus02/step_two_done.png"
+alt="step_two_done" /></p>
+<p>Punkt 3 i 10.0 hvor y værdien er mage til den vi havde i 0.0</p>
+<p><img src="../../assets/bonus02/step_three_done.png"
+alt="step_three_done" /></p>
+<p>Hvis nogle af dine værdier er "skæve" fordi du har trukket i den blå
+streg kan du rette dem til her så de står korrekt.</p>
+<p>Kør dit spil.</p>
+<p>Hmmmm, platformen bevæger sig ikke, kan du regne ud hvad der er
+galt?</p>
+<p>Det er det samme som når vi brugte en <code>AnimatedSprite2D</code>
+tidligere...vi skal huske at sætte den til at "autoplay on load" sådan
+at vores animation starter</p>
+<p><img src="../../assets/bonus02/autoplay_on_load.png"
+alt="autoplay_on_load" /></p>
+<p>Prøv at kør dit spil igen nu...tada, vores elevator kører nu lystigt
+op og ned, det er da for fedt!</p>
+<p><img src="../../assets/bonus02/going_up.png" alt="going_up" /></p>
+<p>Vi streger for sidste gang og klapper os selv på skulderen for det
+var godt arbejde med den <code>AnimationPlayer</code> der!</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Lav en ny
+<code>Platform</code> af typen <code>AnimatableBody2D</code></label>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Den skal ha en
+<code>CollisionShape2D</code></label></li>
+<li><label><input type="checkbox" checked="" />Den skal ha en
+<code>Sprite2D</code> og så bruger vi et billede fra vores tileset til
+elevatoren</label></li>
+</ul></li>
+<li><label><input type="checkbox" checked="" />Tilføj en
+<code>Platform</code> til vores <code>Level01</code></label></li>
+<li><label><input type="checkbox" checked="" />Tilføj en
+<code>AnimationPlayer</code> til vores <code>Platform</code> <em>i</em>
+vores `Level01``</label></li>
+<li><label><input type="checkbox" checked="" />Animer vores
+<code>Platform</code>s y position</label></li>
+</ul>
+<h2 id="hvad-så-nu">Hvad så nu</h2>
+<p>Forhåbentlig kan du se at en <code>AnimationPlayer</code> kan bruges
+til mange ting, du kan f.eks:</p>
+<ul>
+<li>Lave platforme der kan køre fra side til side, eller skrå</li>
+<li>Animere de <code>FirstAid</code> elementer som du måske har lavet i
+<a href="../bonus01/">Bonus level 01</a> så de ser ud som om de snurrer
+rundt</li>
+</ul>
+<p>Nu ved du hvordan man gør, vi glæder os til at se hvad du finder på
+:)</p>
+</article>
+</body>
+</html>
